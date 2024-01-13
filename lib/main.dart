@@ -16,12 +16,12 @@ class MovieDbApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: darkColorScheme().primary,
+      statusBarColor: AppTheme.darkColorScheme.primary,
     ));
 
     return MaterialApp(
       title: 'MovieDB',
-      theme: darkTheme(),
+      theme: AppTheme.darkTheme,
       onGenerateRoute: AppRoutes.onGenerateRoutes,
       debugShowCheckedModeBanner: false,
     );

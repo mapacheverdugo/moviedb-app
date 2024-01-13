@@ -4,21 +4,39 @@ import 'package:moviedb/features/movies/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 
 class MovieDetailsPage extends StatelessWidget {
-  final MovieEntity baseMovie;
+  static const _posterHeight = 120.0;
+  static const _posterWidth = 95.0;
+  static const _backdropHeight = 210.0;
+
+  static const _padding = EdgeInsets.symmetric(
+    vertical: 31,
+    horizontal: 29,
+  );
+  static const _footerButtonsHeight = 42.0;
 
   const MovieDetailsPage({
     super.key,
     required this.baseMovie,
   });
 
+  final MovieEntity baseMovie;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          _buildHeader(context),
-          const SizedBox(height: 18),
-          _buildInfo(context),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildHeader(context),
+                const SizedBox(height: 18),
+                _buildInfo(context),
+                SizedBox(height: _padding.vertical + _footerButtonsHeight),
+              ],
+            ),
+          ),
+          _buildFooter(context),
         ],
       ),
     );
@@ -37,7 +55,7 @@ class MovieDetailsPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return SizedBox(
-      height: 270,
+      height: _backdropHeight + (_posterHeight / 2),
       child: Stack(
         children: [
           ClipRRect(
@@ -48,20 +66,26 @@ class MovieDetailsPage extends StatelessWidget {
             child: Image.network(
               baseMovie.backdropUrl,
               fit: BoxFit.cover,
-              height: 210,
+              height: _backdropHeight,
               width: double.infinity,
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 120,
-              padding: const EdgeInsets.symmetric(horizontal: 29),
+              height: _posterHeight,
+              padding:
+                  EdgeInsets.symmetric(horizontal: _padding.horizontal / 2),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  MoviePoster(
-                    url: baseMovie.posterUrl,
+                  Hero(
+                    tag: "poster-${baseMovie.id}",
+                    child: MoviePoster(
+                      url: baseMovie.posterUrl,
+                      width: _posterWidth,
+                      height: _posterHeight,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -96,8 +120,8 @@ class MovieDetailsPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 29,
+      padding: EdgeInsets.symmetric(
+        horizontal: _padding.horizontal / 2,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,5 +175,58 @@ class MovieDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: _padding.left,
+            vertical: _padding.top,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                height: _footerButtonsHeight,
+                child: ElevatedButton(
+                  onPressed: () => _onBackTap(context),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.tertiary,
+                    foregroundColor: colorScheme.onTertiary,
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.arrow_back),
+                      SizedBox(width: 8),
+                      Text("Back"),
+                      SizedBox(width: 8),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: _footerButtonsHeight,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.all(10),
+                  ),
+                  child: const Icon(Icons.bookmark),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onBackTap(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 
 class MovieListTile extends StatelessWidget {
   final MovieEntity movie;
@@ -18,6 +19,9 @@ class MovieListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: InkWell(
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         onTap: onTap,
         child: GestureDetector(
           child: Padding(
@@ -26,11 +30,11 @@ class MovieListTile extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    movie.posterUrl,
-                    width: 95,
-                    height: 120,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: "poster-${movie.id}",
+                    child: MoviePoster(
+                      url: movie.posterUrl,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 22),
