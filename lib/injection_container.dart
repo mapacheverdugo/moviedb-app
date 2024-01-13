@@ -3,8 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
+import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart';
-import 'package:moviedb/features/movies/presentation/bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -21,9 +23,13 @@ void _initMovieFeature() {
   sl.registerFactory(
     () => MoviesBloc(sl()),
   );
+  sl.registerFactory(
+    () => MovieDetailsBloc(sl()),
+  );
 
   // Use cases
   sl.registerLazySingleton(() => GetMoviesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetMovieDetailsUseCase(repository: sl()));
 
   // Repository
   sl.registerLazySingleton<MovieRepository>(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviedb/features/movies/presentation/bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_list_tile.dart';
 import 'package:moviedb/injection_container.dart';
 

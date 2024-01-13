@@ -7,7 +7,7 @@ import 'package:moviedb/core/domain/usecases/usecase.dart';
 import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart';
-import 'package:moviedb/features/movies/presentation/bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 
 import 'movies_bloc_test.mocks.dart';
 
@@ -57,7 +57,7 @@ void main() {
   );
 
   blocTest<MoviesBloc, MoviesState>(
-    'should emit [MoviesLoading, MoviesLoaded] when data is gotten unsuccessfully',
+    'should emit [MoviesLoading, MoviesError] when data is gotten unsuccessfully',
     build: () {
       when(mockGetMoviesUseCase.call(const NoParameters()))
           .thenAnswer((_) async => const Left(ServerFailure('Server failed')));
