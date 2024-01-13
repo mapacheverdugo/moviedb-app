@@ -22,26 +22,43 @@ class MovieListTile extends StatelessWidget {
           ),
           const SizedBox(width: 22),
           Expanded(
-            child: _buildInfo(),
+            child: _buildInfo(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfo() {
+  Widget _buildInfo(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Title:"),
-        Text(movie.title),
+        Text(
+          "Title:",
+          style: textTheme.titleSmall,
+        ),
+        Text(
+          movie.title,
+        ),
         const SizedBox(height: 5),
-        Text("Release date:"),
-        Text(movie.releaseDate),
-        Text("Average rating:"),
+        Text(
+          "Release date:",
+          style: textTheme.titleSmall,
+        ),
+        Text(
+          movie.releaseDate,
+        ),
         const SizedBox(height: 5),
-        Text(movie.voteAverage.toString()),
+        Text(
+          "Average rating:",
+          style: textTheme.titleSmall,
+        ),
+        Text(
+          movie.voteAverage.toString(),
+        ),
       ],
     );
   }

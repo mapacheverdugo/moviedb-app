@@ -9,20 +9,38 @@ class MoviesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: BlocProvider(
         create: (context) => sl<MoviesBloc>()..add(const GetMoviesEvent()),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Movie DB App"),
-              const Text("Find your movies"),
-              const Text("Categories"),
-              Expanded(
-                child: _buildList(),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 29),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 22),
+                Text(
+                  "Movie DB App",
+                  style: textTheme.displaySmall,
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  "Find your movies",
+                  style: textTheme.titleLarge,
+                ),
+                const SizedBox(height: 22),
+                Text(
+                  "Categories",
+                  style: textTheme.titleLarge,
+                ),
+                const SizedBox(height: 31),
+                Expanded(
+                  child: _buildList(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

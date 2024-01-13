@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:moviedb/config/theme/app_themes.dart';
 import 'package:moviedb/features/movies/presentation/pages/movies_page.dart';
 
 import 'injection_container.dart' as di;
@@ -13,13 +15,15 @@ class MovieDbApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: darkColorScheme().primary,
+    ));
+
     return MaterialApp(
       title: 'MovieDB',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: theme(),
       home: const MoviesPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
