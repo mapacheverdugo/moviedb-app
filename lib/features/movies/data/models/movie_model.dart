@@ -40,7 +40,7 @@ class MovieModel extends MovieEntity {
       'title': title,
       'overview': overview,
       'vote_average': voteAverage,
-      'release_date': releaseDate,
+      'release_date': releaseDate.toIso8601String(),
       'poster_path': posterUrl,
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,

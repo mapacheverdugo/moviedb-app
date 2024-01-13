@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/domain/entities/movie.dart';
 
@@ -13,8 +14,8 @@ void main() {
     overview: 'Overview',
     voteAverage: 1,
     releaseDate: DateTime.parse('2021-01-01'),
-    posterUrl: '/test.jpg',
-    backdropUrl: '/test.jpg',
+    posterUrl: getPosterUrl('/test.jpg'),
+    backdropUrl: getBackdropUrl('/test.jpg'),
     voteCount: 1,
     genres: const [1, 2],
   );
@@ -59,9 +60,9 @@ void main() {
             'title': 'Test',
             'overview': 'Overview',
             'vote_average': 1,
-            'release_date': '2021-01-01',
-            'poster_path': '/test.jpg',
-            'backdrop_path': '/test.jpg',
+            'release_date': '2021-01-01T00:00:00.000',
+            'poster_path': getPosterUrl('/test.jpg'),
+            'backdrop_path': getBackdropUrl('/test.jpg'),
             'vote_count': 1,
             'genre_ids': [1, 2],
           };

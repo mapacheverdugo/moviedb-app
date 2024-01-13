@@ -35,9 +35,7 @@ void main() {
         () async {
           // arrange
           when(
-            mockHttpClient.get(
-              tUrl,
-            ),
+            mockHttpClient.get(tUrl, headers: anyNamed('headers')),
           ).thenAnswer(
             (_) async => http.Response(
               fixture('movies_popular.json'),
@@ -51,7 +49,10 @@ void main() {
           // act
           final result = await theMovieDbApiDataSourceImpl.getMovies();
           // assert
-          verify(mockHttpClient.get(tUrl));
+          verify(mockHttpClient.get(
+            tUrl,
+            headers: anyNamed('headers'),
+          ));
           expect(result, isA<List<MovieModel>>());
         },
       );
@@ -63,6 +64,7 @@ void main() {
           when(
             mockHttpClient.get(
               tUrl,
+              headers: anyNamed('headers'),
             ),
           ).thenAnswer(
             (_) async => http.Response(
