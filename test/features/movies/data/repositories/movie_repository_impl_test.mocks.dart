@@ -3,12 +3,14 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart'
+    as _i3;
+import 'package:moviedb/features/movies/data/models/movie_details_model.dart'
     as _i2;
-import 'package:moviedb/features/movies/data/models/movie_model.dart' as _i4;
+import 'package:moviedb/features/movies/data/models/movie_model.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -23,21 +25,51 @@ import 'package:moviedb/features/movies/data/models/movie_model.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeMovieDetailsModel_0 extends _i1.SmartFake
+    implements _i2.MovieDetailsModel {
+  _FakeMovieDetailsModel_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [TheMovieDbApiDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTheMovieDbApiDataSource extends _i1.Mock
-    implements _i2.TheMovieDbApiDataSource {
+    implements _i3.TheMovieDbApiDataSource {
   MockTheMovieDbApiDataSource() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.MovieModel>> getMovies() => (super.noSuchMethod(
+  _i4.Future<List<_i5.MovieModel>> getMovies() => (super.noSuchMethod(
         Invocation.method(
           #getMovies,
           [],
         ),
-        returnValue: _i3.Future<List<_i4.MovieModel>>.value(<_i4.MovieModel>[]),
-      ) as _i3.Future<List<_i4.MovieModel>>);
+        returnValue: _i4.Future<List<_i5.MovieModel>>.value(<_i5.MovieModel>[]),
+      ) as _i4.Future<List<_i5.MovieModel>>);
+
+  @override
+  _i4.Future<_i2.MovieDetailsModel> getMovieDetails({required int? movieId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getMovieDetails,
+          [],
+          {#movieId: movieId},
+        ),
+        returnValue:
+            _i4.Future<_i2.MovieDetailsModel>.value(_FakeMovieDetailsModel_0(
+          this,
+          Invocation.method(
+            #getMovieDetails,
+            [],
+            {#movieId: movieId},
+          ),
+        )),
+      ) as _i4.Future<_i2.MovieDetailsModel>);
 }

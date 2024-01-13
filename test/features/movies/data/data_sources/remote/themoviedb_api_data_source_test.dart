@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
+import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 
 import '../../../../../fixtures/fixture_reader.dart';
@@ -74,6 +75,65 @@ void main() {
           );
           // act
           final result = theMovieDbApiDataSourceImpl.getMovies;
+          // assert
+          expect(result, throwsA(isA<ServerException>()));
+        },
+      );
+    },
+  );
+
+  group(
+    'getMovieDetails',
+    () {
+      const tMovieId = 1;
+      final tUrl = Uri.parse(TheMovieDbConstants.getMovieDetailsUrl(tMovieId));
+
+      test(
+        'should perform a GET request on a URL and return a MovieDetailsModel when get movie details',
+        () async {
+          // arrange
+          when(
+            mockHttpClient.get(tUrl, headers: anyNamed('headers')),
+          ).thenAnswer(
+            (_) async => http.Response(
+              fixture('movie_details.json'),
+              200,
+              headers: {
+                HttpHeaders.contentTypeHeader:
+                    'application/json; charset=utf-8',
+              },
+            ),
+          );
+          // act
+          final result = await theMovieDbApiDataSourceImpl.getMovieDetails(
+              movieId: tMovieId);
+          // assert
+          verify(mockHttpClient.get(
+            tUrl,
+            headers: anyNamed('headers'),
+          ));
+          expect(result, isA<MovieDetailsModel>());
+        },
+      );
+
+      test(
+        'should throw a ServerException when the response code is 404 or other',
+        () async {
+          // arrange
+          when(
+            mockHttpClient.get(
+              tUrl,
+              headers: anyNamed('headers'),
+            ),
+          ).thenAnswer(
+            (_) async => http.Response(
+              'Something went wrong',
+              404,
+            ),
+          );
+          // act
+          final result =
+              theMovieDbApiDataSourceImpl.getMovieDetails(movieId: tMovieId);
           // assert
           expect(result, throwsA(isA<ServerException>()));
         },

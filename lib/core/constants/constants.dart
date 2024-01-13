@@ -15,4 +15,12 @@ class TheMovieDbConstants {
 
   static const String popularPath = '/movie/popular';
   static const String popularUrl = baseUrl + popularPath;
+
+  static String getMovieDetailsPath(int movieId) {
+    return '/movie/$movieId';
+  }
+
+  static String getMovieDetailsUrl(int movieId) {
+    return baseUrl + getMovieDetailsPath(movieId);
+  }
 }

@@ -38,4 +38,20 @@ class MovieDetailsModel extends MovieDetailsEntity {
           : [],
     );
   }
+
+  MovieDetailsEntity toEntity() {
+    return MovieDetailsEntity(
+      id: id,
+      title: title,
+      posterUrl: posterUrl,
+      backdropUrl: backdropUrl,
+      releaseDate: releaseDate,
+      overview: overview,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
+      popularity: popularity,
+      genres: genres,
+      reviews: reviews,
+    );
+  }
 }
