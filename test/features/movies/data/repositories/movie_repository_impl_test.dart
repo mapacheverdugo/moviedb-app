@@ -21,17 +21,17 @@ void main() {
     movieRepositoryImpl = MovieRepositoryImpl(mockTheMovieDbApiDataSource);
   });
 
-  const tMovieModelList = [
+  final tMovieModelList = [
     MovieModel(
       id: 1,
       title: 'Test',
       overview: 'Overview',
       voteAverage: 1,
-      releaseDate: '2021-01-01',
+      releaseDate: DateTime.parse('2021-01-01'),
       posterUrl: '/test.jpg',
       backdropUrl: '/test.jpg',
       voteCount: 1,
-      genres: [1, 2],
+      genres: const [1, 2],
     )
   ];
 

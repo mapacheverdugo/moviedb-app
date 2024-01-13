@@ -7,6 +7,12 @@ class TheMovieDbConstants {
     'Authorization': 'Bearer $apiToken',
   };
 
+  static const String baseBackdropUrl = 'https://image.tmdb.org/t/p/w1280';
+  static const String basePosterUrl = 'https://image.tmdb.org/t/p/w500';
+
+  static const String moviePlaceHolder =
+      'https://davidkoepp.com/wp-content/themes/blankslate/images/Movie%20Placeholder.jpg';
+
   static const String popularPath = '/movie/popular';
   static const String popularUrl = baseUrl + popularPath;
 }

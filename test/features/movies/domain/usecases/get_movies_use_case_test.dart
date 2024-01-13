@@ -19,28 +19,28 @@ void main() {
     getMoviesUseCase = GetMoviesUseCase(repository: mockMovieRepository);
   });
 
-  const tMovieList = [
+  final tMovieList = [
     MovieEntity(
       id: 1,
       title: 'Test',
       overview: 'Overview',
       voteAverage: 1,
-      releaseDate: '2021-01-01',
+      releaseDate: DateTime.parse('2021-01-01'),
       posterUrl: '/test.jpg',
       backdropUrl: '/test.jpg',
       voteCount: 1,
-      genres: [1, 2],
+      genres: const [1, 2],
     )
   ];
 
   test('should get movies from the repository', () async {
     // arrange
     when(mockMovieRepository.getMovies())
-        .thenAnswer((_) async => const Right(tMovieList));
+        .thenAnswer((_) async => Right(tMovieList));
     // act
     final result = await getMoviesUseCase(const NoParameters());
     // assert
-    expect(result, const Right(tMovieList));
+    expect(result, Right(tMovieList));
     verify(mockMovieRepository.getMovies());
     verifyNoMoreInteractions(mockMovieRepository);
   });

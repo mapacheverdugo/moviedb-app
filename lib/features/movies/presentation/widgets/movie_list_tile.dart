@@ -49,7 +49,7 @@ class MovieListTile extends StatelessWidget {
           style: textTheme.titleSmall,
         ),
         Text(
-          movie.releaseDate,
+          movie.releaseDate.toIso8601String(),
         ),
         const SizedBox(height: 5),
         Text(

@@ -1,3 +1,4 @@
+import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/movies/domain/entities/movie.dart';
 
 class MovieModel extends MovieEntity {
@@ -14,12 +15,16 @@ class MovieModel extends MovieEntity {
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> jsonMap) {
+    final backdropPath = jsonMap['backdrop_path'] as String;
+    final posterPath = jsonMap['poster_path'] as String;
+    final releaseDate = jsonMap['release_date'] as String;
+
     return MovieModel(
       id: jsonMap['id'] as int,
       title: jsonMap['title'] as String,
-      posterUrl: jsonMap['poster_path'] as String,
-      backdropUrl: jsonMap['backdrop_path'] as String,
-      releaseDate: jsonMap['release_date'] as String,
+      posterUrl: getPosterUrl(posterPath),
+      backdropUrl: getBackdropUrl(backdropPath),
+      releaseDate: DateTime.parse(releaseDate),
       genres: (jsonMap['genre_ids'] as List<dynamic>)
           .map((dynamic id) => id as int)
           .toList(),

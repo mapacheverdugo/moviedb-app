@@ -21,17 +21,17 @@ void main() {
     moviesBloc = MoviesBloc(mockGetMoviesUseCase);
   });
 
-  const tMovieModelList = [
+  final tMovieModelList = [
     MovieModel(
       id: 1,
       title: 'Test',
       overview: 'Overview',
       voteAverage: 1,
-      releaseDate: '2021-01-01',
+      releaseDate: DateTime.parse('2021-01-01'),
       posterUrl: '/test.jpg',
       backdropUrl: '/test.jpg',
       voteCount: 1,
-      genres: [1, 2],
+      genres: const [1, 2],
     )
   ];
 
@@ -47,13 +47,13 @@ void main() {
     'should emit [MoviesLoading, MoviesLoaded] when data is gotten successfully',
     build: () {
       when(mockGetMoviesUseCase.call(const NoParameters()))
-          .thenAnswer((_) async => const Right(tMovieModelList));
+          .thenAnswer((_) async => Right(tMovieModelList));
       return moviesBloc;
     },
     act: (bloc) => bloc.add(const GetMoviesEvent()),
     expect: () => [
       MoviesLoading(),
-      const MoviesLoaded(movies: tMovieModelList),
+      MoviesLoaded(movies: tMovieModelList),
     ],
   );
 
