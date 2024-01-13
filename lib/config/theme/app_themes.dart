@@ -14,6 +14,18 @@ class AppTheme {
       colorScheme: darkColorScheme,
       textTheme: textTheme,
       scaffoldBackgroundColor: darkColorScheme.background,
+      chipTheme: ChipThemeData(
+        backgroundColor: darkColorScheme.tertiary,
+        selectedColor: darkColorScheme.primary,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 0,
+        ),
+        labelStyle: textTheme.bodyMedium,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: darkColorScheme.onBackground,

@@ -11,16 +11,15 @@ class MovieDetailsBloc extends Bloc<MovieDetailsEvent, MovieDetailsState> {
 
   MovieDetailsBloc(this._getMovieDetailsUseCase)
       : super(MovieDetailsInitial()) {
-    on<MovieDetailsEvent>((event, emit) {
+    on<MovieDetailsEvent>((event, emit) async {
       if (event is GetMovieDetailsEvent) {
         emit(MovieDetailsLoading());
-        _getMovieDetailsUseCase(event.movieId).then((result) {
-          result.fold(
-            (failure) => emit(MovieDetailsError(message: failure.message)),
-            (movieDetails) =>
-                emit(MovieDetailsLoaded(movieDetails: movieDetails)),
-          );
-        });
+        final failureOrMovies = await _getMovieDetailsUseCase(event.movieId);
+        failureOrMovies.fold(
+          (failure) => emit(MovieDetailsError(message: failure.message)),
+          (movieDetails) =>
+              emit(MovieDetailsLoaded(movieDetails: movieDetails)),
+        );
       }
     });
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
+import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
+import 'package:moviedb/injection_container.dart';
 
 class MovieDetailsPage extends StatelessWidget {
   static const _posterHeight = 120.0;
@@ -24,20 +28,24 @@ class MovieDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildHeader(context),
-                const SizedBox(height: 18),
-                _buildInfo(context),
-                SizedBox(height: _padding.vertical + _footerButtonsHeight),
-              ],
+      body: BlocProvider(
+        create: (context) => sl<MovieDetailsBloc>()
+          ..add(GetMovieDetailsEvent(movieId: baseMovie.id)),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHeader(context),
+                  const SizedBox(height: 18),
+                  _buildInfo(context),
+                  SizedBox(height: _padding.vertical + _footerButtonsHeight),
+                ],
+              ),
             ),
-          ),
-          _buildFooter(context),
-        ],
+            _buildFooter(context),
+          ],
+        ),
       ),
     );
   }
@@ -54,65 +62,85 @@ class MovieDetailsPage extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return SizedBox(
-      height: _backdropHeight + (_posterHeight / 2),
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(16),
-            ),
-            child: Image.network(
-              baseMovie.backdropUrl,
-              fit: BoxFit.cover,
-              height: _backdropHeight,
-              width: double.infinity,
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: _posterHeight,
-              padding:
-                  EdgeInsets.symmetric(horizontal: _padding.horizontal / 2),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Hero(
-                    tag: "poster-${baseMovie.id}",
-                    child: MoviePoster(
-                      url: baseMovie.posterUrl,
-                      width: _posterWidth,
-                      height: _posterHeight,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Spacer(),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              baseMovie.title,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: textTheme.titleLarge,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+    return Column(
+      children: [
+        SizedBox(
+          height: _backdropHeight + (_posterHeight / 2),
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16),
+                ),
+                child: Image.network(
+                  baseMovie.backdropUrl,
+                  fit: BoxFit.cover,
+                  height: _backdropHeight,
+                  width: double.infinity,
+                ),
               ),
-            ),
-          )
-        ],
-      ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: _posterHeight,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: _padding.horizontal / 2),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Hero(
+                        tag: "poster-${baseMovie.id}",
+                        child: MoviePoster(
+                          url: baseMovie.posterUrl,
+                          width: _posterWidth,
+                          height: _posterHeight,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Spacer(),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  baseMovie.title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: textTheme.titleLarge,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 18),
+        BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
+          builder: (context, state) {
+            if (state is MovieDetailsLoaded) {
+              return MovieGenresChips(
+                genres: state.movieDetails.genres,
+                padding: EdgeInsets.symmetric(
+                  horizontal: _padding.horizontal / 2,
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ),
+        const SizedBox(height: 18),
+      ],
     );
   }
 
