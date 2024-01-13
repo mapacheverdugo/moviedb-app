@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:moviedb/config/routes/routes.dart';
 import 'package:moviedb/config/theme/app_themes.dart';
-import 'package:moviedb/features/movies/presentation/pages/movies_page.dart';
 
 import 'injection_container.dart' as di;
 
@@ -22,7 +22,7 @@ class MovieDbApp extends StatelessWidget {
     return MaterialApp(
       title: 'MovieDB',
       theme: darkTheme(),
-      home: const MoviesPage(),
+      onGenerateRoute: AppRoutes.onGenerateRoutes,
       debugShowCheckedModeBanner: false,
     );
   }

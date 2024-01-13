@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moviedb/features/movies/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_list_tile.dart';
 import 'package:moviedb/injection_container.dart';
@@ -76,6 +77,7 @@ class MoviesPage extends StatelessWidget {
                   vertical: 9,
                   horizontal: _padding.horizontal,
                 ),
+                onTap: () => _onMovieTap(context, movie),
               );
             },
           );
@@ -85,6 +87,13 @@ class MoviesPage extends StatelessWidget {
           return const SizedBox.shrink();
         }
       },
+    );
+  }
+
+  void _onMovieTap(BuildContext context, MovieEntity movie) {
+    Navigator.of(context).pushNamed(
+      '/movie_details',
+      arguments: movie,
     );
   }
 }

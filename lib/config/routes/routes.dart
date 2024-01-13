@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:moviedb/features/movies/presentation/pages/movies_page.dart';
 
 class AppRoutes {
   static Route onGenerateRoutes(RouteSettings settings) {
     switch (settings.name) {
-      /* case '/movie-details':
+      case '/movie_details':
         return _materialRoute(
-            MoviesDetailsPage(article: settings.arguments as MovieDetailsEntity)); */
+          MovieDetailsPage(baseMovie: settings.arguments as MovieEntity),
+        );
 
       default:
         return _materialRoute(const MoviesPage());

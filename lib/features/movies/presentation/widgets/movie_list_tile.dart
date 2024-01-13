@@ -5,20 +5,21 @@ import 'package:moviedb/features/movies/domain/entities/movie.dart';
 class MovieListTile extends StatelessWidget {
   final MovieEntity movie;
   final EdgeInsets padding;
+  final VoidCallback? onTap;
 
   const MovieListTile({
     super.key,
     required this.movie,
     this.padding = EdgeInsets.zero,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: GestureDetector(
-          onLongPress: () {},
           child: Padding(
             padding: padding,
             child: Row(
