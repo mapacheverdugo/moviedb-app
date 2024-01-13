@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
+import 'package:moviedb/features/movies/domain/entities/genre.dart';
+import 'package:moviedb/features/movies/domain/entities/review.dart';
 
-class MovieEntity extends Equatable {
+class MovieDetailsEntity extends Equatable {
   final int id;
   final String title;
   final String posterUrl;
@@ -9,8 +11,11 @@ class MovieEntity extends Equatable {
   final String overview;
   final double voteAverage;
   final int voteCount;
+  final double popularity;
+  final List<GenreEntity> genres;
+  final List<ReviewEntity> reviews;
 
-  const MovieEntity({
+  const MovieDetailsEntity({
     required this.id,
     required this.title,
     required this.posterUrl,
@@ -19,6 +24,9 @@ class MovieEntity extends Equatable {
     required this.overview,
     required this.voteAverage,
     required this.voteCount,
+    required this.popularity,
+    required this.genres,
+    required this.reviews,
   });
 
   @override
@@ -28,6 +36,7 @@ class MovieEntity extends Equatable {
         posterUrl,
         backdropUrl,
         releaseDate,
+        genres,
         overview,
         voteAverage,
         voteCount,

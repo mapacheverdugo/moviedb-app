@@ -31,7 +31,6 @@ void main() {
       posterUrl: '/test.jpg',
       backdropUrl: '/test.jpg',
       voteCount: 1,
-      genres: const [1, 2],
     )
   ];
 

@@ -8,29 +8,25 @@ class MovieModel extends MovieEntity {
     required super.posterUrl,
     required super.backdropUrl,
     required super.releaseDate,
-    required super.genres,
     required super.overview,
     required super.voteAverage,
     required super.voteCount,
   });
 
-  factory MovieModel.fromJson(Map<String, dynamic> jsonMap) {
-    final backdropPath = jsonMap['backdrop_path'] as String;
-    final posterPath = jsonMap['poster_path'] as String;
-    final releaseDate = jsonMap['release_date'] as String;
+  factory MovieModel.fromJson(Map<String, dynamic> json) {
+    final backdropPath = json['backdrop_path'] as String;
+    final posterPath = json['poster_path'] as String;
+    final releaseDate = json['release_date'] as String;
 
     return MovieModel(
-      id: jsonMap['id'] as int,
-      title: jsonMap['title'] as String,
+      id: json['id'] as int,
+      title: json['title'] as String,
       posterUrl: getPosterUrl(posterPath),
       backdropUrl: getBackdropUrl(backdropPath),
       releaseDate: DateTime.parse(releaseDate),
-      genres: (jsonMap['genre_ids'] as List<dynamic>)
-          .map((dynamic id) => id as int)
-          .toList(),
-      overview: jsonMap['overview'] as String,
-      voteAverage: (jsonMap['vote_average'] as num).toDouble(),
-      voteCount: jsonMap['vote_count'] as int,
+      overview: json['overview'] as String,
+      voteAverage: (json['vote_average'] as num).toDouble(),
+      voteCount: json['vote_count'] as int,
     );
   }
 
@@ -44,7 +40,6 @@ class MovieModel extends MovieEntity {
       'poster_path': posterUrl,
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,
-      'genre_ids': genres,
     };
   }
 
@@ -55,7 +50,6 @@ class MovieModel extends MovieEntity {
       posterUrl: posterUrl,
       backdropUrl: backdropUrl,
       releaseDate: releaseDate,
-      genres: genres,
       overview: overview,
       voteAverage: voteAverage,
       voteCount: voteCount,

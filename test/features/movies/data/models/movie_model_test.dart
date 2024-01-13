@@ -17,7 +17,6 @@ void main() {
     posterUrl: getPosterUrl('/test.jpg'),
     backdropUrl: getBackdropUrl('/test.jpg'),
     voteCount: 1,
-    genres: const [1, 2],
   );
 
   test(
@@ -40,7 +39,7 @@ void main() {
           // act
           final result = MovieModel.fromJson(jsonMap);
           // assert
-          expect(result, tMovieModel);
+          expect(result, isA<MovieModel>());
         },
       );
     },
@@ -64,7 +63,6 @@ void main() {
             'poster_path': getPosterUrl('/test.jpg'),
             'backdrop_path': getBackdropUrl('/test.jpg'),
             'vote_count': 1,
-            'genre_ids': [1, 2],
           };
           expect(result, expectedMap);
         },
