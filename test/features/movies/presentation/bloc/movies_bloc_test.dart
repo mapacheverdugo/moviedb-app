@@ -8,8 +8,6 @@ import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart';
 import 'package:moviedb/features/movies/presentation/bloc/movies_bloc.dart';
-import 'package:moviedb/features/movies/presentation/bloc/movies_event.dart';
-import 'package:moviedb/features/movies/presentation/bloc/movies_state.dart';
 
 import 'movies_bloc_test.mocks.dart';
 
@@ -38,10 +36,10 @@ void main() {
   ];
 
   test(
-    'initial state should be MoviesEmpty',
+    'initial state should be MoviesInitial',
     () async {
       // assert
-      expect(moviesBloc.state, equals(MoviesEmpty()));
+      expect(moviesBloc.state, equals(MoviesInitial()));
     },
   );
 
@@ -52,7 +50,7 @@ void main() {
           .thenAnswer((_) async => const Right(tMovieModelList));
       return moviesBloc;
     },
-    act: (bloc) => bloc.add(GetMoviesEvent()),
+    act: (bloc) => bloc.add(const GetMoviesEvent()),
     expect: () => [
       MoviesLoading(),
       const MoviesLoaded(movies: tMovieModelList),
@@ -66,7 +64,7 @@ void main() {
           .thenAnswer((_) async => const Left(ServerFailure('Server failed')));
       return moviesBloc;
     },
-    act: (bloc) => bloc.add(GetMoviesEvent()),
+    act: (bloc) => bloc.add(const GetMoviesEvent()),
     expect: () => [
       MoviesLoading(),
       const MoviesError(message: 'Server failed'),

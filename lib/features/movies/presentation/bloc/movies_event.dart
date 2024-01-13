@@ -1,6 +1,6 @@
-import 'package:equatable/equatable.dart';
+part of 'movies_bloc.dart';
 
-abstract class MoviesEvent extends Equatable {
+sealed class MoviesEvent extends Equatable {
   const MoviesEvent();
 
   @override
@@ -8,7 +8,7 @@ abstract class MoviesEvent extends Equatable {
 }
 
 class GetMoviesEvent extends MoviesEvent {
-  GetMoviesEvent();
+  const GetMoviesEvent();
 
   @override
   List<Object> get props => [];

@@ -1,18 +1,17 @@
-import 'package:equatable/equatable.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+part of 'movies_bloc.dart';
 
-abstract class MoviesState extends Equatable {
+sealed class MoviesState extends Equatable {
   const MoviesState();
 
   @override
   List<Object> get props => [];
 }
 
-class MoviesEmpty extends MoviesState {}
+final class MoviesInitial extends MoviesState {}
 
-class MoviesLoading extends MoviesState {}
+final class MoviesLoading extends MoviesState {}
 
-class MoviesError extends MoviesState {
+final class MoviesError extends MoviesState {
   final String message;
 
   const MoviesError({required this.message});
@@ -21,7 +20,7 @@ class MoviesError extends MoviesState {
   List<Object> get props => [message];
 }
 
-class MoviesLoaded extends MoviesState {
+final class MoviesLoaded extends MoviesState {
   final List<MovieEntity> movies;
 
   const MoviesLoaded({required this.movies});
