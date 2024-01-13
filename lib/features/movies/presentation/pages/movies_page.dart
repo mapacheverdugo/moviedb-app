@@ -5,6 +5,11 @@ import 'package:moviedb/features/movies/presentation/widgets/movie_list_tile.dar
 import 'package:moviedb/injection_container.dart';
 
 class MoviesPage extends StatelessWidget {
+  static const _padding = EdgeInsets.symmetric(
+    vertical: 31,
+    horizontal: 15,
+  );
+
   const MoviesPage({super.key});
 
   @override
@@ -15,32 +20,39 @@ class MoviesPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) => sl<MoviesBloc>()..add(const GetMoviesEvent()),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 29),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 22),
-                Text(
-                  "Movie DB App",
-                  style: textTheme.displaySmall,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: _padding.horizontal,
                 ),
-                const SizedBox(height: 22),
-                Text(
-                  "Find your movies",
-                  style: textTheme.titleLarge,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 22),
+                    Text(
+                      "Movie DB App",
+                      style: textTheme.displaySmall,
+                    ),
+                    const SizedBox(height: 22),
+                    Text(
+                      "Find your movies",
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 22),
+                    Text(
+                      "Categories",
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 31),
+                  ],
                 ),
-                const SizedBox(height: 22),
-                Text(
-                  "Categories",
-                  style: textTheme.titleLarge,
-                ),
-                const SizedBox(height: 31),
-                Expanded(
-                  child: _buildList(),
-                ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: _buildList(),
+              ),
+            ],
           ),
         ),
       ),
@@ -51,15 +63,20 @@ class MoviesPage extends StatelessWidget {
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (context, state) {
         if (state is MoviesLoading) {
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         } else if (state is MoviesLoaded) {
-          return ListView.separated(
-            shrinkWrap: true,
+          return ListView.builder(
+            physics: const BouncingScrollPhysics(),
             itemCount: state.movies.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 18),
             itemBuilder: (context, index) {
               final movie = state.movies[index];
-              return MovieListTile(movie: movie);
+              return MovieListTile(
+                movie: movie,
+                padding: EdgeInsets.symmetric(
+                  vertical: 9,
+                  horizontal: _padding.horizontal,
+                ),
+              );
             },
           );
         } else if (state is MoviesError) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-ThemeData theme() {
+ThemeData darkTheme() {
   return ThemeData(
     brightness: Brightness.dark,
     fontFamily: 'Poppins',
@@ -19,20 +19,21 @@ ColorScheme darkColorScheme() {
 }
 
 TextTheme textTheme() {
-  return const TextTheme(
+  return TextTheme(
     displaySmall: TextStyle(
       fontSize: 36,
       fontWeight: FontWeight.w700,
+      color: darkColorScheme().onBackground,
     ),
-    titleLarge: TextStyle(
+    titleLarge: const TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w600,
     ),
-    titleSmall: TextStyle(
+    titleSmall: const TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w500,
     ),
-    bodyMedium: TextStyle(
+    bodyMedium: const TextStyle(
       fontSize: 12,
     ),
   );

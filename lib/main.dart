@@ -21,7 +21,7 @@ class MovieDbApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'MovieDB',
-      theme: theme(),
+      theme: darkTheme(),
       home: const MoviesPage(),
       debugShowCheckedModeBanner: false,
     );
