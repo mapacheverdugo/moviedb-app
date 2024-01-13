@@ -16,8 +16,10 @@ class TheMovieDbApiDataSourceImpl extends TheMovieDbApiDataSource {
 
   @override
   Future<List<MovieModel>> getMovies() async {
-    final response =
-        await _client.get(Uri.parse(TheMovieDbConstants.popularUrl));
+    final response = await _client.get(
+      Uri.parse(TheMovieDbConstants.popularUrl),
+      headers: TheMovieDbConstants.apiStaticHeaders,
+    );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseJson = jsonDecode(response.body);
