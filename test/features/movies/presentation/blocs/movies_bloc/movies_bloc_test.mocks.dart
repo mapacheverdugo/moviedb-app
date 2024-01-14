@@ -7,8 +7,8 @@ import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:moviedb/core/domain/entities/movie.dart' as _i7;
 import 'package:moviedb/core/error/failure.dart' as _i6;
-import 'package:moviedb/features/movies/domain/entities/movie.dart' as _i7;
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart'
     as _i2;
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart'

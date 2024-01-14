@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
 
@@ -19,7 +19,7 @@ void main() {
         GetPopularMoviesUseCase(repository: mockMovieRepository);
   });
 
-  final tMovieList = [
+  final tMovieEntityList = [
     MovieEntity(
       id: 1,
       title: 'Test',
@@ -35,11 +35,11 @@ void main() {
   test('should get popular movies from the repository', () async {
     // arrange
     when(mockMovieRepository.getPopularMovies())
-        .thenAnswer((_) async => Right(tMovieList));
+        .thenAnswer((_) async => Right(tMovieEntityList));
     // act
     final result = await getPopularMoviesUseCase(1);
     // assert
-    expect(result, Right(tMovieList));
+    expect(result, Right(tMovieEntityList));
     verify(mockMovieRepository.getPopularMovies());
     verifyNoMoreInteractions(mockMovieRepository);
   });

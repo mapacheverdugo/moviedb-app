@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';

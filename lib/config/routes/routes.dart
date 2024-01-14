@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/pages/movie_details_page.dart';
 import 'package:moviedb/features/movies/presentation/pages/movies_page.dart';
 

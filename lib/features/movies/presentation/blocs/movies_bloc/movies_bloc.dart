@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
 
 part 'movies_event.dart';

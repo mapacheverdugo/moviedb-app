@@ -1,5 +1,5 @@
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/utils/functions.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
 
 class MovieModel extends MovieEntity {
   const MovieModel({

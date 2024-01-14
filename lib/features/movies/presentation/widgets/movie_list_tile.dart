@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 
 class MovieListTile extends StatelessWidget {

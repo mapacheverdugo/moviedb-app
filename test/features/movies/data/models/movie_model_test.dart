@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
-import 'package:moviedb/features/movies/domain/entities/movie.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
