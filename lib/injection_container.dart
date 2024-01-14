@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:moviedb/core/utils/objectbox.dart';
 import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
@@ -12,6 +13,14 @@ import 'package:moviedb/features/search/data/repositories/search_repository.dart
 import 'package:moviedb/features/search/domain/repositories/search_repository.dart';
 import 'package:moviedb/features/search/domain/usecases/search_usecase.dart';
 import 'package:moviedb/features/search/presentation/blocs/search_bloc/search_bloc.dart';
+import 'package:moviedb/features/watchlist/data/data_sources/watchlist_local_data_source.dart';
+import 'package:moviedb/features/watchlist/data/repositories/watchlist_repository_impl.dart';
+import 'package:moviedb/features/watchlist/domain/repositories/watchlist_repository.dart';
+import 'package:moviedb/features/watchlist/domain/usecases/add_watchlist_item_usecase.dart';
+import 'package:moviedb/features/watchlist/domain/usecases/check_watchlist_item_usecase.dart';
+import 'package:moviedb/features/watchlist/domain/usecases/get_watchlist_items_usecase.dart';
+import 'package:moviedb/features/watchlist/domain/usecases/remove_watchlist_item_usecase.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -19,8 +28,11 @@ Future<void> init() async {
   // Features
   _initMovieFeature();
   _initSearchFeature();
+  _initWatchListFeature();
 
   // External
+  final objectbox = await ObjectBox.create();
+  sl.registerLazySingleton(() => objectbox);
   sl.registerLazySingleton(() => http.Client());
 }
 
@@ -65,5 +77,32 @@ void _initSearchFeature() {
   // Data sources
   sl.registerLazySingleton<SearchRemoteDataSource>(
     () => SearchRemoteDataSourceImpl(sl()),
+  );
+}
+
+void _initWatchListFeature() {
+  // Bloc
+  sl.registerFactory(
+    () => WatchlistBloc(
+      addWatchListItemUseCase: sl(),
+      removeWatchListItemUseCase: sl(),
+      getWatchListItemsUseCase: sl(),
+    ),
+  );
+
+  // Use cases
+  sl.registerLazySingleton(() => GetWatchListItemsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => AddWatchListItemUseCase(repository: sl()));
+  sl.registerLazySingleton(() => RemoveWatchListItemUseCase(repository: sl()));
+  sl.registerLazySingleton(() => CheckWatchListItemUseCase(repository: sl()));
+
+  // Repository
+  sl.registerLazySingleton<WatchListRepository>(
+    () => WatchListRepositoryImpl(sl()),
+  );
+
+  // Data sources
+  sl.registerLazySingleton<WatchListLocalDataSource>(
+    () => WatchListLocalDataSourceImpl(sl()),
   );
 }
