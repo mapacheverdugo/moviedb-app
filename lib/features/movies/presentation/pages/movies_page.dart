@@ -186,7 +186,7 @@ class MoviesPage extends StatelessWidget {
               SizedBox(
                 height: _footerButtonsHeight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => _onLoadMoreTap(context),
                   child: const Row(
                     children: [
                       Text("Load More"),
@@ -206,5 +206,9 @@ class MoviesPage extends StatelessWidget {
       '/movie_details',
       arguments: movie,
     );
+  }
+
+  void _onLoadMoreTap(BuildContext context) {
+    context.read<MoviesBloc>().add(const LoadMoreMoviesEvent());
   }
 }

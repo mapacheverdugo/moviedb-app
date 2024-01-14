@@ -126,9 +126,13 @@ class MovieDetailsPage extends StatelessWidget {
     );
   }
 
-  String get _formattedReleaseDate {
+  String? get _formattedReleaseDate {
+    final releaseDate = baseMovie.releaseDate;
+    if (releaseDate == null) {
+      return null;
+    }
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    return formatter.format(baseMovie.releaseDate);
+    return formatter.format(releaseDate);
   }
 
   String get _formattedAverageRating {
@@ -284,7 +288,7 @@ class MovieDetailsPage extends StatelessWidget {
             "Release Date:",
             style: textTheme.titleSmall,
           ),
-          Text(_formattedReleaseDate),
+          Text(_formattedReleaseDate ?? "NA"),
           const SizedBox(height: 12),
           Row(
             children: [

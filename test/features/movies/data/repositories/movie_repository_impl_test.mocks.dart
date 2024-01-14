@@ -46,10 +46,12 @@ class MockTheMovieDbApiDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<List<_i5.MovieModel>> getPopularMovies() => (super.noSuchMethod(
+  _i4.Future<List<_i5.MovieModel>> getPopularMovies({int? page = 1}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getPopularMovies,
           [],
+          {#page: page},
         ),
         returnValue: _i4.Future<List<_i5.MovieModel>>.value(<_i5.MovieModel>[]),
       ) as _i4.Future<List<_i5.MovieModel>>);

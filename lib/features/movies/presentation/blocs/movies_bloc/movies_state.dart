@@ -1,10 +1,14 @@
 part of 'movies_bloc.dart';
 
 sealed class MoviesState extends Equatable {
-  const MoviesState();
+  final List<MovieEntity> popularMovies;
+
+  const MoviesState({
+    this.popularMovies = const <MovieEntity>[],
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [popularMovies];
 }
 
 final class MoviesInitial extends MoviesState {}
@@ -21,9 +25,7 @@ final class MoviesError extends MoviesState {
 }
 
 final class MoviesLoaded extends MoviesState {
-  final List<MovieEntity> popularMovies;
-
-  const MoviesLoaded({required this.popularMovies});
+  const MoviesLoaded({required super.popularMovies});
 
   @override
   List<Object> get props => [popularMovies];

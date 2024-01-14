@@ -7,7 +7,6 @@ import 'dart:async' as _i5;
 
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:moviedb/core/domain/usecases/usecase.dart' as _i8;
 import 'package:moviedb/core/error/failure.dart' as _i6;
 import 'package:moviedb/features/movies/domain/entities/movie.dart' as _i7;
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart'
@@ -69,7 +68,7 @@ class MockGetPopularMoviesUseCase extends _i1.Mock
 
   @override
   _i5.Future<_i3.Either<_i6.Failure, List<_i7.MovieEntity>>> call(
-          _i8.NoParameters? params) =>
+          int? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,

@@ -49,9 +49,13 @@ class MovieListTile extends StatelessWidget {
     );
   }
 
-  String get _formattedReleaseDate {
+  String? get _formattedReleaseDate {
+    final releaseDate = movie.releaseDate;
+    if (releaseDate == null) {
+      return null;
+    }
     final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    return formatter.format(movie.releaseDate);
+    return formatter.format(releaseDate);
   }
 
   String get _formattedAverageRating {
@@ -80,7 +84,7 @@ class MovieListTile extends StatelessWidget {
           style: textTheme.titleSmall,
         ),
         Text(
-          _formattedReleaseDate,
+          _formattedReleaseDate ?? "NA",
         ),
         const SizedBox(height: 5),
         Text(

@@ -14,8 +14,8 @@ class MovieModel extends MovieEntity {
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
-    final backdropPath = json['backdrop_path'] as String;
-    final posterPath = json['poster_path'] as String;
+    final backdropPath = json['backdrop_path'] as String?;
+    final posterPath = json['poster_path'] as String?;
     final releaseDate = json['release_date'] as String;
 
     return MovieModel(
@@ -23,7 +23,7 @@ class MovieModel extends MovieEntity {
       title: json['title'] as String,
       posterUrl: getPosterUrl(posterPath),
       backdropUrl: getBackdropUrl(backdropPath),
-      releaseDate: DateTime.parse(releaseDate),
+      releaseDate: DateTime.tryParse(releaseDate),
       overview: json['overview'] as String,
       voteAverage: (json['vote_average'] as num).toDouble(),
       voteCount: json['vote_count'] as int,
@@ -36,7 +36,7 @@ class MovieModel extends MovieEntity {
       'title': title,
       'overview': overview,
       'vote_average': voteAverage,
-      'release_date': releaseDate.toIso8601String(),
+      'release_date': releaseDate?.toIso8601String(),
       'poster_path': posterUrl,
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,

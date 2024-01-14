@@ -46,22 +46,25 @@ class MockMovieRepository extends _i1.Mock implements _i3.MovieRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>
-      getPopularMovies() => (super.noSuchMethod(
-            Invocation.method(
-              #getPopularMovies,
-              [],
-            ),
-            returnValue: _i4
-                .Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>.value(
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>> getPopularMovies(
+          {int? page = 1}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getPopularMovies,
+          [],
+          {#page: page},
+        ),
+        returnValue:
+            _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>.value(
                 _FakeEither_0<_i5.Failure, List<_i6.MovieEntity>>(
-              this,
-              Invocation.method(
-                #getPopularMovies,
-                [],
-              ),
-            )),
-          ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>);
+          this,
+          Invocation.method(
+            #getPopularMovies,
+            [],
+            {#page: page},
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>);
 
   @override
   _i4.Future<_i2.Either<_i5.Failure, _i7.MovieDetailsEntity>> getMovieDetails(

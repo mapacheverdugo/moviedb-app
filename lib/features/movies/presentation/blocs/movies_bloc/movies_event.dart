@@ -13,3 +13,10 @@ class GetMoviesEvent extends MoviesEvent {
   @override
   List<Object> get props => [];
 }
+
+class LoadMoreMoviesEvent extends MoviesEvent {
+  const LoadMoreMoviesEvent();
+
+  @override
+  List<Object> get props => [];
+}

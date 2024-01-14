@@ -29,7 +29,7 @@ void main() {
   group(
     'getPopularMovies',
     () {
-      final tUrl = Uri.parse(TheMovieDbConstants.popularUrl);
+      final tUrl = Uri.parse(TheMovieDbConstants.getPopularMoviesPath(1));
 
       test(
         'should perform a GET request on a URL and return a List of MovieModel when get popular movies',
