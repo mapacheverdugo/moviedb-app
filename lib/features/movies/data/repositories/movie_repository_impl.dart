@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/core/error/failure.dart';
-import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
+import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/domain/entities/movie_details.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 
 class MovieRepositoryImpl implements MovieRepository {
-  final TheMovieDbApiDataSource _moviesApiDataSource;
+  final MoviesRemoteDataSource _moviesApiDataSource;
 
   MovieRepositoryImpl(this._moviesApiDataSource);
 

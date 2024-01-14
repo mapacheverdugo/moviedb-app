@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
+import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
@@ -37,7 +37,7 @@ void _initMovieFeature() {
   );
 
   // Data sources
-  sl.registerLazySingleton<TheMovieDbApiDataSource>(
-    () => TheMovieDbApiDataSourceImpl(sl()),
+  sl.registerLazySingleton<MoviesRemoteDataSource>(
+    () => MoviesRemoteDataSourceImpl(sl()),
   );
 }

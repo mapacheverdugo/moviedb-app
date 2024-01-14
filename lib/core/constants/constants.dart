@@ -17,19 +17,27 @@ class TheMovieDbConstants {
   static const String avatarPlaceholder =
       'https://github.com/mapacheverdugo/mapacheverdugo/assets/16374322/193019ca-4124-49df-8613-6ddc89a19207';
 
-  static String getPopularMoviesPath(int page) {
+  static String _getPopularMoviesPath(int page) {
     return '/movie/popular?page=$page';
   }
 
   static String getPopularMoviesUrl(int page) {
-    return baseUrl + getPopularMoviesPath(page);
+    return baseUrl + _getPopularMoviesPath(page);
   }
 
-  static String getMovieDetailsPath(int movieId) {
+  static String _getMovieDetailsPath(int movieId) {
     return '/movie/$movieId?append_to_response=reviews';
   }
 
   static String getMovieDetailsUrl(int movieId) {
-    return baseUrl + getMovieDetailsPath(movieId);
+    return baseUrl + _getMovieDetailsPath(movieId);
+  }
+
+  static String _getSearchMoviePath(String query) {
+    return 'search/movie?query=$query';
+  }
+
+  static String getSearchMovieUrl(String query) {
+    return baseUrl + _getSearchMoviePath(query);
   }
 }

@@ -6,12 +6,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/error/exception.dart';
-import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
+import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 
-import '../../../../../fixtures/fixture_reader.dart';
-import 'themoviedb_api_data_source_test.mocks.dart';
+import '../../../../fixtures/fixture_reader.dart';
+import '../../../search/data/data_sources/search_remote_data_source_test.mocks.dart';
 
 @GenerateMocks(
   [],
@@ -19,17 +19,17 @@ import 'themoviedb_api_data_source_test.mocks.dart';
 )
 void main() {
   late MockHttpClient mockHttpClient;
-  late TheMovieDbApiDataSourceImpl theMovieDbApiDataSourceImpl;
+  late MoviesRemoteDataSourceImpl moviesRemoteDataSourceImpl;
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    theMovieDbApiDataSourceImpl = TheMovieDbApiDataSourceImpl(mockHttpClient);
+    moviesRemoteDataSourceImpl = MoviesRemoteDataSourceImpl(mockHttpClient);
   });
 
   group(
     'getPopularMovies',
     () {
-      final tUrl = Uri.parse(TheMovieDbConstants.getPopularMoviesPath(1));
+      final tUrl = Uri.parse(TheMovieDbConstants.getPopularMoviesUrl(1));
 
       test(
         'should perform a GET request on a URL and return a List of MovieModel when get popular movies',
@@ -48,7 +48,7 @@ void main() {
             ),
           );
           // act
-          final result = await theMovieDbApiDataSourceImpl.getPopularMovies();
+          final result = await moviesRemoteDataSourceImpl.getPopularMovies();
           // assert
           verify(mockHttpClient.get(
             tUrl,
@@ -74,7 +74,7 @@ void main() {
             ),
           );
           // act
-          final result = theMovieDbApiDataSourceImpl.getPopularMovies;
+          final result = moviesRemoteDataSourceImpl.getPopularMovies;
           // assert
           expect(result, throwsA(isA<ServerException>()));
         },
@@ -105,7 +105,7 @@ void main() {
             ),
           );
           // act
-          final result = await theMovieDbApiDataSourceImpl.getMovieDetails(
+          final result = await moviesRemoteDataSourceImpl.getMovieDetails(
               movieId: tMovieId);
           // assert
           verify(mockHttpClient.get(
@@ -133,7 +133,7 @@ void main() {
           );
           // act
           final result =
-              theMovieDbApiDataSourceImpl.getMovieDetails(movieId: tMovieId);
+              moviesRemoteDataSourceImpl.getMovieDetails(movieId: tMovieId);
           // assert
           expect(result, throwsA(isA<ServerException>()));
         },

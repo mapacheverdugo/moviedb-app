@@ -6,7 +6,7 @@
 import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart'
+import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart'
     as _i3;
 import 'package:moviedb/features/movies/data/models/movie_details_model.dart'
     as _i2;
@@ -36,12 +36,12 @@ class _FakeMovieDetailsModel_0 extends _i1.SmartFake
         );
 }
 
-/// A class which mocks [TheMovieDbApiDataSource].
+/// A class which mocks [MoviesRemoteDataSource].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTheMovieDbApiDataSource extends _i1.Mock
-    implements _i3.TheMovieDbApiDataSource {
-  MockTheMovieDbApiDataSource() {
+class MockMoviesRemoteDataSource extends _i1.Mock
+    implements _i3.MoviesRemoteDataSource {
+  MockMoviesRemoteDataSource() {
     _i1.throwOnMissingStub(this);
   }
 

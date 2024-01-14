@@ -6,7 +6,7 @@ import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/core/utils/functions.dart';
-import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_data_source.dart';
+import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
@@ -14,14 +14,14 @@ import 'package:moviedb/features/movies/domain/entities/movie_details.dart';
 
 import 'movie_repository_impl_test.mocks.dart';
 
-@GenerateMocks([TheMovieDbApiDataSource])
+@GenerateMocks([MoviesRemoteDataSource])
 void main() {
-  late MockTheMovieDbApiDataSource mockTheMovieDbApiDataSource;
+  late MockMoviesRemoteDataSource mockMoviesRemoteDataSource;
   late MovieRepositoryImpl movieRepositoryImpl;
 
   setUp(() {
-    mockTheMovieDbApiDataSource = MockTheMovieDbApiDataSource();
-    movieRepositoryImpl = MovieRepositoryImpl(mockTheMovieDbApiDataSource);
+    mockMoviesRemoteDataSource = MockMoviesRemoteDataSource();
+    movieRepositoryImpl = MovieRepositoryImpl(mockMoviesRemoteDataSource);
   });
 
   final tMovieModelList = [
@@ -42,14 +42,14 @@ void main() {
       'should return movies when a call to data source is successful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getPopularMovies())
+        when(mockMoviesRemoteDataSource.getPopularMovies())
             .thenAnswer((_) async => tMovieModelList);
 
         // act
         final result = await movieRepositoryImpl.getPopularMovies();
 
         // assert
-        verify(mockTheMovieDbApiDataSource.getPopularMovies());
+        verify(mockMoviesRemoteDataSource.getPopularMovies());
         expect(result, isA<Right<Failure, List<MovieEntity>>>());
       },
     );
@@ -58,7 +58,7 @@ void main() {
       'should return ServerFailure when a call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getPopularMovies())
+        when(mockMoviesRemoteDataSource.getPopularMovies())
             .thenThrow(ServerException());
 
         // act
@@ -91,7 +91,7 @@ void main() {
       'should return movie details when a call to data source is successful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getMovieDetails(movieId: tMovieId))
+        when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
             .thenAnswer((_) async => tMovieDetailsModel);
 
         // act
@@ -99,7 +99,7 @@ void main() {
             await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
 
         // assert
-        verify(mockTheMovieDbApiDataSource.getMovieDetails(movieId: tMovieId));
+        verify(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId));
         expect(result, isA<Right<Failure, MovieDetailsEntity>>());
       },
     );
@@ -108,7 +108,7 @@ void main() {
       'should return ServerFailure when a call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getMovieDetails(movieId: tMovieId))
+        when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
             .thenThrow(ServerException());
 
         // act

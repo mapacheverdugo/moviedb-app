@@ -6,15 +6,15 @@ import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 
-abstract class TheMovieDbApiDataSource {
+abstract class MoviesRemoteDataSource {
   Future<List<MovieModel>> getPopularMovies({int page = 1});
   Future<MovieDetailsModel> getMovieDetails({required int movieId});
 }
 
-class TheMovieDbApiDataSourceImpl extends TheMovieDbApiDataSource {
+class MoviesRemoteDataSourceImpl extends MoviesRemoteDataSource {
   final http.Client _client;
 
-  TheMovieDbApiDataSourceImpl(this._client);
+  MoviesRemoteDataSourceImpl(this._client);
 
   @override
   Future<List<MovieModel>> getPopularMovies({int page = 1}) async {
