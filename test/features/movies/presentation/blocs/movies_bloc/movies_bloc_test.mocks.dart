@@ -12,7 +12,7 @@ import 'package:moviedb/core/error/failure.dart' as _i6;
 import 'package:moviedb/features/movies/domain/entities/movie.dart' as _i7;
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart'
     as _i2;
-import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart'
+import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart'
     as _i4;
 
 // ignore_for_file: type=lint
@@ -49,11 +49,12 @@ class _FakeEither_1<L, R> extends _i1.SmartFake implements _i3.Either<L, R> {
         );
 }
 
-/// A class which mocks [GetMoviesUseCase].
+/// A class which mocks [GetPopularMoviesUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGetMoviesUseCase extends _i1.Mock implements _i4.GetMoviesUseCase {
-  MockGetMoviesUseCase() {
+class MockGetPopularMoviesUseCase extends _i1.Mock
+    implements _i4.GetPopularMoviesUseCase {
+  MockGetPopularMoviesUseCase() {
     _i1.throwOnMissingStub(this);
   }
 

@@ -21,10 +21,10 @@ final class MoviesError extends MoviesState {
 }
 
 final class MoviesLoaded extends MoviesState {
-  final List<MovieEntity> movies;
+  final List<MovieEntity> popularMovies;
 
-  const MoviesLoaded({required this.movies});
+  const MoviesLoaded({required this.popularMovies});
 
   @override
-  List<Object> get props => [movies];
+  List<Object> get props => [popularMovies];
 }

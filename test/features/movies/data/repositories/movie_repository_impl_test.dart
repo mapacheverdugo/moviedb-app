@@ -37,19 +37,19 @@ void main() {
     )
   ];
 
-  group('get movies', () {
+  group('get popular movies', () {
     test(
       'should return movies when a call to data source is successful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getMovies())
+        when(mockTheMovieDbApiDataSource.getPopularMovies())
             .thenAnswer((_) async => tMovieModelList);
 
         // act
-        final result = await movieRepositoryImpl.getMovies();
+        final result = await movieRepositoryImpl.getPopularMovies();
 
         // assert
-        verify(mockTheMovieDbApiDataSource.getMovies());
+        verify(mockTheMovieDbApiDataSource.getPopularMovies());
         expect(result, isA<Right<Failure, List<MovieEntity>>>());
       },
     );
@@ -58,11 +58,11 @@ void main() {
       'should return ServerFailure when a call to data source is unsuccessful',
       () async {
         // arrange
-        when(mockTheMovieDbApiDataSource.getMovies())
+        when(mockTheMovieDbApiDataSource.getPopularMovies())
             .thenThrow(ServerException());
 
         // act
-        final result = await movieRepositoryImpl.getMovies();
+        final result = await movieRepositoryImpl.getPopularMovies();
 
         // assert
         expect(

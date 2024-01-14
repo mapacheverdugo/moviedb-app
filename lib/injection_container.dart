@@ -4,7 +4,7 @@ import 'package:moviedb/features/movies/data/data_sources/remote/themoviedb_api_
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
-import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart';
+import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 
@@ -28,7 +28,7 @@ void _initMovieFeature() {
   );
 
   // Use cases
-  sl.registerLazySingleton(() => GetMoviesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetPopularMoviesUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetMovieDetailsUseCase(repository: sl()));
 
   // Repository

@@ -6,7 +6,7 @@ import 'package:moviedb/features/movies/domain/entities/movie_details.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
 
-import 'get_movies_use_case_test.mocks.dart';
+import 'get_popular_movies_use_case_test.mocks.dart';
 
 @GenerateMocks([MovieRepository])
 void main() {

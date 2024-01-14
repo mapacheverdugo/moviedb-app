@@ -7,7 +7,7 @@ import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 
 abstract class TheMovieDbApiDataSource {
-  Future<List<MovieModel>> getMovies();
+  Future<List<MovieModel>> getPopularMovies();
   Future<MovieDetailsModel> getMovieDetails({required int movieId});
 }
 
@@ -17,7 +17,7 @@ class TheMovieDbApiDataSourceImpl extends TheMovieDbApiDataSource {
   TheMovieDbApiDataSourceImpl(this._client);
 
   @override
-  Future<List<MovieModel>> getMovies() async {
+  Future<List<MovieModel>> getPopularMovies() async {
     final response = await _client.get(
       Uri.parse(TheMovieDbConstants.popularUrl),
       headers: TheMovieDbConstants.apiStaticHeaders,

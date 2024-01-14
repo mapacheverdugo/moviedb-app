@@ -110,9 +110,9 @@ class MoviesPage extends StatelessWidget {
                       right: _padding.right - _movieListTilePadding.right,
                     ),
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.movies.length,
+                    itemCount: state.popularMovies.length,
                     itemBuilder: (context, index) {
-                      final movie = state.movies[index];
+                      final movie = state.popularMovies[index];
                       return MovieListTile(
                         movie: movie,
                         padding: EdgeInsets.symmetric(

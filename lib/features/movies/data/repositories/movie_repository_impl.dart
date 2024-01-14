@@ -12,9 +12,9 @@ class MovieRepositoryImpl implements MovieRepository {
   MovieRepositoryImpl(this._moviesApiDataSource);
 
   @override
-  Future<Either<Failure, List<MovieEntity>>> getMovies() async {
+  Future<Either<Failure, List<MovieEntity>>> getPopularMovies() async {
     try {
-      final movies = await _moviesApiDataSource.getMovies();
+      final movies = await _moviesApiDataSource.getPopularMovies();
       return Right(movies.map((e) => e.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure('An error has occurred'));

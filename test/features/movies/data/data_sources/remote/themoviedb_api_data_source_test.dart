@@ -27,12 +27,12 @@ void main() {
   });
 
   group(
-    'getMovies',
+    'getPopularMovies',
     () {
       final tUrl = Uri.parse(TheMovieDbConstants.popularUrl);
 
       test(
-        'should perform a GET request on a URL and return a List of MovieModel when get movies',
+        'should perform a GET request on a URL and return a List of MovieModel when get popular movies',
         () async {
           // arrange
           when(
@@ -48,7 +48,7 @@ void main() {
             ),
           );
           // act
-          final result = await theMovieDbApiDataSourceImpl.getMovies();
+          final result = await theMovieDbApiDataSourceImpl.getPopularMovies();
           // assert
           verify(mockHttpClient.get(
             tUrl,
@@ -74,7 +74,7 @@ void main() {
             ),
           );
           // act
-          final result = theMovieDbApiDataSourceImpl.getMovies;
+          final result = theMovieDbApiDataSourceImpl.getPopularMovies;
           // assert
           expect(result, throwsA(isA<ServerException>()));
         },

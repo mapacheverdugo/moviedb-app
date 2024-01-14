@@ -6,19 +6,19 @@ import 'package:mockito/mockito.dart';
 import 'package:moviedb/core/domain/usecases/usecase.dart';
 import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
-import 'package:moviedb/features/movies/domain/usecases/get_movies_usecase.dart';
+import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 
 import 'movies_bloc_test.mocks.dart';
 
-@GenerateMocks([GetMoviesUseCase])
+@GenerateMocks([GetPopularMoviesUseCase])
 void main() {
-  late MockGetMoviesUseCase mockGetMoviesUseCase;
+  late MockGetPopularMoviesUseCase mockGetPopularMoviesUseCase;
   late MoviesBloc moviesBloc;
 
   setUp(() {
-    mockGetMoviesUseCase = MockGetMoviesUseCase();
-    moviesBloc = MoviesBloc(mockGetMoviesUseCase);
+    mockGetPopularMoviesUseCase = MockGetPopularMoviesUseCase();
+    moviesBloc = MoviesBloc(mockGetPopularMoviesUseCase);
   });
 
   final tMovieModelList = [
@@ -45,21 +45,21 @@ void main() {
   blocTest<MoviesBloc, MoviesState>(
     'should emit [MoviesLoading, MoviesLoaded] when data is gotten successfully',
     build: () {
-      when(mockGetMoviesUseCase.call(const NoParameters()))
+      when(mockGetPopularMoviesUseCase.call(const NoParameters()))
           .thenAnswer((_) async => Right(tMovieModelList));
       return moviesBloc;
     },
     act: (bloc) => bloc.add(const GetMoviesEvent()),
     expect: () => [
       MoviesLoading(),
-      MoviesLoaded(movies: tMovieModelList),
+      MoviesLoaded(popularMovies: tMovieModelList),
     ],
   );
 
   blocTest<MoviesBloc, MoviesState>(
     'should emit [MoviesLoading, MoviesError] when data is gotten unsuccessfully',
     build: () {
-      when(mockGetMoviesUseCase.call(const NoParameters()))
+      when(mockGetPopularMoviesUseCase.call(const NoParameters()))
           .thenAnswer((_) async => const Left(ServerFailure('Server failed')));
       return moviesBloc;
     },
