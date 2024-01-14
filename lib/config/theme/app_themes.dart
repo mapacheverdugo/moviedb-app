@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  static const Color greenColor = Color(0XFF4FCCA3);
+  static const Color darkBlueColor = Color(0XFF242A32);
+  static const Color darkGreyColor = Color(0XFF3A3F47);
+  static const Color whiteColor = Color(0XFFFFFFFF);
+
   static const String fontFamily = 'Poppins';
   static const EdgeInsets defaultButtonPadding = EdgeInsets.symmetric(
     vertical: 10,
@@ -14,51 +19,40 @@ class AppTheme {
       colorScheme: darkColorScheme,
       textTheme: textTheme,
       scaffoldBackgroundColor: darkColorScheme.background,
-      chipTheme: ChipThemeData(
-        backgroundColor: darkColorScheme.tertiary,
-        selectedColor: darkColorScheme.primary,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 0,
-        ),
-        labelStyle: textTheme.bodyMedium,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+      textButtonTheme: textButtonTheme,
+      elevatedButtonTheme: elevatedButtonTheme,
+      chipTheme: chipTheme,
+      appBarTheme: appBarTheme,
+      listTileTheme: ListTileThemeData(
+        contentPadding: EdgeInsets.zero,
+        horizontalTitleGap: 0,
+        minVerticalPadding: 0,
+        titleTextStyle: textTheme.titleSmall,
+        subtitleTextStyle: textTheme.bodyMedium,
+        textColor: darkColorScheme.onBackground,
       ),
-      textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: darkColorScheme.onBackground,
-          textStyle: textTheme.titleMedium,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          padding: defaultButtonPadding,
+      tabBarTheme: TabBarTheme(
+        labelColor: darkColorScheme.onBackground,
+        labelStyle: textTheme.titleMedium,
+        unselectedLabelColor: darkColorScheme.onBackground,
+        unselectedLabelStyle: textTheme.bodyLarge?.copyWith(
+          color: darkColorScheme.onBackground,
         ),
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          textStyle: textTheme.titleMedium,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          padding: defaultButtonPadding,
-          minimumSize: const Size(0, 42),
-        ),
+        indicatorColor: darkColorScheme.tertiary,
       ),
     );
   }
 
   static ColorScheme get darkColorScheme {
     return const ColorScheme.dark(
-      primary: Color(0XFF4FCCA3),
-      onPrimary: Color(0XFF242A32),
-      secondary: Color(0XFFFFFFFF),
-      onSecondary: Color(0XFF242A32),
-      tertiary: Color(0XFF3A3F47),
-      onTertiary: Color(0XFFFFFFFF),
-      background: Color(0XFF242A32),
-      onBackground: Color(0XFFFFFFFF),
+      primary: greenColor,
+      onPrimary: darkBlueColor,
+      secondary: whiteColor,
+      onSecondary: darkBlueColor,
+      tertiary: darkGreyColor,
+      onTertiary: whiteColor,
+      background: darkBlueColor,
+      onBackground: whiteColor,
     );
   }
 
@@ -85,10 +79,55 @@ class AppTheme {
         fontFamily: fontFamily,
         fontWeight: FontWeight.w500,
       ),
+      bodyLarge: const TextStyle(
+        fontSize: 14,
+        fontFamily: fontFamily,
+      ),
       bodyMedium: const TextStyle(
         fontSize: 12,
         fontFamily: fontFamily,
       ),
     );
   }
+
+  static TextButtonThemeData get textButtonTheme => TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: darkColorScheme.onBackground,
+          textStyle: textTheme.titleMedium,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: defaultButtonPadding,
+        ),
+      );
+
+  static ElevatedButtonThemeData get elevatedButtonTheme =>
+      ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          textStyle: textTheme.titleMedium,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          padding: defaultButtonPadding,
+          minimumSize: const Size(0, 42),
+        ),
+      );
+
+  static ChipThemeData get chipTheme => ChipThemeData(
+        backgroundColor: darkColorScheme.tertiary,
+        selectedColor: darkColorScheme.primary,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 14,
+          vertical: 0,
+        ),
+        labelStyle: textTheme.bodyMedium,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      );
+
+  static AppBarTheme get appBarTheme => const AppBarTheme(
+        backgroundColor: darkBlueColor,
+        elevation: 0,
+      );
 }

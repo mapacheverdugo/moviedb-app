@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/features/movies/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
+import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 import 'package:moviedb/injection_container.dart';
@@ -18,6 +19,20 @@ class MovieDetailsPage extends StatelessWidget {
   );
   static const _footerButtonsHeight = 42.0;
 
+  static const _tabs = [
+    Tab(
+      height: 37,
+      text: "About Movie",
+    ),
+    Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      child: Tab(
+        height: 37,
+        text: "Reviews",
+      ),
+    ),
+  ];
+
   const MovieDetailsPage({
     super.key,
     required this.baseMovie,
@@ -27,20 +42,80 @@ class MovieDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tabBar = CustomTabBar(
+      padding: EdgeInsets.symmetric(
+        horizontal: _padding.horizontal / 2,
+      ),
+      tabs: _tabs,
+    );
+
     return Scaffold(
       body: BlocProvider(
         create: (context) => sl<MovieDetailsBloc>()
           ..add(GetMovieDetailsEvent(movieId: baseMovie.id)),
         child: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildHeader(context),
-                  const SizedBox(height: 18),
-                  _buildInfo(context),
-                  SizedBox(height: _padding.vertical + _footerButtonsHeight),
-                ],
+            DefaultTabController(
+              length: _tabs.length,
+              child: NestedScrollView(
+                floatHeaderSlivers: true,
+                physics: const BouncingScrollPhysics(),
+                headerSliverBuilder: (headerContext, innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverOverlapAbsorber(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          headerContext),
+                      sliver: SliverAppBar(
+                        pinned: true,
+                        floating: true,
+                        expandedHeight: _backdropHeight +
+                            (_posterHeight / 2) +
+                            40 +
+                            tabBar.preferredSize.height,
+                        automaticallyImplyLeading: false,
+                        flexibleSpace: FlexibleSpaceBar(
+                          collapseMode: CollapseMode.pin,
+                          background: _buildHeader(context),
+                        ),
+                        bottom: tabBar,
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    _buildAboutTab(context),
+                    _buildReviewsTab(context),
+                  ]
+                      .map(
+                        (child) => SafeArea(
+                          top: false,
+                          bottom: false,
+                          child: Builder(
+                            builder: (BuildContext context) {
+                              return CustomScrollView(
+                                physics: const BouncingScrollPhysics(),
+                                key: PageStorageKey<String>(child.toString()),
+                                slivers: <Widget>[
+                                  SliverOverlapInjector(
+                                    handle: NestedScrollView
+                                        .sliverOverlapAbsorberHandleFor(
+                                            context),
+                                  ),
+                                  SliverPadding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    sliver: SliverToBoxAdapter(
+                                      child: child,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
               ),
             ),
             _buildFooter(context),
@@ -144,7 +219,7 @@ class MovieDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfo(BuildContext context) {
+  Widget _buildReviewsTab(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -154,6 +229,30 @@ class MovieDetailsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 18),
+          Text(
+            "Reviews:",
+            style: textTheme.titleSmall,
+          ),
+          const SizedBox(height: 5),
+          const Text("No reviews yet"),
+          SizedBox(height: _footerButtonsHeight + _padding.vertical),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAboutTab(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: _padding.horizontal / 2,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 18),
           Text(
             "Overviews:",
             style: textTheme.titleSmall,
@@ -200,6 +299,7 @@ class MovieDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: _footerButtonsHeight + _padding.vertical),
         ],
       ),
     );
