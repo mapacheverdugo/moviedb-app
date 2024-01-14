@@ -44,13 +44,18 @@ class MockSearchRepository extends _i1.Mock implements _i3.SearchRepository {
   }
 
   @override
-  _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>> search(
-          {required String? query}) =>
+  _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>> search({
+    required String? query,
+    int? page = 1,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #search,
           [],
-          {#query: query},
+          {
+            #query: query,
+            #page: page,
+          },
         ),
         returnValue:
             _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>.value(
@@ -59,7 +64,10 @@ class MockSearchRepository extends _i1.Mock implements _i3.SearchRepository {
           Invocation.method(
             #search,
             [],
-            {#query: query},
+            {
+              #query: query,
+              #page: page,
+            },
           ),
         )),
       ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.MovieEntity>>>);

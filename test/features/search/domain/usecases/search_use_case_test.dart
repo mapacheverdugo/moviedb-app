@@ -38,7 +38,7 @@ void main() {
     when(mockSearchRepository.search(query: tQuery))
         .thenAnswer((_) async => Right(tMovieEntityList));
     // act
-    final result = await searchUseCase(tQuery);
+    final result = await searchUseCase(SearchUseCaseParams(query: tQuery));
     // assert
     expect(result, Right(tMovieEntityList));
     verify(mockSearchRepository.search(query: tQuery));

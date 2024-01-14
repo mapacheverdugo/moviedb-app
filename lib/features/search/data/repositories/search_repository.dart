@@ -11,10 +11,15 @@ class SearchRepositoryImpl implements SearchRepository {
   SearchRepositoryImpl(this._remoteDataSource);
 
   @override
-  Future<Either<Failure, List<MovieEntity>>> search(
-      {required String query}) async {
+  Future<Either<Failure, List<MovieEntity>>> search({
+    required String query,
+    int page = 1,
+  }) async {
     try {
-      final movies = await _remoteDataSource.search(query: query);
+      final movies = await _remoteDataSource.search(
+        query: query,
+        page: page,
+      );
       return Right(movies.map((e) => e.toEntity()).toList());
     } on ServerException {
       return const Left(ServerFailure('An error has occurred'));

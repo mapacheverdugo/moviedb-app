@@ -34,13 +34,18 @@ class MockSearchRemoteDataSource extends _i1.Mock
   }
 
   @override
-  _i3.Future<List<_i4.SearchResultItemModel>> search(
-          {required String? query}) =>
+  _i3.Future<List<_i4.SearchResultItemModel>> search({
+    required String? query,
+    int? page = 1,
+  }) =>
       (super.noSuchMethod(
         Invocation.method(
           #search,
           [],
-          {#query: query},
+          {
+            #query: query,
+            #page: page,
+          },
         ),
         returnValue: _i3.Future<List<_i4.SearchResultItemModel>>.value(
             <_i4.SearchResultItemModel>[]),

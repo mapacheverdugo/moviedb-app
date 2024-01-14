@@ -33,11 +33,11 @@ class TheMovieDbConstants {
     return baseUrl + _getMovieDetailsPath(movieId);
   }
 
-  static String _getSearchMoviePath(String query) {
-    return 'search/movie?query=$query';
+  static String _getSearchMoviePath(String query, {int page = 1}) {
+    return 'search/movie?query=$query&page=$page';
   }
 
-  static String getSearchMovieUrl(String query) {
-    return baseUrl + _getSearchMoviePath(query);
+  static String getSearchMovieUrl(String query, {int page = 1}) {
+    return baseUrl + _getSearchMoviePath(query, page: page);
   }
 }

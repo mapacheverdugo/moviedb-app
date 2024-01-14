@@ -6,7 +6,10 @@ import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/features/search/data/models/search_result_item_model.dart';
 
 abstract class SearchRemoteDataSource {
-  Future<List<SearchResultItemModel>> search({required String query});
+  Future<List<SearchResultItemModel>> search({
+    required String query,
+    int page = 1,
+  });
 }
 
 class SearchRemoteDataSourceImpl extends SearchRemoteDataSource {
@@ -15,9 +18,15 @@ class SearchRemoteDataSourceImpl extends SearchRemoteDataSource {
   SearchRemoteDataSourceImpl(this._client);
 
   @override
-  Future<List<SearchResultItemModel>> search({required String query}) async {
+  Future<List<SearchResultItemModel>> search({
+    required String query,
+    int page = 1,
+  }) async {
     final response = await _client.get(
-      Uri.parse(TheMovieDbConstants.getSearchMovieUrl(query)),
+      Uri.parse(TheMovieDbConstants.getSearchMovieUrl(
+        query,
+        page: page,
+      )),
       headers: TheMovieDbConstants.apiStaticHeaders,
     );
 
