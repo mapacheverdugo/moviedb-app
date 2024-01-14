@@ -1,3 +1,17 @@
+import 'package:flutter/widgets.dart';
+
+class AppConstants {
+  static const pagePadding = EdgeInsets.symmetric(
+    vertical: 31,
+    horizontal: 29,
+  );
+  static const movieListTilePadding = EdgeInsets.symmetric(
+    vertical: 9,
+    horizontal: 9,
+  );
+  static const footerButtonsHeight = 42.0;
+}
+
 class TheMovieDbConstants {
   static const String baseUrl = "https://api.themoviedb.org/3";
   static const String apiToken =
@@ -34,7 +48,7 @@ class TheMovieDbConstants {
   }
 
   static String _getSearchMoviePath(String query, {int page = 1}) {
-    return 'search/movie?query=$query&page=$page';
+    return '/search/movie?query=$query&page=$page';
   }
 
   static String getSearchMovieUrl(String query, {int page = 1}) {

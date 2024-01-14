@@ -1,23 +1,23 @@
 part of 'search_bloc.dart';
 
 sealed class SearchEvent extends Equatable {
-  const SearchEvent();
+  final String query;
+
+  const SearchEvent({required this.query});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [query];
 }
 
 class GetSearchResults extends SearchEvent {
-  final String query;
-
-  const GetSearchResults(this.query);
+  const GetSearchResults({required super.query});
 
   @override
   List<Object> get props => [query];
 }
 
 class LoadMoreSearchResults extends SearchEvent {
-  const LoadMoreSearchResults();
+  const LoadMoreSearchResults({super.query = ''});
 
   @override
   List<Object> get props => [];

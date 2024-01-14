@@ -40,6 +40,21 @@ class AppTheme {
         ),
         indicatorColor: darkColorScheme.tertiary,
       ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: darkColorScheme.tertiary,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 19,
+          vertical: 10,
+        ),
+        hintStyle: textTheme.bodyLarge?.copyWith(
+          color: darkColorScheme.onBackground,
+        ),
+      ),
     );
   }
 
@@ -82,10 +97,12 @@ class AppTheme {
       bodyLarge: const TextStyle(
         fontSize: 14,
         fontFamily: fontFamily,
+        fontWeight: FontWeight.w400,
       ),
       bodyMedium: const TextStyle(
         fontSize: 12,
         fontFamily: fontFamily,
+        fontWeight: FontWeight.w400,
       ),
     );
   }

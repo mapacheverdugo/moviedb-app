@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
+import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
@@ -13,12 +15,6 @@ class MovieDetailsPage extends StatelessWidget {
   static const _posterHeight = 120.0;
   static const _posterWidth = 95.0;
   static const _backdropHeight = 210.0;
-
-  static const _padding = EdgeInsets.symmetric(
-    vertical: 31,
-    horizontal: 29,
-  );
-  static const _footerButtonsHeight = 42.0;
 
   static const _tabs = [
     Tab(
@@ -45,7 +41,7 @@ class MovieDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final tabBar = CustomTabBar(
       padding: EdgeInsets.symmetric(
-        horizontal: _padding.horizontal / 2,
+        horizontal: AppConstants.pagePadding.horizontal / 2,
       ),
       tabs: _tabs,
     );
@@ -164,8 +160,8 @@ class MovieDetailsPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   height: _posterHeight,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: _padding.horizontal / 2),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.pagePadding.horizontal / 2),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -211,7 +207,7 @@ class MovieDetailsPage extends StatelessWidget {
               return MovieGenresChips(
                 genres: state.movieDetails.genres,
                 padding: EdgeInsets.symmetric(
-                  horizontal: _padding.horizontal / 2,
+                  horizontal: AppConstants.pagePadding.horizontal / 2,
                 ),
               );
             } else {
@@ -227,7 +223,7 @@ class MovieDetailsPage extends StatelessWidget {
   Widget _buildReviewsTab(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: _padding.horizontal / 2,
+        horizontal: AppConstants.pagePadding.horizontal / 2,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,7 +256,9 @@ class MovieDetailsPage extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: _footerButtonsHeight + _padding.vertical),
+          SizedBox(
+              height: AppConstants.footerButtonsHeight +
+                  AppConstants.pagePadding.vertical),
         ],
       ),
     );
@@ -271,7 +269,7 @@ class MovieDetailsPage extends StatelessWidget {
 
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: _padding.horizontal / 2,
+        horizontal: AppConstants.pagePadding.horizontal / 2,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,46 +321,32 @@ class MovieDetailsPage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: _footerButtonsHeight + _padding.vertical),
+          SizedBox(
+              height: AppConstants.footerButtonsHeight +
+                  AppConstants.pagePadding.vertical),
         ],
       ),
     );
   }
 
   Widget _buildFooter(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Align(
       alignment: Alignment.bottomCenter,
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _padding.left,
-            vertical: _padding.top,
+            horizontal: AppConstants.pagePadding.left,
+            vertical: AppConstants.pagePadding.top,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(
-                height: _footerButtonsHeight,
-                child: ElevatedButton(
-                  onPressed: () => _onBackTap(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colorScheme.tertiary,
-                    foregroundColor: colorScheme.onTertiary,
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.arrow_back),
-                      SizedBox(width: 8),
-                      Text("Back"),
-                      SizedBox(width: 8),
-                    ],
-                  ),
-                ),
+              const SizedBox(
+                height: AppConstants.footerButtonsHeight,
+                child: FloatingBackButton(),
               ),
               SizedBox(
-                height: _footerButtonsHeight,
+                height: AppConstants.footerButtonsHeight,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -376,9 +360,5 @@ class MovieDetailsPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _onBackTap(BuildContext context) {
-    Navigator.of(context).pop();
   }
 }

@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:moviedb/config/theme/app_themes.dart';
+import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
+import 'package:moviedb/core/presentation/widgets/app_title.dart';
+import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
+import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
+import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
-import 'package:moviedb/features/movies/presentation/widgets/movie_list_tile.dart';
 import 'package:moviedb/injection_container.dart';
 
 class MoviesPage extends StatelessWidget {
-  static const _padding = EdgeInsets.symmetric(
-    vertical: 31,
-    horizontal: 29,
-  );
-  static const _movieListTilePadding = EdgeInsets.symmetric(
-    vertical: 9,
-    horizontal: 9,
-  );
-  static const _footerButtonsHeight = 42.0;
-
   const MoviesPage({super.key});
 
   @override
@@ -34,20 +27,23 @@ class MoviesPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(
-                      horizontal: _padding.left,
+                      horizontal: AppConstants.pagePadding.left,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 22),
-                        Text(
-                          "Movie DB App",
-                          style: textTheme.displaySmall,
-                        ),
+                        const AppTitle(),
                         const SizedBox(height: 22),
                         Text(
                           "Find your movies",
                           style: textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 18),
+                        CustomSearchBar(
+                          readOnly: true,
+                          onFieldTap: () => _onSearchAction(context),
+                          onSearchAction: () => _onSearchAction(context),
                         ),
                         const SizedBox(height: 22),
                         Text(
@@ -78,55 +74,10 @@ class MoviesPage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is MoviesLoaded) {
-          return ShaderMask(
-            shaderCallback: (Rect rect) {
-              return const LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black,
-                  Colors.transparent,
-                  Colors.transparent,
-                  Colors.transparent
-                ],
-                stops: [
-                  0.0,
-                  0.1,
-                  0.9,
-                  1.0
-                ], // 10% purple, 80% transparent, 10% purple
-              ).createShader(rect);
-            },
-            blendMode: BlendMode.dstOut,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                children: [
-                  const SizedBox(height: 31),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(
-                      left: _padding.left - _movieListTilePadding.left,
-                      right: _padding.right - _movieListTilePadding.right,
-                    ),
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.popularMovies.length,
-                    itemBuilder: (context, index) {
-                      final movie = state.popularMovies[index];
-                      return MovieListTile(
-                        movie: movie,
-                        padding: EdgeInsets.symmetric(
-                          vertical: _movieListTilePadding.vertical / 2,
-                          horizontal: _movieListTilePadding.horizontal / 2,
-                        ),
-                        onTap: () => _onMovieTap(context, movie),
-                      );
-                    },
-                  ),
-                  _buildListFooter(context),
-                ],
-              ),
-            ),
+          return MoviesList(
+            movies: state.popularMovies,
+            onMovieTap: (movie) => _onMovieTap(context, movie),
+            onLoadMoreTap: () => _onLoadMoreTap(context),
           );
         } else if (state is MoviesError) {
           return Text(state.message);
@@ -143,23 +94,16 @@ class MoviesPage extends StatelessWidget {
       child: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
-            horizontal: _padding.left,
-            vertical: _padding.top,
+            horizontal: AppConstants.pagePadding.left,
+            vertical: AppConstants.pagePadding.top,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SizedBox(
-                height: _footerButtonsHeight,
-                child: ElevatedButton(
+                height: AppConstants.footerButtonsHeight,
+                child: FloatingWatchListButton(
                   onPressed: () {},
-                  child: const Row(
-                    children: [
-                      Text("Watch List"),
-                      SizedBox(width: 8),
-                      Icon(Icons.bookmark),
-                    ],
-                  ),
                 ),
               ),
             ],
@@ -169,36 +113,8 @@ class MoviesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildListFooter(BuildContext context) {
-    const defaultButtonPadding = AppTheme.defaultButtonPadding;
-
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SafeArea(
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: _padding.left - (defaultButtonPadding.horizontal / 2),
-            vertical: _padding.top,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: _footerButtonsHeight,
-                child: TextButton(
-                  onPressed: () => _onLoadMoreTap(context),
-                  child: const Row(
-                    children: [
-                      Text("Load More"),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  void _onSearchAction(BuildContext context) {
+    Navigator.of(context).pushNamed('/search');
   }
 
   void _onMovieTap(BuildContext context, MovieEntity movie) {

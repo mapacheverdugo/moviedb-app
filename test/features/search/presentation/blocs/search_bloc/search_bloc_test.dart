@@ -52,7 +52,8 @@ void main() {
             .thenAnswer((_) async => Right(tSearchResultItemModelList));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const GetSearchResults(tQuery)),
+      act: (bloc) => bloc.add(const GetSearchResults(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoading(),
         SearchLoaded(results: tSearchResultItemModelList),
@@ -69,7 +70,8 @@ void main() {
             (_) async => const Left(ServerFailure('Server failed')));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const GetSearchResults(tQuery)),
+      act: (bloc) => bloc.add(const GetSearchResults(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoading(),
         const SearchError(message: 'Server failed'),
@@ -88,7 +90,8 @@ void main() {
             .thenAnswer((_) async => Right(tSearchResultItemModelList));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoaded(results: tSearchResultItemModelList),
       ],
@@ -104,7 +107,8 @@ void main() {
             .thenAnswer((_) async => const Right([]));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
       expect: () => [],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));
@@ -119,7 +123,8 @@ void main() {
             (_) async => const Left(ServerFailure('Server failed')));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
       expect: () => [
         const SearchError(message: 'Server failed'),
       ],
