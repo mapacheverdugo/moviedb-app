@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:moviedb/core/utils/objectbox.dart';
+import 'package:isar/isar.dart';
 import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
@@ -14,6 +14,7 @@ import 'package:moviedb/features/search/domain/repositories/search_repository.da
 import 'package:moviedb/features/search/domain/usecases/search_usecase.dart';
 import 'package:moviedb/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:moviedb/features/watchlist/data/data_sources/watchlist_local_data_source.dart';
+import 'package:moviedb/features/watchlist/data/models/watchlist_item_model.dart';
 import 'package:moviedb/features/watchlist/data/repositories/watchlist_repository_impl.dart';
 import 'package:moviedb/features/watchlist/domain/repositories/watchlist_repository.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/add_watchlist_item_usecase.dart';
@@ -21,6 +22,7 @@ import 'package:moviedb/features/watchlist/domain/usecases/check_watchlist_item_
 import 'package:moviedb/features/watchlist/domain/usecases/get_watchlist_items_usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/remove_watchlist_item_usecase.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 final sl = GetIt.instance;
 
@@ -31,8 +33,12 @@ Future<void> init() async {
   _initWatchListFeature();
 
   // External
-  final objectbox = await ObjectBox.create();
-  sl.registerLazySingleton(() => objectbox);
+  final dir = await getApplicationDocumentsDirectory();
+  final isar = await Isar.open(
+    [WatchListItemModelSchema],
+    directory: dir.path,
+  );
+  sl.registerLazySingleton(() => isar);
   sl.registerLazySingleton(() => http.Client());
 }
 

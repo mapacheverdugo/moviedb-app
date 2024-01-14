@@ -1,41 +1,45 @@
-import 'package:moviedb/core/utils/objectbox.dart';
+import 'package:isar/isar.dart';
+import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/watchlist/data/models/watchlist_item_model.dart';
-import 'package:moviedb/objectbox.g.dart';
 
 abstract class WatchListLocalDataSource {
-  Future<List<WatchListItemModel>> getWatchListItems();
+  Future<List<MovieEntity>> getWatchListItems();
   Future<int> addWatchListItem(WatchListItemModel item);
   Future<void> removeWatchListItem(int id);
   Future<bool> isItemAdded(int id);
 }
 
 class WatchListLocalDataSourceImpl extends WatchListLocalDataSource {
-  final ObjectBox _objectBox;
+  late final Isar _isar;
+  IsarCollection<WatchListItemModel> get _box => _isar.watchListItemModels;
 
-  late Box<WatchListItemModel> _box;
-
-  WatchListLocalDataSourceImpl(this._objectBox) {
-    _box = _objectBox.store.box<WatchListItemModel>();
-  }
+  WatchListLocalDataSourceImpl(this._isar);
 
   @override
-  Future<List<WatchListItemModel>> getWatchListItems() async {
-    return _box.getAllAsync();
+  Future<List<MovieEntity>> getWatchListItems() async {
+    final result = await _box.where(sort: Sort.desc).anyId().findAll();
+    return result;
   }
 
   @override
   Future<int> addWatchListItem(WatchListItemModel item) async {
-    return _box.put(item);
+    final result = await _isar.writeTxn(() {
+      return _box.put(item);
+    });
+
+    return result;
   }
 
   @override
   Future<void> removeWatchListItem(int id) async {
-    _box.remove(id);
+    await _isar.writeTxn(() {
+      return _box.delete(id);
+    });
   }
 
   @override
   Future<bool> isItemAdded(int id) async {
-    final values = await _box.getAllAsync();
-    return values.toList().indexWhere((e) => e.id == id) > -1;
+    final item = await _box.filter().tmdbIdEqualTo(id).findFirst();
+    return item?.isWatchlist == true;
   }
 }

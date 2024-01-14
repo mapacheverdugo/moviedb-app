@@ -49,7 +49,7 @@ class MovieDetailsPage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => sl<MovieDetailsBloc>()
-          ..add(GetMovieDetailsEvent(movieId: baseMovie.id)),
+          ..add(GetMovieDetailsEvent(movieId: baseMovie.tmdbId)),
         child: Stack(
           children: [
             DefaultTabController(
@@ -166,7 +166,7 @@ class MovieDetailsPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Hero(
-                        tag: "poster-${baseMovie.id}",
+                        tag: "poster-${baseMovie.tmdbId}",
                         child: MoviePoster(
                           url: baseMovie.posterUrl,
                           width: _posterWidth,

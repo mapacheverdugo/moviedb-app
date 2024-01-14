@@ -53,7 +53,7 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
     RemoveWatchlistItem event,
     Emitter<WatchlistState> emit,
   ) async {
-    final result = await _removeWatchListItemUseCase.call(event.movie.id);
+    final result = await _removeWatchListItemUseCase.call(event.movie.tmdbId);
     result.fold(
       (failure) => emit(
         WatchlistError(

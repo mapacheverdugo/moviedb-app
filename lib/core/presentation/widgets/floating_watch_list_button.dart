@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 class FloatingWatchListButton extends StatelessWidget {
   const FloatingWatchListButton({
     super.key,
-    this.onPressed,
   });
-
-  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: () => _onWatchlistTap(context),
       child: const Row(
         children: [
           Text("Watch List"),
@@ -20,5 +17,9 @@ class FloatingWatchListButton extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onWatchlistTap(BuildContext context) {
+    Navigator.of(context).pushNamed('/watchlist');
   }
 }

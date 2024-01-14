@@ -7,6 +7,7 @@ import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
 class MoviesPage extends StatelessWidget {
@@ -77,6 +78,7 @@ class MoviesPage extends StatelessWidget {
           return MoviesList(
             movies: state.popularMovies,
             onMovieTap: (movie) => _onMovieTap(context, movie),
+            onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
             onLoadMoreTap: () => _onLoadMoreTap(context),
           );
         } else if (state is MoviesError) {
@@ -97,14 +99,12 @@ class MoviesPage extends StatelessWidget {
             horizontal: AppConstants.pagePadding.left,
             vertical: AppConstants.pagePadding.top,
           ),
-          child: Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SizedBox(
                 height: AppConstants.footerButtonsHeight,
-                child: FloatingWatchListButton(
-                  onPressed: () {},
-                ),
+                child: FloatingWatchListButton(),
               ),
             ],
           ),
@@ -122,6 +122,10 @@ class MoviesPage extends StatelessWidget {
       '/movie_details',
       arguments: movie,
     );
+  }
+
+  void _onBookmarkTap(BuildContext context, MovieEntity movie) {
+    context.read<WatchlistBloc>().add(AddWatchlistItem(movie: movie));
   }
 
   void _onLoadMoreTap(BuildContext context) {

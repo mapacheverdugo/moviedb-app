@@ -9,11 +9,13 @@ class MoviesList extends StatelessWidget {
     super.key,
     required this.movies,
     this.onMovieTap,
+    this.onBookmarkTap,
     this.onLoadMoreTap,
   });
 
   final List<MovieEntity> movies;
   final Function(MovieEntity)? onMovieTap;
+  final Function(MovieEntity)? onBookmarkTap;
   final VoidCallback? onLoadMoreTap;
 
   @override
@@ -61,7 +63,11 @@ class MoviesList extends StatelessWidget {
                     horizontal:
                         AppConstants.movieListTilePadding.horizontal / 2,
                   ),
-                  onTap: () => onMovieTap?.call(movie),
+                  onTap:
+                      onMovieTap != null ? () => onMovieTap?.call(movie) : null,
+                  onBookmarkTap: onBookmarkTap != null
+                      ? () => onBookmarkTap?.call(movie)
+                      : null,
                 );
               },
             ),
@@ -89,14 +95,16 @@ class MoviesList extends StatelessWidget {
             children: [
               SizedBox(
                 height: AppConstants.footerButtonsHeight,
-                child: TextButton(
-                  onPressed: onLoadMoreTap,
-                  child: const Row(
-                    children: [
-                      Text("Load More"),
-                    ],
-                  ),
-                ),
+                child: onLoadMoreTap != null
+                    ? TextButton(
+                        onPressed: onLoadMoreTap,
+                        child: const Row(
+                          children: [
+                            Text("Load More"),
+                          ],
+                        ),
+                      )
+                    : null,
               ),
             ],
           ),

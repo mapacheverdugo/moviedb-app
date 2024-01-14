@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
+import 'package:moviedb/injection_container.dart';
 
 class MovieListTile extends StatelessWidget {
   final MovieEntity movie;
   final EdgeInsets padding;
   final VoidCallback? onTap;
+  final VoidCallback? onBookmarkTap;
 
   const MovieListTile({
     super.key,
     required this.movie,
     this.padding = EdgeInsets.zero,
     this.onTap,
+    this.onBookmarkTap,
   });
 
   @override
@@ -31,7 +36,7 @@ class MovieListTile extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
                   child: Hero(
-                    tag: "poster-${movie.id}",
+                    tag: "poster-${movie.tmdbId}",
                     child: MoviePoster(
                       url: movie.posterUrl,
                     ),
@@ -41,6 +46,8 @@ class MovieListTile extends StatelessWidget {
                 Expanded(
                   child: _buildInfo(context),
                 ),
+                const SizedBox(width: 22),
+                _buildTrailing(context),
               ],
             ),
           ),
@@ -95,6 +102,31 @@ class MovieListTile extends StatelessWidget {
           _formattedAverageRating,
         ),
       ],
+    );
+  }
+
+  Widget _buildTrailing(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<WatchlistBloc>(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Builder(builder: (context) {
+            return GestureDetector(
+              onTap: () {
+                context.read<WatchlistBloc>().add(
+                      AddWatchlistItem(
+                        movie: movie,
+                      ),
+                    );
+              },
+              child: const Icon(Icons.bookmark),
+            );
+          }),
+        ],
+      ),
     );
   }
 }

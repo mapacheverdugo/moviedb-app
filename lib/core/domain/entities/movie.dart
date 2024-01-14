@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:objectbox/objectbox.dart';
 
-@Entity()
 class MovieEntity extends Equatable {
-  @Id()
-  final int id;
+  final int tmdbId;
   final String title;
   final String posterUrl;
   final String backdropUrl;
@@ -12,9 +9,12 @@ class MovieEntity extends Equatable {
   final String overview;
   final double voteAverage;
   final int voteCount;
+  final double popularity;
+  final bool isWatchlist;
+  final int? userRating;
 
   const MovieEntity({
-    required this.id,
+    required this.tmdbId,
     required this.title,
     required this.posterUrl,
     required this.backdropUrl,
@@ -22,15 +22,14 @@ class MovieEntity extends Equatable {
     required this.overview,
     required this.voteAverage,
     required this.voteCount,
+    required this.popularity,
+    this.isWatchlist = false,
+    this.userRating,
   });
-
-  set id(int id) {
-    id = id;
-  }
 
   @override
   List<Object?> get props => [
-        id,
+        tmdbId,
         title,
         posterUrl,
         backdropUrl,
@@ -38,5 +37,6 @@ class MovieEntity extends Equatable {
         overview,
         voteAverage,
         voteCount,
+        popularity,
       ];
 }

@@ -10,5 +10,6 @@
     "genre_ids":[
       1,
       2
-    ]
+    ],
+    "popularity": 0.1
 }

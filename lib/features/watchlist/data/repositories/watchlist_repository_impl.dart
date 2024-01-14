@@ -14,7 +14,7 @@ class WatchListRepositoryImpl extends WatchListRepository {
   Future<Either<Failure, List<MovieEntity>>> getWatchListItems() async {
     try {
       final watchList = await _localDataSource.getWatchListItems();
-      return Right(watchList.map((e) => e.toEntity()).toList());
+      return Right(watchList.map((e) => e).toList());
     } catch (e) {
       return const Left(CacheFailure('An error has occurred'));
     }

@@ -1,9 +1,19 @@
+import 'package:isar/isar.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/utils/functions.dart';
 
+part 'watchlist_item_model.g.dart';
+
+@Collection(ignore: {'props'})
 class WatchListItemModel extends MovieEntity {
+  final Id id = Isar.autoIncrement;
+
+  @Index(type: IndexType.value)
+  // ignore: overridden_fields, annotate_overrides
+  final int tmdbId;
+
   WatchListItemModel({
-    required super.id,
+    required this.tmdbId,
     required super.title,
     required super.posterUrl,
     required super.backdropUrl,
@@ -11,7 +21,9 @@ class WatchListItemModel extends MovieEntity {
     required super.overview,
     required super.voteAverage,
     required super.voteCount,
-  });
+    required super.popularity,
+    super.isWatchlist = true,
+  }) : super(tmdbId: tmdbId);
 
   factory WatchListItemModel.fromJson(Map<String, dynamic> json) {
     final backdropPath = json['backdrop_path'] as String?;
@@ -19,7 +31,7 @@ class WatchListItemModel extends MovieEntity {
     final releaseDate = json['release_date'] as String;
 
     return WatchListItemModel(
-      id: json['id'] as int,
+      tmdbId: json['id'] as int,
       title: json['title'] as String,
       posterUrl: getPosterUrl(posterPath),
       backdropUrl: getBackdropUrl(backdropPath),
@@ -27,12 +39,13 @@ class WatchListItemModel extends MovieEntity {
       overview: json['overview'] as String,
       voteAverage: (json['vote_average'] as num).toDouble(),
       voteCount: json['vote_count'] as int,
+      popularity: (json['popularity'] as num).toDouble(),
     );
   }
 
   factory WatchListItemModel.fromEntity(MovieEntity entity) {
     return WatchListItemModel(
-      id: entity.id,
+      tmdbId: entity.tmdbId,
       title: entity.title,
       posterUrl: entity.posterUrl,
       backdropUrl: entity.backdropUrl,
@@ -40,12 +53,13 @@ class WatchListItemModel extends MovieEntity {
       overview: entity.overview,
       voteAverage: entity.voteAverage,
       voteCount: entity.voteCount,
+      popularity: entity.popularity,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': tmdbId,
       'title': title,
       'overview': overview,
       'vote_average': voteAverage,
@@ -53,12 +67,13 @@ class WatchListItemModel extends MovieEntity {
       'poster_path': posterUrl,
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,
+      'popularity': popularity,
     };
   }
 
   MovieEntity toEntity() {
     return MovieEntity(
-      id: id,
+      tmdbId: tmdbId,
       title: title,
       posterUrl: posterUrl,
       backdropUrl: backdropUrl,
@@ -66,6 +81,7 @@ class WatchListItemModel extends MovieEntity {
       overview: overview,
       voteAverage: voteAverage,
       voteCount: voteCount,
+      popularity: popularity,
     );
   }
 }

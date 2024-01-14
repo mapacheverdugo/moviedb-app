@@ -3,7 +3,7 @@ import 'package:moviedb/core/utils/functions.dart';
 
 class MovieModel extends MovieEntity {
   const MovieModel({
-    required super.id,
+    required super.tmdbId,
     required super.title,
     required super.posterUrl,
     required super.backdropUrl,
@@ -11,6 +11,7 @@ class MovieModel extends MovieEntity {
     required super.overview,
     required super.voteAverage,
     required super.voteCount,
+    required super.popularity,
   });
 
   factory MovieModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +20,7 @@ class MovieModel extends MovieEntity {
     final releaseDate = json['release_date'] as String;
 
     return MovieModel(
-      id: json['id'] as int,
+      tmdbId: json['id'] as int,
       title: json['title'] as String,
       posterUrl: getPosterUrl(posterPath),
       backdropUrl: getBackdropUrl(backdropPath),
@@ -27,12 +28,13 @@ class MovieModel extends MovieEntity {
       overview: json['overview'] as String,
       voteAverage: (json['vote_average'] as num).toDouble(),
       voteCount: json['vote_count'] as int,
+      popularity: (json['popularity'] as num).toDouble(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': tmdbId,
       'title': title,
       'overview': overview,
       'vote_average': voteAverage,
@@ -40,12 +42,13 @@ class MovieModel extends MovieEntity {
       'poster_path': posterUrl,
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,
+      'popularity': popularity,
     };
   }
 
   MovieEntity toEntity() {
     return MovieEntity(
-      id: id,
+      tmdbId: tmdbId,
       title: title,
       posterUrl: posterUrl,
       backdropUrl: backdropUrl,
@@ -53,6 +56,7 @@ class MovieModel extends MovieEntity {
       overview: overview,
       voteAverage: voteAverage,
       voteCount: voteCount,
+      popularity: popularity,
     );
   }
 }

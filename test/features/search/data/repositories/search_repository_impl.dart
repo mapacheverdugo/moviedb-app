@@ -25,7 +25,7 @@ void main() {
 
   final tMovieModelList = [
     SearchResultItemModel(
-      id: 1,
+      tmdbId: 1,
       title: 'Test',
       overview: 'Overview',
       voteAverage: 1,
@@ -33,6 +33,7 @@ void main() {
       posterUrl: '/test.jpg',
       backdropUrl: '/test.jpg',
       voteCount: 1,
+      popularity: 0.1,
     )
   ];
 

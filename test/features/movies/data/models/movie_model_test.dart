@@ -9,7 +9,7 @@ import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   final tMovieModel = MovieModel(
-    id: 1,
+    tmdbId: 1,
     title: 'Test',
     overview: 'Overview',
     voteAverage: 1,
@@ -17,6 +17,7 @@ void main() {
     posterUrl: getPosterUrl('/test.jpg'),
     backdropUrl: getBackdropUrl('/test.jpg'),
     voteCount: 1,
+    popularity: 0.1,
   );
 
   test(
@@ -63,6 +64,7 @@ void main() {
             'poster_path': getPosterUrl('/test.jpg'),
             'backdrop_path': getBackdropUrl('/test.jpg'),
             'vote_count': 1,
+            'popularity': 0.1,
           };
           expect(result, expectedMap);
         },
