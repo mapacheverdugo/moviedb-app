@@ -34,7 +34,7 @@ void main() {
     'fromJson',
     () {
       test(
-        'should return a valid model when the JSON is valid',
+        'should return a valid model with genres and reviews when the JSON is valid',
         () async {
           // arrange
           final Map<String, dynamic> jsonMap =
@@ -43,6 +43,8 @@ void main() {
           final result = MovieDetailsModel.fromJson(jsonMap);
           // assert
           expect(result, isA<MovieDetailsModel>());
+          expect(result.genres, isNotEmpty);
+          expect(result.reviews, isNotEmpty);
         },
       );
     },

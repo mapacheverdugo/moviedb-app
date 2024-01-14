@@ -9,15 +9,19 @@ class TheMovieDbConstants {
 
   static const String baseBackdropUrl = 'https://image.tmdb.org/t/p/w1280';
   static const String basePosterUrl = 'https://image.tmdb.org/t/p/w500';
+  static const String baseAvatarUrl = 'https://image.tmdb.org/t/p/w185';
 
   static const String moviePlaceHolder =
-      'https://davidkoepp.com/wp-content/themes/blankslate/images/Movie%20Placeholder.jpg';
+      'https://github.com/mapacheverdugo/mapacheverdugo/assets/16374322/eb88b766-7773-43cf-a655-fdb4e7d61013';
+
+  static const String avatarPlaceholder =
+      'https://github.com/mapacheverdugo/mapacheverdugo/assets/16374322/193019ca-4124-49df-8613-6ddc89a19207';
 
   static const String popularPath = '/movie/popular';
   static const String popularUrl = baseUrl + popularPath;
 
   static String getMovieDetailsPath(int movieId) {
-    return '/movie/$movieId';
+    return '/movie/$movieId?append_to_response=reviews';
   }
 
   static String getMovieDetailsUrl(int movieId) {

@@ -6,6 +6,7 @@ import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_d
 import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
+import 'package:moviedb/features/movies/presentation/widgets/review_list_tile.dart';
 import 'package:moviedb/injection_container.dart';
 
 class MovieDetailsPage extends StatelessWidget {
@@ -220,22 +221,41 @@ class MovieDetailsPage extends StatelessWidget {
   }
 
   Widget _buildReviewsTab(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: _padding.horizontal / 2,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 18),
-          Text(
-            "Reviews:",
-            style: textTheme.titleSmall,
+          BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
+            builder: (context, state) {
+              if (state is MovieDetailsLoaded) {
+                if (state.movieDetails.reviews.isEmpty) {
+                  return const Text("No reviews yet");
+                }
+                return ListView.separated(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.movieDetails.reviews.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 28);
+                  },
+                  itemBuilder: (context, index) {
+                    final review = state.movieDetails.reviews[index];
+                    return ReviewListTile(
+                      review: review,
+                    );
+                  },
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
-          const SizedBox(height: 5),
-          const Text("No reviews yet"),
           SizedBox(height: _footerButtonsHeight + _padding.vertical),
         ],
       ),

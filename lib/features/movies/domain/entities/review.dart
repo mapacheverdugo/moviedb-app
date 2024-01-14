@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class ReviewEntity extends Equatable {
   final String authorName;
-  final String? avatarUrl;
+  final String avatarUrl;
   final double? rating;
   final String content;
 

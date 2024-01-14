@@ -1,3 +1,4 @@
+import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/movies/domain/entities/review.dart';
 
 class ReviewModel extends ReviewEntity {
@@ -9,9 +10,11 @@ class ReviewModel extends ReviewEntity {
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) {
+    final avatarPath = json['author_details']['avatar_path'] as String?;
+
     return ReviewModel(
       authorName: json['author_details']['name'],
-      avatarUrl: json['author_details']['avatar_path'],
+      avatarUrl: getAvatarUrl(avatarPath),
       rating: (json['author_details']['rating'] as num?)?.toDouble(),
       content: json['content'],
     );

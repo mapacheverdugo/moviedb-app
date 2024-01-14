@@ -1,3 +1,4 @@
+import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/movies/data/models/genre_model.dart';
 import 'package:moviedb/features/movies/data/models/review_model.dart';
 import 'package:moviedb/features/movies/domain/entities/movie_details.dart';
@@ -18,11 +19,14 @@ class MovieDetailsModel extends MovieDetailsEntity {
   });
 
   factory MovieDetailsModel.fromJson(Map<String, dynamic> json) {
+    final backdropPath = json['backdrop_path'] as String?;
+    final posterPath = json['poster_path'] as String?;
+
     return MovieDetailsModel(
       id: json['id'],
       title: json['title'],
-      posterUrl: json['poster_path'],
-      backdropUrl: json['backdrop_path'],
+      posterUrl: getPosterUrl(posterPath),
+      backdropUrl: getBackdropUrl(backdropPath),
       releaseDate: DateTime.parse(json['release_date']),
       overview: json['overview'],
       voteAverage: (json['vote_average'] as num).toDouble(),
