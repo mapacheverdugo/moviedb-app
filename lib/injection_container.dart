@@ -1,7 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
+import 'package:moviedb/core/network/network_info.dart';
+import 'package:moviedb/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
+import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
@@ -35,14 +39,21 @@ Future<void> init() async {
   _initSearchFeature();
   _initWatchListFeature();
 
+  // Core
+  sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
+
   // External
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open(
-    [WatchListItemModelSchema],
+    [
+      WatchListItemModelSchema,
+      MovieModelSchema,
+    ],
     directory: dir.path,
   );
   sl.registerLazySingleton(() => isar);
   sl.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton(() => Connectivity());
 }
 
 void _initMoviesFeature() {
@@ -64,12 +75,19 @@ void _initMoviesFeature() {
 
   // Repository
   sl.registerLazySingleton<MovieRepository>(
-    () => MovieRepositoryImpl(sl()),
+    () => MovieRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
   );
 
   // Data sources
   sl.registerLazySingleton<MoviesRemoteDataSource>(
     () => MoviesRemoteDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<MoviesLocalDataSource>(
+    () => MoviesLocalDataSourceImpl(sl()),
   );
 }
 

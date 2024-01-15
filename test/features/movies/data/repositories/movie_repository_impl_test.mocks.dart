@@ -6,6 +6,9 @@
 import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:moviedb/core/network/network_info.dart' as _i7;
+import 'package:moviedb/features/movies/data/data_sources/movies_local_data_source.dart'
+    as _i6;
 import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart'
     as _i3;
 import 'package:moviedb/features/movies/data/models/movie_details_model.dart'
@@ -85,4 +88,63 @@ class MockMoviesRemoteDataSource extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.MovieDetailsModel>);
+}
+
+/// A class which mocks [MoviesLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockMoviesLocalDataSource extends _i1.Mock
+    implements _i6.MoviesLocalDataSource {
+  MockMoviesLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<List<_i5.MovieModel>> getPopularMovies({int? page = 1}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getPopularMovies,
+          [],
+          {#page: page},
+        ),
+        returnValue: _i4.Future<List<_i5.MovieModel>>.value(<_i5.MovieModel>[]),
+      ) as _i4.Future<List<_i5.MovieModel>>);
+
+  @override
+  _i4.Future<List<_i5.MovieModel>> getTopMovies({int? page = 1}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getTopMovies,
+          [],
+          {#page: page},
+        ),
+        returnValue: _i4.Future<List<_i5.MovieModel>>.value(<_i5.MovieModel>[]),
+      ) as _i4.Future<List<_i5.MovieModel>>);
+
+  @override
+  _i4.Future<void> cacheMovies({required List<_i5.MovieModel>? movies}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cacheMovies,
+          [],
+          {#movies: movies},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
+/// A class which mocks [NetworkInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkInfo extends _i1.Mock implements _i7.NetworkInfo {
+  MockNetworkInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<bool> get isConnected => (super.noSuchMethod(
+        Invocation.getter(#isConnected),
+        returnValue: _i4.Future<bool>.value(false),
+      ) as _i4.Future<bool>);
 }

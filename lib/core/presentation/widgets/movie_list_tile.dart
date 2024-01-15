@@ -137,7 +137,7 @@ class MovieListTile extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 18),
-            InkWell(
+            /* InkWell(
               customBorder: const CircleBorder(),
               onTap: onBookmarkTap,
               child: Padding(
@@ -150,7 +150,7 @@ class MovieListTile extends StatelessWidget {
                   size: 22,
                 ),
               ),
-            ),
+            ), */
           ],
         );
       },
