@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
@@ -85,9 +86,22 @@ class SearchPage extends StatelessWidget {
           );
         } else if (state is SearchLoaded) {
           if (state.results.isEmpty) {
-            return const SimpleStateMessage(
-              title: "No results found",
-              subtitle: "Try searching something else.",
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/animations/cat.json',
+                  width: 140,
+                  height: 140,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  repeat: false,
+                ),
+                const SimpleStateMessage(
+                  title: "No results found",
+                  subtitle: "Try searching something else.",
+                ),
+              ],
             );
           }
           return MoviesList(

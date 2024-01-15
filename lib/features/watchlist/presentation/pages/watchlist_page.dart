@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
@@ -82,9 +83,23 @@ class WatchlistPage extends StatelessWidget {
               subtitle: state.message,
             );
           } else {
-            return const SimpleStateMessage(
-              title: "No movies in your watch list yet!",
-              subtitle: "Add some movies to your watch list to see them here.",
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Lottie.asset(
+                  'assets/animations/popcorns.json',
+                  width: 140,
+                  height: 140,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  repeat: false,
+                ),
+                const SimpleStateMessage(
+                  title: "No movies in your watch list yet!",
+                  subtitle:
+                      "Add some movies to your watch list to see them here.",
+                ),
+              ],
             );
           }
         }
