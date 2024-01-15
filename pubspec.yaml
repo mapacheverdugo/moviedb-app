@@ -43,6 +43,7 @@ dev_dependencies:
   isar_generator: *isar_version
   flutter_launcher_icons: ^0.13.1
   bootstrap_icons: ^1.11.3
+  animations: ^2.0.8
 
 flutter:
   uses-material-design: true

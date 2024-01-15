@@ -1,12 +1,17 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviedb/core/constants/constants.dart';
+import 'package:moviedb/core/constants/enums.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
 import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/selected_category_cubit/selected_category_cubit.dart';
+import 'package:moviedb/features/movies/presentation/blocs/top_movies_bloc/top_movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/widgets/movies_categories_chips.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
@@ -18,9 +23,20 @@ class MoviesPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      body: BlocProvider(
-        create: (context) =>
-            sl<PopularMoviesBloc>()..add(const GetPopularMoviesEvent()),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                sl<PopularMoviesBloc>()..add(const GetPopularMoviesEvent()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                sl<TopMoviesBloc>()..add(const GetTopMoviesEvent()),
+          ),
+          BlocProvider(
+            create: (context) => SelectedCategoryCubit(),
+          ),
+        ],
         child: Stack(
           children: [
             SafeArea(
@@ -53,11 +69,40 @@ class MoviesPage extends StatelessWidget {
                           "Categories",
                           style: textTheme.titleLarge,
                         ),
+                        const SizedBox(height: 18),
+                        BlocBuilder<SelectedCategoryCubit, MoviesCategory>(
+                          builder: (context, state) {
+                            return MoviesCategoriesChips(
+                              selected: state,
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: _buildList(),
+                  BlocBuilder<SelectedCategoryCubit, MoviesCategory>(
+                    builder: (context, state) {
+                      return Expanded(
+                        child: PageTransitionSwitcher(
+                          transitionBuilder: (
+                            Widget child,
+                            Animation<double> animation,
+                            Animation<double> secondaryAnimation,
+                          ) {
+                            return FadeThroughTransition(
+                              animation: animation,
+                              secondaryAnimation: secondaryAnimation,
+                              fillColor: Colors.transparent,
+                              child: child,
+                            );
+                          },
+                          child: [
+                            _buildPopularList(),
+                            _buildTopList(),
+                          ][state.index],
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -69,7 +114,7 @@ class MoviesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildList() {
+  Widget _buildPopularList() {
     return BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
       builder: (context, state) {
         final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
@@ -93,6 +138,38 @@ class MoviesPage extends StatelessWidget {
         } else if (state is PopularMoviesNoMoreResults) {
           return loadedList;
         } else if (state is PopularMoviesError) {
+          return Text(state.message);
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  Widget _buildTopList() {
+    return BlocBuilder<TopMoviesBloc, TopMoviesState>(
+      builder: (context, state) {
+        final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
+          builder: (context, __) {
+            return MoviesList(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              movies: state.movies,
+              onMovieTap: (movie) => _onMovieTap(context, movie),
+              onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+              onLoadMoreTap: () => _onLoadMoreTap(context),
+            );
+          },
+        );
+
+        if (state is TopMoviesLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is TopMoviesLoaded) {
+          return loadedList;
+        } else if (state is TopMoviesNoMoreResults) {
+          return loadedList;
+        } else if (state is TopMoviesError) {
           return Text(state.message);
         } else {
           return const SizedBox.shrink();

@@ -9,6 +9,7 @@ import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_useca
 import 'package:moviedb/features/movies/domain/usecases/get_top_movies_usecase.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/top_movies_bloc/top_movies_bloc.dart';
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart';
 import 'package:moviedb/features/search/data/repositories/search_repository_impl.dart';
 import 'package:moviedb/features/search/domain/repositories/search_repository.dart';
@@ -30,7 +31,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Features
-  _initMovieFeature();
+  _initMoviesFeature();
   _initSearchFeature();
   _initWatchListFeature();
 
@@ -44,10 +45,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => http.Client());
 }
 
-void _initMovieFeature() {
+void _initMoviesFeature() {
   // Bloc
   sl.registerFactory(
     () => PopularMoviesBloc(sl()),
+  );
+  sl.registerFactory(
+    () => TopMoviesBloc(sl()),
   );
   sl.registerFactory(
     () => MovieDetailsBloc(sl()),

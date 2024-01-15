@@ -41,7 +41,6 @@ class WatchlistPage extends StatelessWidget {
                           "Your Watch List",
                           style: textTheme.titleLarge,
                         ),
-                        const SizedBox(height: 22),
                       ],
                     ),
                   ),
@@ -64,6 +63,9 @@ class WatchlistPage extends StatelessWidget {
         if (state.movies.isNotEmpty) {
           return MoviesList(
             movies: state.movies,
+            padding: const EdgeInsets.symmetric(
+              vertical: 31,
+            ),
             onMovieTap: (movie) => _onMovieTap(context, movie),
             onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
           );

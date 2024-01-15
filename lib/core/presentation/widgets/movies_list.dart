@@ -35,8 +35,8 @@ class MoviesList extends StatelessWidget {
           ],
           stops: [
             0.0,
-            0.03,
-            0.97,
+            0.1,
+            0.9,
             1.0
           ], // 10% purple, 80% transparent, 10% purple
         ).createShader(rect);
