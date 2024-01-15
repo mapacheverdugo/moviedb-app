@@ -17,12 +17,3 @@ final class ToggleWatchlistItem extends WatchlistEvent {
   @override
   List<Object> get props => [movie];
 }
-
-final class CheckWatchlistItem extends WatchlistEvent {
-  final MovieEntity movie;
-
-  const CheckWatchlistItem({required this.movie});
-
-  @override
-  List<Object> get props => [movie];
-}

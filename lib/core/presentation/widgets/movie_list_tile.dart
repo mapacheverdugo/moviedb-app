@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
-import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_item_checker_bloc/watchlist_item_checker_bloc.dart';
 
 class MovieListTile extends StatelessWidget {
   final MovieEntity movie;
@@ -21,7 +21,9 @@ class MovieListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<WatchlistBloc>().add(CheckWatchlistItem(movie: movie));
+    context
+        .read<WatchlistItemCheckerBloc>()
+        .add(CheckWatchlistItem(movie: movie));
 
     return IntrinsicHeight(
       child: InkWell(

@@ -22,6 +22,7 @@ import 'package:moviedb/features/watchlist/domain/usecases/check_watchlist_item_
 import 'package:moviedb/features/watchlist/domain/usecases/get_watchlist_items_usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/remove_watchlist_item_usecase.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_item_checker_bloc/watchlist_item_checker_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 
 final sl = GetIt.instance;
@@ -93,6 +94,10 @@ void _initWatchListFeature() {
       addWatchListItemUseCase: sl(),
       removeWatchListItemUseCase: sl(),
       getWatchListItemsUseCase: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => WatchlistItemCheckerBloc(
       checkWatchlistItem: sl(),
     ),
   );

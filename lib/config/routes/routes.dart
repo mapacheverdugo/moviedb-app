@@ -13,7 +13,7 @@ class AppRoutes {
           MovieDetailsPage(baseMovie: settings.arguments as MovieEntity),
         );
       case '/watchlist':
-        return _materialRoute(const WatchlistPage());
+        return _materialRoute(WatchlistPage());
       case '/search':
         return _materialRoute(const SearchPage());
       default:

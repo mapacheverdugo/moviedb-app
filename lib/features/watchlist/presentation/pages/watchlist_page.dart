@@ -8,7 +8,9 @@ import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 
 class WatchlistPage extends StatelessWidget {
-  const WatchlistPage({super.key});
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
+  WatchlistPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +74,8 @@ class WatchlistPage extends StatelessWidget {
           } else if (state is WatchlistError) {
             return Text(state.message);
           } else {
-            return Center(
-              child: const Text("No movies in your watchlist"),
+            return const Center(
+              child: Text("No movies in your watchlist"),
             );
           }
         }
@@ -112,6 +114,13 @@ class WatchlistPage extends StatelessWidget {
   }
 
   void _onBookmarkTap(BuildContext context, MovieEntity movie) {
+    if (movie.isWatchlisted) {
+      _listKey.currentState?.removeItem(
+        1,
+        (context, animation) => Container(),
+      );
+    }
+
     context.read<WatchlistBloc>().add(ToggleWatchlistItem(movie: movie));
     context.read<WatchlistBloc>().add(GetWatchlistItems());
   }

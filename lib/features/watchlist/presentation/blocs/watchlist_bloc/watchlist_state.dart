@@ -35,15 +35,3 @@ final class WatchlistItemAdded extends WatchlistState {
 final class WatchlistItemRemoved extends WatchlistState {
   const WatchlistItemRemoved({required super.movies});
 }
-
-final class WatchlistItemChecked extends WatchlistState {
-  final bool isWatchlisted;
-
-  const WatchlistItemChecked({
-    required this.isWatchlisted,
-    required super.movies,
-  });
-
-  @override
-  List<Object> get props => [isWatchlisted];
-}
