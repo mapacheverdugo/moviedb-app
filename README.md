@@ -1,8 +1,8 @@
 
 
-# Movie DB: Movies Mobile App
+# 🍿 Movie DB: Movies Mobile App 🍿 
 
-This is a mobile app that shows the most popular movies from [The Movie DB](https://www.themoviedb.org/).
+This is a mobile app that shows the most popular and top rated movies from [The Movie DB](https://www.themoviedb.org/).
 <p align="center">
   <img src="https://github.com/mapacheverdugo/moviedb-app/assets/16374322/1c576d9a-4c20-486d-bb9c-c2f47178df7d" width="300" >
   <img src="https://github.com/mapacheverdugo/moviedb-app/assets/16374322/65bd1a22-2e63-44b0-b7a0-05415e909c09" width="300" >
@@ -15,6 +15,7 @@ This is a mobile app that shows the most popular movies from [The Movie DB](http
 - See details of a movie
 - Local watchlist of movies
 - Works offline
+- Light and dark theme, dark theme is cooler 
 - BloC pattern
 - Dependency injection with GetIt
 - Clean architecture
@@ -23,7 +24,7 @@ This is a mobile app that shows the most popular movies from [The Movie DB](http
 ## How to run
 
 1. Clone this repository
-2. Edit the parameter `apiKey` from the class `TheMovieDbConstants` in the file `lib/core/constants/constants.dart` with your API key from [The Movie DB](https://www.themoviedb.org/)
+2. You don't need to configure the API key as I've already set mine. However, if you prefer to use your own API key, simply edit the `apiKey` parameter in the `TheMovieDbConstants` class, located in the file `lib/core/constants/constants.dart`, replacing it with your API key from [The Movie DB](https://www.themoviedb.org/).
 3. Run `flutter pub get`
 4. Run `flutter run`
 
