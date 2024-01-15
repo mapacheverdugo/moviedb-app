@@ -31,12 +31,11 @@ class WatchlistItemCheckerBloc
       ),
       (isWatchlisted) {
         event.movie.isWatchlisted = isWatchlisted;
-        /* emit(
+        emit(
           WatchlistItemChecked(
             isWatchlisted: isWatchlisted,
-            movies: state.movies,
           ),
-        ); */
+        );
       },
     );
   }

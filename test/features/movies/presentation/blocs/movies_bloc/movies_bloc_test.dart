@@ -104,7 +104,9 @@ void main() {
         return moviesBloc;
       },
       act: (bloc) => bloc.add(const LoadMoreMoviesEvent()),
-      expect: () => [],
+      expect: () => [
+        const MoviesNoMoreResults(popularMovies: []),
+      ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));
         expect(bloc.isLastPage, equals(true));

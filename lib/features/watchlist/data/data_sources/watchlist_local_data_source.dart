@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
+import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/features/watchlist/data/models/watchlist_item_model.dart';
 
 abstract class WatchListLocalDataSource {
@@ -23,11 +24,15 @@ class WatchListLocalDataSourceImpl extends WatchListLocalDataSource {
 
   @override
   Future<int> addWatchListItem(WatchListItemModel item) async {
-    final result = await _isar.writeTxn(() {
-      return _box.put(item);
-    });
+    try {
+      final result = await _isar.writeTxn(() {
+        return _box.put(item);
+      });
 
-    return result;
+      return result;
+    } catch (e) {
+      throw CacheException();
+    }
   }
 
   @override

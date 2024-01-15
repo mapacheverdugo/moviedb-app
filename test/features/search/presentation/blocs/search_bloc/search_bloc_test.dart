@@ -140,7 +140,7 @@ void main() {
     );
 
     blocTest<SearchBloc, SearchState>(
-      'should emit nothing, same page number and marked as last page when no more data is available',
+      'should emit [SearchNoMoreResults], same page number and marked as last page when no more data is available',
       build: () {
         when(mockSearchUseCase.call(any))
             .thenAnswer((_) async => const Right([]));
@@ -148,7 +148,9 @@ void main() {
       },
       act: (bloc) => bloc.add(const LoadMoreSearchResults()),
       wait: SearchBloc.debounceDuration,
-      expect: () => [],
+      expect: () => [
+        const SearchNoMoreResults(results: []),
+      ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));
         expect(bloc.isLastPage, equals(true));

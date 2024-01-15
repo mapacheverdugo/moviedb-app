@@ -7,9 +7,9 @@ import 'package:moviedb/core/error/exception.dart';
 import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart';
 import 'package:moviedb/features/search/data/models/search_result_item_model.dart';
-import 'package:moviedb/features/search/data/repositories/search_repository.dart';
+import 'package:moviedb/features/search/data/repositories/search_repository_impl.dart';
 
-import 'search_repository_impl.mocks.dart';
+import 'search_repository_impl_test.mocks.dart';
 
 @GenerateMocks([SearchRemoteDataSource])
 void main() {

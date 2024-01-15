@@ -111,24 +111,29 @@ class MovieListTile extends StatelessWidget {
   Widget _buildTrailing(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        if (onBookmarkTap != null)
-          GestureDetector(
-            onTap: onBookmarkTap,
-            child: Icon(
-              movie.isWatchlisted
-                  ? Icons.bookmark_added_rounded
-                  : Icons.bookmark_rounded, // TODO: change for Bootstrap Icons
-              color: movie.isWatchlisted
-                  ? colorScheme.primary
-                  : colorScheme.onBackground,
-            ),
-          ),
-      ],
+    return BlocBuilder<WatchlistItemCheckerBloc, WatchlistItemCheckerState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            if (onBookmarkTap != null)
+              GestureDetector(
+                onTap: onBookmarkTap,
+                child: Icon(
+                  movie.isWatchlisted
+                      ? Icons.bookmark_added_rounded
+                      : Icons
+                          .bookmark_rounded, // TODO: change for Bootstrap Icons
+                  color: movie.isWatchlisted
+                      ? colorScheme.primary
+                      : colorScheme.onBackground,
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

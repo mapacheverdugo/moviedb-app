@@ -9,7 +9,7 @@ import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_useca
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart';
-import 'package:moviedb/features/search/data/repositories/search_repository.dart';
+import 'package:moviedb/features/search/data/repositories/search_repository_impl.dart';
 import 'package:moviedb/features/search/domain/repositories/search_repository.dart';
 import 'package:moviedb/features/search/domain/usecases/search_usecase.dart';
 import 'package:moviedb/features/search/presentation/blocs/search_bloc/search_bloc.dart';
