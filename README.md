@@ -1,16 +1,24 @@
-# moviedb
+# Movie DB: Movies and Series Mobile App
 
-A new Flutter project.
+This is a mobile app that shows the most popular movies and series from [The Movie DB](https://www.themoviedb.org/).
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- List movies by popularity and rating
+- Search movies by title
+- See details of a movie
+- Local watchlist of movies
+- Works offline
+- BloC pattern
+- Dependency injection with GetIt
+- Clean architecture
+- Unit tests
 
-A few resources to get you started if this is your first Flutter project:
+## How to run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone this repository
+2. Edit the parameter `apiKey` from the class `TheMovieDbConstants` in the file `lib/core/constants/constants.dart` with your API key from [The Movie DB](https://www.themoviedb.org/)
+3. Run `flutter pub get`
+4. Run `flutter run`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
