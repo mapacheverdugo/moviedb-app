@@ -57,20 +57,6 @@ class MovieModel extends MovieEntity {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': tmdbId,
-      'title': title,
-      'overview': overview,
-      'vote_average': voteAverage,
-      'release_date': releaseDate?.toIso8601String(),
-      'poster_path': posterUrl,
-      'backdrop_path': backdropUrl,
-      'vote_count': voteCount,
-      'popularity': popularity,
-    };
-  }
-
   MovieEntity toEntity() {
     return MovieEntity(
       tmdbId: tmdbId,
@@ -83,5 +69,19 @@ class MovieModel extends MovieEntity {
       voteCount: voteCount,
       popularity: popularity,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': tmdbId,
+      'title': title,
+      'overview': overview,
+      'vote_average': voteAverage,
+      'release_date': releaseDate?.toIso8601String(),
+      'poster_path': posterUrl,
+      'backdrop_path': backdropUrl,
+      'vote_count': voteCount,
+      'popularity': popularity,
+    };
   }
 }

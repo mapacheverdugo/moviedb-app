@@ -124,7 +124,7 @@ class MoviesPage extends StatelessWidget {
               movies: state.movies,
               onMovieTap: (movie) => _onMovieTap(context, movie),
               onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-              onLoadMoreTap: () => _onLoadMoreTap(context),
+              onLoadMoreTap: () => _onLoadMorePopularTap(context),
             );
           },
         );
@@ -156,7 +156,7 @@ class MoviesPage extends StatelessWidget {
               movies: state.movies,
               onMovieTap: (movie) => _onMovieTap(context, movie),
               onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-              onLoadMoreTap: () => _onLoadMoreTap(context),
+              onLoadMoreTap: () => _onLoadMoreTopTap(context),
             );
           },
         );
@@ -216,7 +216,11 @@ class MoviesPage extends StatelessWidget {
     context.read<WatchlistBloc>().add(ToggleWatchlistItem(movie: movie));
   }
 
-  void _onLoadMoreTap(BuildContext context) {
+  void _onLoadMorePopularTap(BuildContext context) {
     context.read<PopularMoviesBloc>().add(const LoadMorePopularMoviesEvent());
+  }
+
+  void _onLoadMoreTopTap(BuildContext context) {
+    context.read<TopMoviesBloc>().add(const LoadMoreTopMoviesEvent());
   }
 }

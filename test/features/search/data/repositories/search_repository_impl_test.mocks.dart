@@ -6,6 +6,9 @@
 import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:moviedb/core/network/network_info.dart' as _i6;
+import 'package:moviedb/features/search/data/data_sources/search_local_data_source.dart'
+    as _i5;
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart'
     as _i2;
 import 'package:moviedb/features/search/data/models/search_result_item_model.dart'
@@ -50,4 +53,58 @@ class MockSearchRemoteDataSource extends _i1.Mock
         returnValue: _i3.Future<List<_i4.SearchResultItemModel>>.value(
             <_i4.SearchResultItemModel>[]),
       ) as _i3.Future<List<_i4.SearchResultItemModel>>);
+}
+
+/// A class which mocks [SearchLocalDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockSearchLocalDataSource extends _i1.Mock
+    implements _i5.SearchLocalDataSource {
+  MockSearchLocalDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<List<_i4.SearchResultItemModel>> search({
+    required String? query,
+    int? page = 1,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #search,
+          [],
+          {
+            #query: query,
+            #page: page,
+          },
+        ),
+        returnValue: _i3.Future<List<_i4.SearchResultItemModel>>.value(
+            <_i4.SearchResultItemModel>[]),
+      ) as _i3.Future<List<_i4.SearchResultItemModel>>);
+
+  @override
+  _i3.Future<void> cacheSearchItems(List<_i4.SearchResultItemModel>? items) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cacheSearchItems,
+          [items],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+}
+
+/// A class which mocks [NetworkInfo].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNetworkInfo extends _i1.Mock implements _i6.NetworkInfo {
+  MockNetworkInfo() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<bool> get isConnected => (super.noSuchMethod(
+        Invocation.getter(#isConnected),
+        returnValue: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
 }

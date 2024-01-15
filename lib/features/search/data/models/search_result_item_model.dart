@@ -33,6 +33,20 @@ class SearchResultItemModel extends MovieEntity {
     );
   }
 
+  factory SearchResultItemModel.fromEntity(MovieEntity entity) {
+    return SearchResultItemModel(
+      tmdbId: entity.tmdbId,
+      title: entity.title,
+      posterUrl: entity.posterUrl,
+      backdropUrl: entity.backdropUrl,
+      releaseDate: entity.releaseDate,
+      overview: entity.overview,
+      voteAverage: entity.voteAverage,
+      voteCount: entity.voteCount,
+      popularity: entity.popularity,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': tmdbId,

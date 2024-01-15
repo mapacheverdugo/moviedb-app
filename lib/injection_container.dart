@@ -15,6 +15,7 @@ import 'package:moviedb/features/movies/domain/usecases/get_top_movies_usecase.d
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/top_movies_bloc/top_movies_bloc.dart';
+import 'package:moviedb/features/search/data/data_sources/search_local_data_source.dart';
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart';
 import 'package:moviedb/features/search/data/repositories/search_repository_impl.dart';
 import 'package:moviedb/features/search/domain/repositories/search_repository.dart';
@@ -104,12 +105,19 @@ void _initSearchFeature() {
 
   // Repository
   sl.registerLazySingleton<SearchRepository>(
-    () => SearchRepositoryImpl(sl()),
+    () => SearchRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
   );
 
   // Data sources
   sl.registerLazySingleton<SearchRemoteDataSource>(
     () => SearchRemoteDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<SearchLocalDataSource>(
+    () => SearchLocalDataSourceImpl(sl()),
   );
 }
 
