@@ -1,4 +1,4 @@
-package com.example.moviedb
+package cl.mapacheverdugo.moviedb
 
 import io.flutter.embedding.android.FlutterActivity
 
