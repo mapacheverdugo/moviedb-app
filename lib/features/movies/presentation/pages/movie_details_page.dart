@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
+import 'package:moviedb/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_action_button.dart';
+import 'package:moviedb/core/presentation/widgets/simple_state_message.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar.dart';
 import 'package:moviedb/features/movies/presentation/widgets/header_delegate.dart';
@@ -140,7 +142,9 @@ class MovieDetailsPage extends StatelessWidget {
             builder: (context, state) {
               if (state is MovieDetailsLoaded) {
                 if (state.movieDetails.reviews.isEmpty) {
-                  return const Text("No reviews yet");
+                  return const SimpleStateMessage(
+                    title: "No reviews found for this movie",
+                  );
                 }
                 return ListView.separated(
                   shrinkWrap: true,
@@ -156,6 +160,15 @@ class MovieDetailsPage extends StatelessWidget {
                       review: review,
                     );
                   },
+                );
+              } else if (state is MovieDetailsLoading) {
+                return const Center(
+                  child: DefaultLoadingIndicator(),
+                );
+              } else if (state is MovieDetailsError) {
+                return SimpleStateMessage(
+                  title: "Error",
+                  subtitle: state.message,
                 );
               } else {
                 return const SizedBox.shrink();

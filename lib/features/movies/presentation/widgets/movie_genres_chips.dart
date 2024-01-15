@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:moviedb/features/movies/domain/entities/genre.dart';
 
@@ -15,24 +16,26 @@ class MovieGenresChips extends StatelessWidget {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
-    return SizedBox(
-      height: 32 + padding.vertical,
-      width: mq.size.width,
-      child: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        padding: EdgeInsets.symmetric(
-          horizontal: padding.horizontal / 2,
-          vertical: padding.vertical / 2,
+    return FadeInLeft(
+      child: SizedBox(
+        height: 32 + padding.vertical,
+        width: mq.size.width,
+        child: ListView.separated(
+          physics: const BouncingScrollPhysics(),
+          padding: EdgeInsets.symmetric(
+            horizontal: padding.horizontal / 2,
+            vertical: padding.vertical / 2,
+          ),
+          scrollDirection: Axis.horizontal,
+          itemCount: genres.length,
+          separatorBuilder: (context, index) => const SizedBox(width: 12),
+          itemBuilder: (context, index) {
+            final genre = genres[index];
+            return Chip(
+              label: Text(genre.name),
+            );
+          },
         ),
-        scrollDirection: Axis.horizontal,
-        itemCount: genres.length,
-        separatorBuilder: (context, index) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final genre = genres[index];
-          return Chip(
-            label: Text(genre.name),
-          );
-        },
       ),
     );
   }

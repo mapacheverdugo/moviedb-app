@@ -6,6 +6,7 @@ import 'package:moviedb/core/constants/enums.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
 import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
+import 'package:moviedb/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
@@ -131,7 +132,7 @@ class MoviesPage extends StatelessWidget {
 
         if (state is PopularMoviesLoading) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: DefaultLoadingIndicator(),
           );
         } else if (state is PopularMoviesLoaded) {
           return loadedList;
@@ -163,7 +164,7 @@ class MoviesPage extends StatelessWidget {
 
         if (state is TopMoviesLoading) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: DefaultLoadingIndicator(),
           );
         } else if (state is TopMoviesLoaded) {
           return loadedList;

@@ -4,8 +4,10 @@ import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
 import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
+import 'package:moviedb/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
+import 'package:moviedb/core/presentation/widgets/simple_state_message.dart';
 import 'package:moviedb/features/search/presentation/blocs/search_bloc/search_bloc.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
@@ -72,11 +74,22 @@ class SearchPage extends StatelessWidget {
   Widget _buildList() {
     return BlocBuilder<SearchBloc, SearchState>(
       builder: (context, state) {
+        if (state is SearchInitial) {
+          return const SimpleStateMessage(
+            title: "Start typing to search a movie!",
+          );
+        }
         if (state is SearchLoading) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: DefaultLoadingIndicator(),
           );
         } else if (state is SearchLoaded) {
+          if (state.results.isEmpty) {
+            return const SimpleStateMessage(
+              title: "No results found",
+              subtitle: "Try searching something else.",
+            );
+          }
           return MoviesList(
             movies: state.results,
             padding: const EdgeInsets.symmetric(
@@ -96,7 +109,10 @@ class SearchPage extends StatelessWidget {
             onBookmarkTap: (movie) => _onBookmarkedTap(context, movie),
           );
         } else if (state is SearchError) {
-          return Text(state.message);
+          return SimpleStateMessage(
+            title: "Error",
+            subtitle: state.message,
+          );
         } else {
           return const SizedBox.shrink();
         }

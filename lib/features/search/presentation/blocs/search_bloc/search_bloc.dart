@@ -22,6 +22,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       (event, emit) async {
         isLastPage = false;
         page = 1;
+
+        if (event.query.isEmpty) {
+          emit(SearchInitial());
+          return;
+        }
+
         emit(SearchLoading(results: state.results));
         final failureOrMovies = await _searchUseCase(
           SearchUseCaseParams(
@@ -45,6 +51,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       (event, emit) async {
         isLastPage = false;
         page = 1;
+
+        if (event.query.isEmpty) {
+          emit(SearchInitial());
+          return;
+        }
+
         emit(SearchLoading(results: state.results));
         final failureOrMovies = await _searchUseCase(
           SearchUseCaseParams(

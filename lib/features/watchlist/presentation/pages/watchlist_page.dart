@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/app_title.dart';
+import 'package:moviedb/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
+import 'package:moviedb/core/presentation/widgets/simple_state_message.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 
 class WatchlistPage extends StatelessWidget {
@@ -72,13 +74,17 @@ class WatchlistPage extends StatelessWidget {
         } else {
           if (state is WatchlistLoading) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: DefaultLoadingIndicator(),
             );
           } else if (state is WatchlistError) {
-            return Text(state.message);
+            return SimpleStateMessage(
+              title: "Error",
+              subtitle: state.message,
+            );
           } else {
-            return const Center(
-              child: Text("No movies in your watchlist"),
+            return const SimpleStateMessage(
+              title: "No movies in your watch list yet!",
+              subtitle: "Add some movies to your watch list to see them here.",
             );
           }
         }
