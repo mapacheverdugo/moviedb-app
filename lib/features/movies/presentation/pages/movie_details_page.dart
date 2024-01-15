@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:moviedb/core/constants/constants.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
+import 'package:moviedb/core/presentation/widgets/floating_watch_list_action_button.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
 import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 import 'package:moviedb/features/movies/presentation/widgets/review_list_tile.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
 class MovieDetailsPage extends StatelessWidget {
@@ -347,12 +349,13 @@ class MovieDetailsPage extends StatelessWidget {
               ),
               SizedBox(
                 height: AppConstants.footerButtonsHeight,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(10),
-                  ),
-                  child: const Icon(Icons.bookmark),
+                child: BlocBuilder<WatchlistBloc, WatchlistState>(
+                  builder: (context, state) {
+                    return FloatingWatchListActionButton(
+                      isWatchlisted: baseMovie.isWatchlisted,
+                      onTap: () => _onTapWatchlistButton(context),
+                    );
+                  },
                 ),
               ),
             ],
@@ -360,5 +363,11 @@ class MovieDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTapWatchlistButton(BuildContext context) {
+    context.read<WatchlistBloc>().add(
+          ToggleWatchlistItem(movie: baseMovie),
+        );
   }
 }

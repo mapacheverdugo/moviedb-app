@@ -1,23 +1,22 @@
 part of 'watchlist_bloc.dart';
 
 sealed class WatchlistState extends Equatable {
-  const WatchlistState();
+  final List<MovieEntity> movies;
+
+  const WatchlistState({this.movies = const []});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [movies];
 }
 
 final class WatchlistInitial extends WatchlistState {}
 
-final class WatchlistLoading extends WatchlistState {}
+final class WatchlistLoading extends WatchlistState {
+  const WatchlistLoading({required super.movies});
+}
 
 final class WatchlistLoaded extends WatchlistState {
-  final List<MovieEntity> movies;
-
-  const WatchlistLoaded({required this.movies});
-
-  @override
-  List<Object> get props => [movies];
+  const WatchlistLoaded({required super.movies});
 }
 
 final class WatchlistError extends WatchlistState {
@@ -30,12 +29,21 @@ final class WatchlistError extends WatchlistState {
 }
 
 final class WatchlistItemAdded extends WatchlistState {
-  final int id;
-
-  const WatchlistItemAdded({required this.id});
-
-  @override
-  List<Object> get props => [id];
+  const WatchlistItemAdded({required super.movies});
 }
 
-final class WatchlistItemRemoved extends WatchlistState {}
+final class WatchlistItemRemoved extends WatchlistState {
+  const WatchlistItemRemoved({required super.movies});
+}
+
+final class WatchlistItemChecked extends WatchlistState {
+  final bool isWatchlisted;
+
+  const WatchlistItemChecked({
+    required this.isWatchlisted,
+    required super.movies,
+  });
+
+  @override
+  List<Object> get props => [isWatchlisted];
+}

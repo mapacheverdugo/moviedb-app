@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
-import 'package:moviedb/injection_container.dart';
 
 class MovieListTile extends StatelessWidget {
   final MovieEntity movie;
@@ -22,6 +21,8 @@ class MovieListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<WatchlistBloc>().add(CheckWatchlistItem(movie: movie));
+
     return IntrinsicHeight(
       child: InkWell(
         customBorder: RoundedRectangleBorder(
@@ -106,27 +107,26 @@ class MovieListTile extends StatelessWidget {
   }
 
   Widget _buildTrailing(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<WatchlistBloc>(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Builder(builder: (context) {
-            return GestureDetector(
-              onTap: () {
-                context.read<WatchlistBloc>().add(
-                      AddWatchlistItem(
-                        movie: movie,
-                      ),
-                    );
-              },
-              child: const Icon(Icons.bookmark),
-            );
-          }),
-        ],
-      ),
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        if (onBookmarkTap != null)
+          GestureDetector(
+            onTap: onBookmarkTap,
+            child: Icon(
+              movie.isWatchlisted
+                  ? Icons.bookmark_added_rounded
+                  : Icons.bookmark_rounded, // TODO: change for Bootstrap Icons
+              color: movie.isWatchlisted
+                  ? colorScheme.primary
+                  : colorScheme.onBackground,
+            ),
+          ),
+      ],
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:moviedb/core/presentation/widgets/app_title.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
-import 'package:moviedb/injection_container.dart';
 
 class WatchlistPage extends StatelessWidget {
   const WatchlistPage({super.key});
@@ -15,43 +14,42 @@ class WatchlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
+    context.read<WatchlistBloc>().add(GetWatchlistItems());
+
     return Scaffold(
       body: Scaffold(
-        body: BlocProvider(
-          create: (context) => sl<WatchlistBloc>()..add(GetWatchlistItems()),
-          child: Stack(
-            children: [
-              SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: AppConstants.pagePadding.left,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 22),
-                          const AppTitle(),
-                          const SizedBox(height: 22),
-                          Text(
-                            "Your Watch List",
-                            style: textTheme.titleLarge,
-                          ),
-                          const SizedBox(height: 22),
-                        ],
-                      ),
+        body: Stack(
+          children: [
+            SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AppConstants.pagePadding.left,
                     ),
-                    Expanded(
-                      child: _buildList(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 22),
+                        const AppTitle(),
+                        const SizedBox(height: 22),
+                        Text(
+                          "Your Watch List",
+                          style: textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 22),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: _buildList(),
+                  ),
+                ],
               ),
-              _buildMainFooter(),
-            ],
-          ),
+            ),
+            _buildMainFooter(),
+          ],
         ),
       ),
     );
@@ -60,19 +58,24 @@ class WatchlistPage extends StatelessWidget {
   Widget _buildList() {
     return BlocBuilder<WatchlistBloc, WatchlistState>(
       builder: (context, state) {
-        if (state is WatchlistLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is WatchlistLoaded) {
+        if (state.movies.isNotEmpty) {
           return MoviesList(
             movies: state.movies,
             onMovieTap: (movie) => _onMovieTap(context, movie),
+            onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
           );
-        } else if (state is WatchlistError) {
-          return Text(state.message);
         } else {
-          return const SizedBox.shrink();
+          if (state is WatchlistLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is WatchlistError) {
+            return Text(state.message);
+          } else {
+            return Center(
+              child: const Text("No movies in your watchlist"),
+            );
+          }
         }
       },
     );
@@ -106,5 +109,10 @@ class WatchlistPage extends StatelessWidget {
       '/movie_details',
       arguments: movie,
     );
+  }
+
+  void _onBookmarkTap(BuildContext context, MovieEntity movie) {
+    context.read<WatchlistBloc>().add(ToggleWatchlistItem(movie: movie));
+    context.read<WatchlistBloc>().add(GetWatchlistItems());
   }
 }

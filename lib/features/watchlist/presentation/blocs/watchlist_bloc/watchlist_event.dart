@@ -9,19 +9,10 @@ sealed class WatchlistEvent extends Equatable {
 
 final class GetWatchlistItems extends WatchlistEvent {}
 
-final class AddWatchlistItem extends WatchlistEvent {
+final class ToggleWatchlistItem extends WatchlistEvent {
   final MovieEntity movie;
 
-  const AddWatchlistItem({required this.movie});
-
-  @override
-  List<Object> get props => [movie];
-}
-
-final class RemoveWatchlistItem extends WatchlistEvent {
-  final MovieEntity movie;
-
-  const RemoveWatchlistItem({required this.movie});
+  const ToggleWatchlistItem({required this.movie});
 
   @override
   List<Object> get props => [movie];

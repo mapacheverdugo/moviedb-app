@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/domain/usecases/usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/add_watchlist_item_usecase.dart';
+import 'package:moviedb/features/watchlist/domain/usecases/check_watchlist_item_usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/get_watchlist_items_usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/remove_watchlist_item_usecase.dart';
 
@@ -13,26 +14,45 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
   late AddWatchListItemUseCase _addWatchListItemUseCase;
   late RemoveWatchListItemUseCase _removeWatchListItemUseCase;
   late GetWatchListItemsUseCase _getWatchListItemsUseCase;
+  late CheckWatchListItemUseCase _checkWatchlistItemUseCase;
 
   WatchlistBloc({
     required AddWatchListItemUseCase addWatchListItemUseCase,
     required RemoveWatchListItemUseCase removeWatchListItemUseCase,
     required GetWatchListItemsUseCase getWatchListItemsUseCase,
+    required CheckWatchListItemUseCase checkWatchlistItem,
   }) : super(WatchlistInitial()) {
     _addWatchListItemUseCase = addWatchListItemUseCase;
     _removeWatchListItemUseCase = removeWatchListItemUseCase;
     _getWatchListItemsUseCase = getWatchListItemsUseCase;
+    _checkWatchlistItemUseCase = checkWatchlistItem;
 
-    on<AddWatchlistItem>(_addWathcListTime);
-    on<RemoveWatchlistItem>(_removeWathcListTime);
+    on<ToggleWatchlistItem>(_toggleWatchListItem);
     on<GetWatchlistItems>(_getWathcListItems);
+    on<CheckWatchlistItem>(_checkWatchlistItem);
   }
 
-  Future<void> _addWathcListTime(
-    AddWatchlistItem event,
+  Future<void> _toggleWatchListItem(
+    ToggleWatchlistItem event,
     Emitter<WatchlistState> emit,
   ) async {
+    final wasWatchlisted = event.movie.isWatchlisted;
+    event.movie.isWatchlisted = !event.movie.isWatchlisted;
+
+    if (!wasWatchlisted) {
+      await _addWatchListItem(event, emit);
+    } else {
+      await _removeWatchListItem(event, emit);
+    }
+  }
+
+  Future<void> _addWatchListItem(
+    ToggleWatchlistItem event,
+    Emitter<WatchlistState> emit,
+  ) async {
+    event.movie.isWatchlisted = true;
     final result = await _addWatchListItemUseCase.call(event.movie);
+
     result.fold(
       (failure) => emit(
         WatchlistError(
@@ -42,17 +62,18 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
       (id) {
         emit(
           WatchlistItemAdded(
-            id: id,
+            movies: state.movies,
           ),
         );
       },
     );
   }
 
-  Future<void> _removeWathcListTime(
-    RemoveWatchlistItem event,
+  Future<void> _removeWatchListItem(
+    ToggleWatchlistItem event,
     Emitter<WatchlistState> emit,
   ) async {
+    event.movie.isWatchlisted = false;
     final result = await _removeWatchListItemUseCase.call(event.movie.tmdbId);
     result.fold(
       (failure) => emit(
@@ -62,7 +83,9 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
       ),
       (success) {
         emit(
-          WatchlistItemRemoved(),
+          WatchlistItemRemoved(
+            movies: state.movies,
+          ),
         );
       },
     );
@@ -72,7 +95,11 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
     WatchlistEvent event,
     Emitter<WatchlistState> emit,
   ) async {
-    emit(WatchlistLoading());
+    emit(
+      WatchlistLoading(
+        movies: state.movies,
+      ),
+    );
     final result = await _getWatchListItemsUseCase.call(const NoParameters());
     result.fold(
       (failure) => emit(
@@ -84,6 +111,29 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
         emit(
           WatchlistLoaded(
             movies: watchlistItems,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _checkWatchlistItem(
+    CheckWatchlistItem event,
+    Emitter<WatchlistState> emit,
+  ) async {
+    final result = await _checkWatchlistItemUseCase.call(event.movie.tmdbId);
+    result.fold(
+      (failure) => emit(
+        WatchlistError(
+          message: failure.message,
+        ),
+      ),
+      (isWatchlisted) {
+        event.movie.isWatchlisted = isWatchlisted;
+        emit(
+          WatchlistItemChecked(
+            isWatchlisted: isWatchlisted,
+            movies: state.movies,
           ),
         );
       },

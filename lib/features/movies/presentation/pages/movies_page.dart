@@ -75,11 +75,15 @@ class MoviesPage extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else if (state is MoviesLoaded) {
-          return MoviesList(
-            movies: state.popularMovies,
-            onMovieTap: (movie) => _onMovieTap(context, movie),
-            onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-            onLoadMoreTap: () => _onLoadMoreTap(context),
+          return BlocBuilder<WatchlistBloc, WatchlistState>(
+            builder: (context, __) {
+              return MoviesList(
+                movies: state.popularMovies,
+                onMovieTap: (movie) => _onMovieTap(context, movie),
+                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+                onLoadMoreTap: () => _onLoadMoreTap(context),
+              );
+            },
           );
         } else if (state is MoviesError) {
           return Text(state.message);
@@ -125,7 +129,7 @@ class MoviesPage extends StatelessWidget {
   }
 
   void _onBookmarkTap(BuildContext context, MovieEntity movie) {
-    context.read<WatchlistBloc>().add(AddWatchlistItem(movie: movie));
+    context.read<WatchlistBloc>().add(ToggleWatchlistItem(movie: movie));
   }
 
   void _onLoadMoreTap(BuildContext context) {

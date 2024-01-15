@@ -28,9 +28,9 @@ const WatchListItemModelSchema = CollectionSchema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'isWatchlist': PropertySchema(
+    r'isWatchlisted': PropertySchema(
       id: 2,
-      name: r'isWatchlist',
+      name: r'isWatchlisted',
       type: IsarType.bool,
     ),
     r'overview': PropertySchema(
@@ -93,8 +93,8 @@ const WatchListItemModelSchema = CollectionSchema(
     r'tmdbId': IndexSchema(
       id: 7174867214654401712,
       name: r'tmdbId',
-      unique: false,
-      replace: false,
+      unique: true,
+      replace: true,
       properties: [
         IndexPropertySchema(
           name: r'tmdbId',
@@ -133,7 +133,7 @@ void _watchListItemModelSerialize(
 ) {
   writer.writeString(offsets[0], object.backdropUrl);
   writer.writeLong(offsets[1], object.hashCode);
-  writer.writeBool(offsets[2], object.isWatchlist);
+  writer.writeBool(offsets[2], object.isWatchlisted);
   writer.writeString(offsets[3], object.overview);
   writer.writeDouble(offsets[4], object.popularity);
   writer.writeString(offsets[5], object.posterUrl);
@@ -154,6 +154,7 @@ WatchListItemModel _watchListItemModelDeserialize(
 ) {
   final object = WatchListItemModel(
     backdropUrl: reader.readString(offsets[0]),
+    isWatchlisted: reader.readBoolOrNull(offsets[2]) ?? true,
     overview: reader.readString(offsets[3]),
     popularity: reader.readDouble(offsets[4]),
     posterUrl: reader.readString(offsets[5]),
@@ -163,6 +164,7 @@ WatchListItemModel _watchListItemModelDeserialize(
     voteAverage: reader.readDouble(offsets[11]),
     voteCount: reader.readLong(offsets[12]),
   );
+  object.userRating = reader.readLongOrNull(offsets[10]);
   return object;
 }
 
@@ -178,7 +180,7 @@ P _watchListItemModelDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? true) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
@@ -215,6 +217,61 @@ List<IsarLinkBase<dynamic>> _watchListItemModelGetLinks(
 
 void _watchListItemModelAttach(
     IsarCollection<dynamic> col, Id id, WatchListItemModel object) {}
+
+extension WatchListItemModelByIndex on IsarCollection<WatchListItemModel> {
+  Future<WatchListItemModel?> getByTmdbId(int tmdbId) {
+    return getByIndex(r'tmdbId', [tmdbId]);
+  }
+
+  WatchListItemModel? getByTmdbIdSync(int tmdbId) {
+    return getByIndexSync(r'tmdbId', [tmdbId]);
+  }
+
+  Future<bool> deleteByTmdbId(int tmdbId) {
+    return deleteByIndex(r'tmdbId', [tmdbId]);
+  }
+
+  bool deleteByTmdbIdSync(int tmdbId) {
+    return deleteByIndexSync(r'tmdbId', [tmdbId]);
+  }
+
+  Future<List<WatchListItemModel?>> getAllByTmdbId(List<int> tmdbIdValues) {
+    final values = tmdbIdValues.map((e) => [e]).toList();
+    return getAllByIndex(r'tmdbId', values);
+  }
+
+  List<WatchListItemModel?> getAllByTmdbIdSync(List<int> tmdbIdValues) {
+    final values = tmdbIdValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'tmdbId', values);
+  }
+
+  Future<int> deleteAllByTmdbId(List<int> tmdbIdValues) {
+    final values = tmdbIdValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'tmdbId', values);
+  }
+
+  int deleteAllByTmdbIdSync(List<int> tmdbIdValues) {
+    final values = tmdbIdValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'tmdbId', values);
+  }
+
+  Future<Id> putByTmdbId(WatchListItemModel object) {
+    return putByIndex(r'tmdbId', object);
+  }
+
+  Id putByTmdbIdSync(WatchListItemModel object, {bool saveLinks = true}) {
+    return putByIndexSync(r'tmdbId', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByTmdbId(List<WatchListItemModel> objects) {
+    return putAllByIndex(r'tmdbId', objects);
+  }
+
+  List<Id> putAllByTmdbIdSync(List<WatchListItemModel> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'tmdbId', objects, saveLinks: saveLinks);
+  }
+}
 
 extension WatchListItemModelQueryWhereSort
     on QueryBuilder<WatchListItemModel, WatchListItemModel, QWhere> {
@@ -649,10 +706,10 @@ extension WatchListItemModelQueryFilter
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QAfterFilterCondition>
-      isWatchlistEqualTo(bool value) {
+      isWatchlistedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isWatchlist',
+        property: r'isWatchlisted',
         value: value,
       ));
     });
@@ -1524,16 +1581,16 @@ extension WatchListItemModelQuerySortBy
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QAfterSortBy>
-      sortByIsWatchlist() {
+      sortByIsWatchlisted() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isWatchlist', Sort.asc);
+      return query.addSortBy(r'isWatchlisted', Sort.asc);
     });
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QAfterSortBy>
-      sortByIsWatchlistDesc() {
+      sortByIsWatchlistedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isWatchlist', Sort.desc);
+      return query.addSortBy(r'isWatchlisted', Sort.desc);
     });
   }
 
@@ -1723,16 +1780,16 @@ extension WatchListItemModelQuerySortThenBy
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QAfterSortBy>
-      thenByIsWatchlist() {
+      thenByIsWatchlisted() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isWatchlist', Sort.asc);
+      return query.addSortBy(r'isWatchlisted', Sort.asc);
     });
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QAfterSortBy>
-      thenByIsWatchlistDesc() {
+      thenByIsWatchlistedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isWatchlist', Sort.desc);
+      return query.addSortBy(r'isWatchlisted', Sort.desc);
     });
   }
 
@@ -1894,9 +1951,9 @@ extension WatchListItemModelQueryWhereDistinct
   }
 
   QueryBuilder<WatchListItemModel, WatchListItemModel, QDistinct>
-      distinctByIsWatchlist() {
+      distinctByIsWatchlisted() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isWatchlist');
+      return query.addDistinctBy(r'isWatchlisted');
     });
   }
 
@@ -1993,9 +2050,9 @@ extension WatchListItemModelQueryProperty
   }
 
   QueryBuilder<WatchListItemModel, bool, QQueryOperations>
-      isWatchlistProperty() {
+      isWatchlistedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isWatchlist');
+      return query.addPropertyName(r'isWatchlisted');
     });
   }
 

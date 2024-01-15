@@ -93,6 +93,7 @@ void _initWatchListFeature() {
       addWatchListItemUseCase: sl(),
       removeWatchListItemUseCase: sl(),
       getWatchListItemsUseCase: sl(),
+      checkWatchlistItem: sl(),
     ),
   );
 

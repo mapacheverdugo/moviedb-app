@@ -5,10 +5,11 @@ import 'package:moviedb/core/utils/functions.dart';
 part 'watchlist_item_model.g.dart';
 
 @Collection(ignore: {'props'})
+// ignore: must_be_immutable
 class WatchListItemModel extends MovieEntity {
   final Id id = Isar.autoIncrement;
 
-  @Index(type: IndexType.value)
+  @Index(unique: true, replace: true)
   // ignore: overridden_fields, annotate_overrides
   final int tmdbId;
 
@@ -22,7 +23,7 @@ class WatchListItemModel extends MovieEntity {
     required super.voteAverage,
     required super.voteCount,
     required super.popularity,
-    super.isWatchlist = true,
+    super.isWatchlisted = true,
   }) : super(tmdbId: tmdbId);
 
   factory WatchListItemModel.fromJson(Map<String, dynamic> json) {
@@ -54,6 +55,7 @@ class WatchListItemModel extends MovieEntity {
       voteAverage: entity.voteAverage,
       voteCount: entity.voteCount,
       popularity: entity.popularity,
+      isWatchlisted: entity.isWatchlisted,
     );
   }
 
@@ -68,6 +70,8 @@ class WatchListItemModel extends MovieEntity {
       'backdrop_path': backdropUrl,
       'vote_count': voteCount,
       'popularity': popularity,
+      'isWatchlisted': isWatchlisted,
+      'userRating': userRating,
     };
   }
 
@@ -82,6 +86,8 @@ class WatchListItemModel extends MovieEntity {
       voteAverage: voteAverage,
       voteCount: voteCount,
       popularity: popularity,
+      isWatchlisted: isWatchlisted,
+      userRating: userRating,
     );
   }
 }

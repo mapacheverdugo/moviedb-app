@@ -1,8 +1,9 @@
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/utils/functions.dart';
 
+// ignore: must_be_immutable
 class SearchResultItemModel extends MovieEntity {
-  const SearchResultItemModel({
+  SearchResultItemModel({
     required super.tmdbId,
     required super.title,
     required super.posterUrl,

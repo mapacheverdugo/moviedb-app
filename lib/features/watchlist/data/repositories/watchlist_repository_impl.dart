@@ -32,9 +32,9 @@ class WatchListRepositoryImpl extends WatchListRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> removeWatchListItem(int id) async {
+  Future<Either<Failure, bool>> removeWatchListItem(int tmdbId) async {
     try {
-      await _localDataSource.removeWatchListItem(id);
+      await _localDataSource.removeWatchListItem(tmdbId);
       return const Right(true);
     } catch (e) {
       return const Left(CacheFailure('An error has occurred'));
@@ -42,9 +42,9 @@ class WatchListRepositoryImpl extends WatchListRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> checkIfAdded(int id) async {
+  Future<Either<Failure, bool>> checkIfAdded(int tmdbId) async {
     try {
-      final result = await _localDataSource.isItemAdded(id);
+      final result = await _localDataSource.isItemAdded(tmdbId);
       return Right(result);
     } catch (e) {
       return const Left(CacheFailure('An error has occurred'));

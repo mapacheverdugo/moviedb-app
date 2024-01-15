@@ -1,8 +1,9 @@
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/utils/functions.dart';
 
+// ignore: must_be_immutable
 class MovieModel extends MovieEntity {
-  const MovieModel({
+  MovieModel({
     required super.tmdbId,
     required super.title,
     required super.posterUrl,

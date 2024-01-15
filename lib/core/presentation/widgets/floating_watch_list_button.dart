@@ -13,7 +13,7 @@ class FloatingWatchListButton extends StatelessWidget {
         children: [
           Text("Watch List"),
           SizedBox(width: 8),
-          Icon(Icons.bookmark),
+          Icon(Icons.bookmark_rounded),
         ],
       ),
     );

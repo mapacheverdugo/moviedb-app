@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class MovieEntity extends Equatable {
   final int tmdbId;
   final String title;
@@ -10,10 +11,10 @@ class MovieEntity extends Equatable {
   final double voteAverage;
   final int voteCount;
   final double popularity;
-  final bool isWatchlist;
-  final int? userRating;
+  bool isWatchlisted;
+  int? userRating;
 
-  const MovieEntity({
+  MovieEntity({
     required this.tmdbId,
     required this.title,
     required this.posterUrl,
@@ -23,7 +24,7 @@ class MovieEntity extends Equatable {
     required this.voteAverage,
     required this.voteCount,
     required this.popularity,
-    this.isWatchlist = false,
+    this.isWatchlisted = false,
     this.userRating,
   });
 
@@ -38,5 +39,7 @@ class MovieEntity extends Equatable {
         voteAverage,
         voteCount,
         popularity,
+        isWatchlisted,
+        userRating,
       ];
 }

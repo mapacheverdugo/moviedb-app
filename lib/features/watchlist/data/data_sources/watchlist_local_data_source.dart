@@ -5,8 +5,8 @@ import 'package:moviedb/features/watchlist/data/models/watchlist_item_model.dart
 abstract class WatchListLocalDataSource {
   Future<List<MovieEntity>> getWatchListItems();
   Future<int> addWatchListItem(WatchListItemModel item);
-  Future<void> removeWatchListItem(int id);
-  Future<bool> isItemAdded(int id);
+  Future<void> removeWatchListItem(int tmdbId);
+  Future<bool> isItemAdded(int tmdbId);
 }
 
 class WatchListLocalDataSourceImpl extends WatchListLocalDataSource {
@@ -31,15 +31,15 @@ class WatchListLocalDataSourceImpl extends WatchListLocalDataSource {
   }
 
   @override
-  Future<void> removeWatchListItem(int id) async {
+  Future<void> removeWatchListItem(int tmdbId) async {
     await _isar.writeTxn(() {
-      return _box.delete(id);
+      return _box.deleteByTmdbId(tmdbId);
     });
   }
 
   @override
-  Future<bool> isItemAdded(int id) async {
-    final item = await _box.filter().tmdbIdEqualTo(id).findFirst();
-    return item?.isWatchlist == true;
+  Future<bool> isItemAdded(int tmdbId) async {
+    final item = await _box.filter().tmdbIdEqualTo(tmdbId).findFirst();
+    return item?.isWatchlisted == true;
   }
 }

@@ -5,6 +5,6 @@ import 'package:moviedb/core/error/failure.dart';
 abstract class WatchListRepository {
   Future<Either<Failure, List<MovieEntity>>> getWatchListItems();
   Future<Either<Failure, int>> addWatchListItem(MovieEntity movie);
-  Future<Either<Failure, bool>> removeWatchListItem(int id);
-  Future<Either<Failure, bool>> checkIfAdded(int id);
+  Future<Either<Failure, bool>> removeWatchListItem(int tmdbId);
+  Future<Either<Failure, bool>> checkIfAdded(int tmdbId);
 }
