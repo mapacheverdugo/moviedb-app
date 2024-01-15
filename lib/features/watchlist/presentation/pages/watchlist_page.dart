@@ -23,6 +23,7 @@ class WatchlistPage extends StatelessWidget {
         body: Stack(
           children: [
             SafeArea(
+              bottom: false,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

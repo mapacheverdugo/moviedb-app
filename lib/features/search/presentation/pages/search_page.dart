@@ -23,6 +23,7 @@ class SearchPage extends StatelessWidget {
           child: Stack(
             children: [
               SafeArea(
+                bottom: false,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
