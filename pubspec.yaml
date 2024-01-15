@@ -30,6 +30,7 @@ dependencies:
   auto_animated_list: ^1.0.4
   great_list_view: ^0.2.3  
   page_transition: ^2.1.0
+  flutter_native_splash: ^2.3.4
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +41,7 @@ dev_dependencies:
   bloc_test: ^9.0.2
   mocktail: ^0.2.0
   isar_generator: *isar_version
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
