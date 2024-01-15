@@ -45,7 +45,7 @@ void main() {
     },
   );
 
-  group('GetSearchResults', () {
+  group('ChangeQueryToSearch', () {
     blocTest<SearchBloc, SearchState>(
       'should emit [SearchLoading, SearchLoaded] and add 1 to page when data is gotten successfully',
       build: () {
@@ -53,7 +53,7 @@ void main() {
             .thenAnswer((_) async => Right(tSearchResultItemModelList));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const GetSearchResults(query: tQuery)),
+      act: (bloc) => bloc.add(const ChangeQueryToSearch(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoading(),
@@ -71,7 +71,45 @@ void main() {
             (_) async => const Left(ServerFailure('Server failed')));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const GetSearchResults(query: tQuery)),
+      act: (bloc) => bloc.add(const ChangeQueryToSearch(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
+      expect: () => [
+        SearchLoading(),
+        const SearchError(message: 'Server failed'),
+      ],
+      verify: (bloc) {
+        expect(bloc.page, equals(tPage));
+      },
+    );
+  });
+
+  group('SearchNow', () {
+    blocTest<SearchBloc, SearchState>(
+      'should emit [SearchLoading, SearchLoaded] and add 1 to page when data is gotten successfully',
+      build: () {
+        when(mockSearchUseCase.call(any))
+            .thenAnswer((_) async => Right(tSearchResultItemModelList));
+        return searchBloc;
+      },
+      act: (bloc) => bloc.add(const SearchNow(query: tQuery)),
+      wait: SearchBloc.debounceDuration,
+      expect: () => [
+        SearchLoading(),
+        SearchLoaded(results: tSearchResultItemModelList),
+      ],
+      verify: (bloc) {
+        expect(bloc.page, equals(tPage + 1));
+      },
+    );
+
+    blocTest<SearchBloc, SearchState>(
+      'should emit [SearchLoading, SearchError] and same page when data is gotten unsuccessfully',
+      build: () {
+        when(mockSearchUseCase.call(any)).thenAnswer(
+            (_) async => const Left(ServerFailure('Server failed')));
+        return searchBloc;
+      },
+      act: (bloc) => bloc.add(const SearchNow(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoading(),
@@ -91,7 +129,7 @@ void main() {
             .thenAnswer((_) async => Right(tSearchResultItemModelList));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
       wait: SearchBloc.debounceDuration,
       expect: () => [
         SearchLoaded(results: tSearchResultItemModelList),
@@ -108,7 +146,7 @@ void main() {
             .thenAnswer((_) async => const Right([]));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
       wait: SearchBloc.debounceDuration,
       expect: () => [],
       verify: (bloc) {
@@ -124,7 +162,7 @@ void main() {
             (_) async => const Left(ServerFailure('Server failed')));
         return searchBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreSearchResults(query: tQuery)),
+      act: (bloc) => bloc.add(const LoadMoreSearchResults()),
       wait: SearchBloc.debounceDuration,
       expect: () => [
         const SearchError(message: 'Server failed'),

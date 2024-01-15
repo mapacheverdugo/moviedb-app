@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:moviedb/core/presentation/widgets/search_icon_button.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  const CustomSearchBar({
+  final TextEditingController _controller = TextEditingController();
+
+  CustomSearchBar({
     super.key,
     this.readOnly = false,
     this.autofocus = false,
@@ -15,15 +17,19 @@ class CustomSearchBar extends StatelessWidget {
   final bool autofocus;
   final Function(String)? onChanged;
   final VoidCallback? onFieldTap;
-  final VoidCallback? onSearchAction;
+  final Function(String)? onSearchAction;
 
   @override
   Widget build(BuildContext context) {
     final textField = TextFormField(
+      controller: _controller,
       readOnly: readOnly,
       decoration: const InputDecoration(
         hintText: "Search Here ...",
       ),
+      textInputAction: TextInputAction.search,
+      keyboardType: TextInputType.text,
+      onFieldSubmitted: onSearchAction,
       autofocus: autofocus,
       onChanged: onChanged,
     );
@@ -40,7 +46,11 @@ class CustomSearchBar extends StatelessWidget {
         ),
         const SizedBox(width: 23),
         SearchIconButton(
-          onPressed: onSearchAction,
+          onPressed: () {
+            if (onSearchAction != null) {
+              onSearchAction?.call(_controller.text);
+            }
+          },
         ),
       ],
     );

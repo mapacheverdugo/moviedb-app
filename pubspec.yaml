@@ -28,8 +28,8 @@ dependencies:
   isar: *isar_version
   isar_flutter_libs: *isar_version
   auto_animated_list: ^1.0.4
-  great_list_view: ^0.2.3
-  
+  great_list_view: ^0.2.3  
+  page_transition: ^2.1.0
 
 dev_dependencies:
   flutter_test:

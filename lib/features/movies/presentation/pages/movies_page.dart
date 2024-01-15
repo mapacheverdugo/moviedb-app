@@ -44,7 +44,7 @@ class MoviesPage extends StatelessWidget {
                         CustomSearchBar(
                           readOnly: true,
                           onFieldTap: () => _onSearchAction(context),
-                          onSearchAction: () => _onSearchAction(context),
+                          onSearchAction: (_) => _onSearchAction(context),
                         ),
                         const SizedBox(height: 22),
                         Text(

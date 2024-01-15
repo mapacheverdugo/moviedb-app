@@ -44,11 +44,10 @@ class SearchPage extends StatelessWidget {
                           Builder(builder: (context) {
                             return CustomSearchBar(
                               autofocus: true,
-                              onChanged: (query) {
-                                context.read<SearchBloc>().add(
-                                      GetSearchResults(query: query),
-                                    );
-                              },
+                              onChanged: (query) =>
+                                  _onInputChanged(context, query),
+                              onSearchAction: (query) =>
+                                  _onSearchAction(context, query),
                             );
                           }),
                           const SizedBox(height: 22),
@@ -123,5 +122,17 @@ class SearchPage extends StatelessWidget {
 
   void _onLoadMoreTap(BuildContext context) {
     context.read<SearchBloc>().add(const LoadMoreSearchResults());
+  }
+
+  void _onInputChanged(BuildContext context, String query) {
+    context.read<SearchBloc>().add(
+          ChangeQueryToSearch(query: query),
+        );
+  }
+
+  void _onSearchAction(BuildContext context, String query) {
+    context.read<SearchBloc>().add(
+          SearchNow(query: query),
+        );
   }
 }

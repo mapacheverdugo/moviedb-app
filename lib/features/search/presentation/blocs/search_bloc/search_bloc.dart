@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/search/domain/usecases/search_usecase.dart';
 import 'package:rxdart/rxdart.dart';
@@ -17,8 +18,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   String query = '';
 
   SearchBloc(this._searchUseCase) : super(SearchInitial()) {
-    on<GetSearchResults>(
+    on<ChangeQueryToSearch>(
       (event, emit) async {
+        page = 1;
         emit(SearchLoading());
         final failureOrMovies = await _searchUseCase(
           SearchUseCaseParams(
@@ -36,6 +38,27 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         );
       },
       transformer: debounce(debounceDuration),
+    );
+
+    on<SearchNow>(
+      (event, emit) async {
+        page = 1;
+        emit(SearchLoading());
+        final failureOrMovies = await _searchUseCase(
+          SearchUseCaseParams(
+            query: event.query,
+            page: page,
+          ),
+        );
+        failureOrMovies.fold(
+          (failure) => emit(SearchError(message: failure.message)),
+          (results) {
+            page++;
+            query = event.query;
+            emit(SearchLoaded(results: results));
+          },
+        );
+      },
     );
 
     on<LoadMoreSearchResults>((event, emit) async {
@@ -64,6 +87,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         },
       );
     });
+  }
+
+  @override
+  void onChange(Change<SearchState> change) {
+    super.onChange(change);
+    debugPrint(change.toString());
+    debugPrint(change.currentState.toString());
+    debugPrint(change.nextState.toString());
   }
 }
 

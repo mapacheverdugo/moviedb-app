@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/domain/usecases/usecase.dart';
 import 'package:moviedb/features/watchlist/domain/usecases/add_watchlist_item_usecase.dart';
@@ -113,11 +112,11 @@ class WatchlistBloc extends Bloc<WatchlistEvent, WatchlistState> {
     );
   }
 
-  @override
+/*   @override
   void onChange(Change<WatchlistState> change) {
     super.onChange(change);
     debugPrint(change.toString());
     debugPrint(change.currentState.toString());
     debugPrint(change.nextState.toString());
-  }
+  } */
 }
