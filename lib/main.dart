@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moviedb/config/routes/routes.dart';
 import 'package:moviedb/config/theme/app_themes.dart';
+import 'package:moviedb/core/presentation/blocs/cubit/theme_cubit.dart';
+import 'package:moviedb/core/utils/functions.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_item_checker_bloc/watchlist_item_checker_bloc.dart';
 import 'package:moviedb/injection_container.dart';
@@ -20,14 +21,6 @@ class MovieDbApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-    );
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -36,12 +29,21 @@ class MovieDbApp extends StatelessWidget {
         BlocProvider(
           create: (context) => sl<WatchlistItemCheckerBloc>(),
         ),
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
       ],
-      child: MaterialApp(
-        title: 'MovieDB',
-        theme: AppTheme.darkTheme,
-        onGenerateRoute: AppRoutes.onGenerateRoutes,
-        debugShowCheckedModeBanner: false,
+      child: BlocBuilder<ThemeCubit, Brightness>(
+        builder: (context, state) {
+          setStatusBarColor(state);
+
+          return MaterialApp(
+            title: 'MovieDB',
+            theme: AppTheme.getThemeByBrightness(state),
+            onGenerateRoute: AppRoutes.onGenerateRoutes,
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
     );
   }

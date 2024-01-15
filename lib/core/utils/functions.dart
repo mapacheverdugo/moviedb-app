@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moviedb/core/constants/constants.dart';
 
 String getPosterUrl(String? path) {
@@ -33,5 +35,25 @@ String getAvatarUrl(String? path) {
     return baseUrl + path;
   } else {
     return TheMovieDbConstants.avatarPlaceholder;
+  }
+}
+
+void setStatusBarColor(Brightness brightness) {
+  if (brightness == Brightness.dark) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
+  } else {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
   }
 }

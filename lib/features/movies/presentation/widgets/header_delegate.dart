@@ -90,6 +90,7 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Opacity(
               opacity: 1 - opacity,
               child: AppBar(
+                backgroundColor: colorScheme.background,
                 automaticallyImplyLeading: false,
                 leading: Container(),
                 leadingWidth: 20,

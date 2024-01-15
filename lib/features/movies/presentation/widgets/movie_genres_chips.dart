@@ -16,7 +16,7 @@ class MovieGenresChips extends StatelessWidget {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
 
-    return FadeInLeft(
+    return FadeInRight(
       child: SizedBox(
         height: 32 + padding.vertical,
         width: mq.size.width,

@@ -4,6 +4,8 @@ class AppTheme {
   static const Color greenColor = Color(0XFF4FCCA3);
   static const Color darkBlueColor = Color(0XFF242A32);
   static const Color darkGreyColor = Color(0XFF3A3F47);
+  static const Color lightGreyColor = Color.fromARGB(255, 232, 232, 232);
+  static const Color grey = Color(0XFFA0A3A8);
   static const Color whiteColor = Color(0XFFFFFFFF);
 
   static const String fontFamily = 'Poppins';
@@ -12,50 +14,52 @@ class AppTheme {
     horizontal: 12,
   );
 
+  static ThemeData getThemeByBrightness(Brightness brightness) {
+    return brightness == Brightness.light ? lightTheme : darkTheme;
+  }
+
   static ThemeData get darkTheme {
+    const brightness = Brightness.dark;
+    final colorScheme = getColorSchemeByBrightness(brightness);
+
     return ThemeData(
-      brightness: Brightness.dark,
+      brightness: brightness,
       fontFamily: fontFamily,
-      colorScheme: darkColorScheme,
-      textTheme: textTheme,
-      scaffoldBackgroundColor: darkColorScheme.background,
-      textButtonTheme: textButtonTheme,
-      elevatedButtonTheme: elevatedButtonTheme,
-      chipTheme: chipTheme,
+      colorScheme: getColorSchemeByBrightness(brightness),
+      textTheme: getTextThemeByBrightness(brightness),
+      scaffoldBackgroundColor: colorScheme.background,
+      textButtonTheme: getTextButtonTheme(brightness),
+      elevatedButtonTheme: getElevatedButtonTheme(brightness),
+      chipTheme: getChipTheme(brightness),
       appBarTheme: appBarTheme,
-      listTileTheme: ListTileThemeData(
-        contentPadding: EdgeInsets.zero,
-        horizontalTitleGap: 0,
-        minVerticalPadding: 0,
-        titleTextStyle: textTheme.titleSmall,
-        subtitleTextStyle: textTheme.bodyMedium,
-        textColor: darkColorScheme.onBackground,
-      ),
-      tabBarTheme: TabBarTheme(
-        labelColor: darkColorScheme.onBackground,
-        labelStyle: textTheme.titleMedium,
-        unselectedLabelColor: darkColorScheme.onBackground,
-        unselectedLabelStyle: textTheme.bodyLarge?.copyWith(
-          color: darkColorScheme.onBackground,
-        ),
-        indicatorColor: darkColorScheme.tertiary,
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide.none,
-        ),
-        filled: true,
-        fillColor: darkColorScheme.tertiary,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 19,
-          vertical: 10,
-        ),
-        hintStyle: textTheme.bodyLarge?.copyWith(
-          color: darkColorScheme.onBackground,
-        ),
-      ),
+      listTileTheme: getListTileThemeData(brightness),
+      tabBarTheme: getTabBarTheme(brightness),
+      inputDecorationTheme: getInputDecorationTheme(brightness),
     );
+  }
+
+  static ThemeData get lightTheme {
+    const brightness = Brightness.light;
+    final colorScheme = getColorSchemeByBrightness(brightness);
+
+    return ThemeData(
+      brightness: brightness,
+      fontFamily: fontFamily,
+      colorScheme: getColorSchemeByBrightness(brightness),
+      textTheme: getTextThemeByBrightness(brightness),
+      scaffoldBackgroundColor: colorScheme.background,
+      textButtonTheme: getTextButtonTheme(brightness),
+      elevatedButtonTheme: getElevatedButtonTheme(brightness),
+      chipTheme: getChipTheme(brightness),
+      appBarTheme: appBarTheme,
+      listTileTheme: getListTileThemeData(brightness),
+      tabBarTheme: getTabBarTheme(brightness),
+      inputDecorationTheme: getInputDecorationTheme(brightness),
+    );
+  }
+
+  static ColorScheme getColorSchemeByBrightness(Brightness brightness) {
+    return brightness == Brightness.light ? lightColorScheme : darkColorScheme;
   }
 
   static ColorScheme get darkColorScheme {
@@ -71,13 +75,26 @@ class AppTheme {
     );
   }
 
-  static TextTheme get textTheme {
+  static ColorScheme get lightColorScheme {
+    return const ColorScheme.light(
+      primary: greenColor,
+      onPrimary: darkBlueColor,
+      secondary: darkBlueColor,
+      onSecondary: whiteColor,
+      tertiary: grey,
+      onTertiary: whiteColor,
+      background: whiteColor,
+      onBackground: darkBlueColor,
+    );
+  }
+
+  static TextTheme getTextThemeByBrightness(Brightness brightness) {
     return TextTheme(
       displaySmall: TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w700,
         fontFamily: fontFamily,
-        color: darkColorScheme.onBackground,
+        color: getColorSchemeByBrightness(brightness).onBackground,
       ),
       titleLarge: const TextStyle(
         fontSize: 18,
@@ -107,10 +124,11 @@ class AppTheme {
     );
   }
 
-  static TextButtonThemeData get textButtonTheme => TextButtonThemeData(
+  static TextButtonThemeData getTextButtonTheme(Brightness brightness) =>
+      TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: darkColorScheme.onBackground,
-          textStyle: textTheme.titleMedium,
+          foregroundColor: getColorSchemeByBrightness(brightness).onBackground,
+          textStyle: getTextThemeByBrightness(brightness).titleMedium,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -118,10 +136,11 @@ class AppTheme {
         ),
       );
 
-  static ElevatedButtonThemeData get elevatedButtonTheme =>
+  static ElevatedButtonThemeData getElevatedButtonTheme(
+          Brightness brightness) =>
       ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          textStyle: textTheme.titleMedium,
+          textStyle: getTextThemeByBrightness(brightness).titleMedium,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -130,14 +149,14 @@ class AppTheme {
         ),
       );
 
-  static ChipThemeData get chipTheme => ChipThemeData(
+  static ChipThemeData getChipTheme(Brightness brightness) => ChipThemeData(
         backgroundColor: darkColorScheme.tertiary,
         selectedColor: darkColorScheme.primary,
         padding: const EdgeInsets.symmetric(
           horizontal: 14,
           vertical: 0,
         ),
-        labelStyle: textTheme.bodyMedium,
+        labelStyle: getTextThemeByBrightness(brightness).bodyMedium,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -146,5 +165,46 @@ class AppTheme {
   static AppBarTheme get appBarTheme => const AppBarTheme(
         backgroundColor: darkBlueColor,
         elevation: 0,
+      );
+
+  static ListTileThemeData getListTileThemeData(Brightness brightness) =>
+      ListTileThemeData(
+        contentPadding: EdgeInsets.zero,
+        horizontalTitleGap: 0,
+        minVerticalPadding: 0,
+        titleTextStyle: getTextThemeByBrightness(brightness).titleSmall,
+        subtitleTextStyle: getTextThemeByBrightness(brightness).bodyMedium,
+        textColor: darkColorScheme.onBackground,
+      );
+
+  static TabBarTheme getTabBarTheme(Brightness brightness) => TabBarTheme(
+        labelColor: getColorSchemeByBrightness(brightness).onBackground,
+        labelStyle: getTextThemeByBrightness(brightness).titleMedium,
+        unselectedLabelColor:
+            getColorSchemeByBrightness(brightness).onBackground,
+        unselectedLabelStyle:
+            getTextThemeByBrightness(brightness).bodyLarge?.copyWith(
+                  color: getColorSchemeByBrightness(brightness).onBackground,
+                ),
+        indicatorColor: getColorSchemeByBrightness(brightness).tertiary,
+      );
+
+  static InputDecorationTheme getInputDecorationTheme(Brightness brightness) =>
+      InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: brightness == Brightness.dark
+            ? getColorSchemeByBrightness(brightness).tertiary
+            : lightGreyColor,
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 19,
+          vertical: 10,
+        ),
+        hintStyle: getTextThemeByBrightness(brightness).bodyLarge?.copyWith(
+              color: getColorSchemeByBrightness(brightness).onBackground,
+            ),
       );
 }

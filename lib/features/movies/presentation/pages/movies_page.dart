@@ -9,6 +9,7 @@ import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
 import 'package:moviedb/core/presentation/widgets/default_loading_indicator.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
+import 'package:moviedb/core/presentation/widgets/simple_state_message.dart';
 import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:moviedb/features/movies/presentation/blocs/selected_category_cubit/selected_category_cubit.dart';
 import 'package:moviedb/features/movies/presentation/blocs/top_movies_bloc/top_movies_bloc.dart';
@@ -118,28 +119,38 @@ class MoviesPage extends StatelessWidget {
   Widget _buildPopularList() {
     return BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
       builder: (context, state) {
-        final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
-          builder: (context, __) {
-            return MoviesList(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              movies: state.movies,
-              onMovieTap: (movie) => _onMovieTap(context, movie),
-              onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-              onLoadMoreTap: () => _onLoadMorePopularTap(context),
-            );
-          },
-        );
-
         if (state is PopularMoviesLoading) {
           return const Center(
             child: DefaultLoadingIndicator(),
           );
         } else if (state is PopularMoviesLoaded) {
-          return loadedList;
+          return BlocBuilder<WatchlistBloc, WatchlistState>(
+            builder: (context, __) {
+              return MoviesList(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                movies: state.movies,
+                onMovieTap: (movie) => _onMovieTap(context, movie),
+                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+                onLoadMoreTap: () => _onLoadMorePopularTap(context),
+              );
+            },
+          );
         } else if (state is PopularMoviesNoMoreResults) {
-          return loadedList;
+          return BlocBuilder<WatchlistBloc, WatchlistState>(
+            builder: (context, __) {
+              return MoviesList(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                movies: state.movies,
+                onMovieTap: (movie) => _onMovieTap(context, movie),
+                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+              );
+            },
+          );
         } else if (state is PopularMoviesError) {
-          return Text(state.message);
+          return SimpleStateMessage(
+            title: "Error",
+            subtitle: state.message,
+          );
         } else {
           return const SizedBox.shrink();
         }
@@ -150,28 +161,38 @@ class MoviesPage extends StatelessWidget {
   Widget _buildTopList() {
     return BlocBuilder<TopMoviesBloc, TopMoviesState>(
       builder: (context, state) {
-        final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
-          builder: (context, __) {
-            return MoviesList(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              movies: state.movies,
-              onMovieTap: (movie) => _onMovieTap(context, movie),
-              onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-              onLoadMoreTap: () => _onLoadMoreTopTap(context),
-            );
-          },
-        );
-
         if (state is TopMoviesLoading) {
           return const Center(
             child: DefaultLoadingIndicator(),
           );
         } else if (state is TopMoviesLoaded) {
-          return loadedList;
+          return BlocBuilder<WatchlistBloc, WatchlistState>(
+            builder: (context, __) {
+              return MoviesList(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                movies: state.movies,
+                onMovieTap: (movie) => _onMovieTap(context, movie),
+                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+                onLoadMoreTap: () => _onLoadMoreTopTap(context),
+              );
+            },
+          );
         } else if (state is TopMoviesNoMoreResults) {
-          return loadedList;
+          return BlocBuilder<WatchlistBloc, WatchlistState>(
+            builder: (context, __) {
+              return MoviesList(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                movies: state.movies,
+                onMovieTap: (movie) => _onMovieTap(context, movie),
+                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+              );
+            },
+          );
         } else if (state is TopMoviesError) {
-          return Text(state.message);
+          return SimpleStateMessage(
+            title: "Error",
+            subtitle: state.message,
+          );
         } else {
           return const SizedBox.shrink();
         }

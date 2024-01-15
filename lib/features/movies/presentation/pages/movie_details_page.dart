@@ -73,6 +73,7 @@ class MovieDetailsPage extends StatelessWidget {
                   ];
                 },
                 body: TabBarView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
                     _buildAboutTab(context),
                     _buildReviewsTab(context),
@@ -163,7 +164,10 @@ class MovieDetailsPage extends StatelessWidget {
                 );
               } else if (state is MovieDetailsLoading) {
                 return const Center(
-                  child: DefaultLoadingIndicator(),
+                  child: Padding(
+                    padding: AppConstants.pagePadding,
+                    child: DefaultLoadingIndicator(),
+                  ),
                 );
               } else if (state is MovieDetailsError) {
                 return SimpleStateMessage(
