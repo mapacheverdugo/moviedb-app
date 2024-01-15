@@ -1,12 +1,16 @@
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
+part 'genre.g.dart';
+
+@Embedded(ignore: {'props'})
 class GenreEntity extends Equatable {
   final int id;
   final String name;
 
   const GenreEntity({
-    required this.id,
-    required this.name,
+    this.id = 0,
+    this.name = "",
   });
 
   @override

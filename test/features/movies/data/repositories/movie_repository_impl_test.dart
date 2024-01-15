@@ -270,7 +270,7 @@ void main() {
 
   const tMovieId = 1;
   final tMovieDetailsModel = MovieDetailsModel(
-    id: tMovieId,
+    tmdbId: tMovieId,
     title: 'Test',
     overview: 'Overview',
     voteAverage: 1,
@@ -283,39 +283,105 @@ void main() {
     reviews: const [],
   );
 
-  group('getMovieDetails', () {
+  group('getMoviesDetails', () {
     test(
-      'should return movie details when a call to data source is successful',
+      'should check if the device is online',
       () async {
         // arrange
+        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
             .thenAnswer((_) async => tMovieDetailsModel);
 
         // act
-        final result =
-            await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
-
+        movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
         // assert
-        verify(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId));
-        expect(result, isA<Right<Failure, MovieDetailsEntity>>());
+        verify(mockNetworkInfo.isConnected);
       },
     );
 
-    test(
-      'should return ServerFailure when a call to data source is unsuccessful',
-      () async {
-        // arrange
-        when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
-            .thenThrow(ServerException());
+    runTestsOnline(() {
+      test(
+        'should return remote data when the call to remote data source is successful',
+        () async {
+          // arrange
+          when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
+              .thenAnswer((_) async => tMovieDetailsModel);
 
-        // act
-        final result =
-            await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
+          // act
+          final result =
+              await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
 
-        // assert
-        expect(
-            result, equals(const Left(ServerFailure('An error has occurred'))));
-      },
-    );
+          // assert
+          verify(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId));
+          expect(result, isA<Right<Failure, MovieDetailsEntity>>());
+        },
+      );
+
+      test(
+        'should cache the data locally when the call to remote data source is successful',
+        () async {
+          // arrange
+          when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
+              .thenAnswer((_) async => tMovieDetailsModel);
+          // act
+          await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
+          // assert
+          verify(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId));
+          verify(
+              mockMoviesLocalDataSource.cacheMovieDetail(tMovieDetailsModel));
+        },
+      );
+
+      test(
+        'should return ServerFailure when a call to data source is unsuccessful',
+        () async {
+          // arrange
+          when(mockMoviesRemoteDataSource.getMovieDetails(movieId: tMovieId))
+              .thenThrow(ServerException());
+
+          // act
+          final result =
+              await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
+
+          // assert
+          expect(result,
+              equals(const Left(ServerFailure('An error has occurred'))));
+        },
+      );
+    });
+
+    runTestsOffline(() {
+      test(
+        'should return last locally cached data when the cached data is present',
+        () async {
+          // arrange
+          when(mockMoviesLocalDataSource.getMovieDetails(tmdbId: tMovieId))
+              .thenAnswer((_) async => tMovieDetailsModel);
+          // act
+          final result =
+              await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
+          // assert
+
+          verify(movieRepositoryImpl.getMovieDetails(movieId: tMovieId));
+          expect(result, equals(Right(tMovieDetailsModel)));
+        },
+      );
+
+      test(
+        'should return CacheFailure when there is no cached data present',
+        () async {
+          // arrange
+          when(mockMoviesLocalDataSource.getMovieDetails(tmdbId: tMovieId))
+              .thenThrow(CacheException());
+          // act
+          final result =
+              await movieRepositoryImpl.getMovieDetails(movieId: tMovieId);
+          // assert
+          verify(mockMoviesLocalDataSource.getMovieDetails(tmdbId: tMovieId));
+          expect(result,
+              equals(const Left(CacheFailure("An error has occurred"))));
+        },
+      );
+    });
   });
 }

@@ -122,12 +122,42 @@ class MockMoviesLocalDataSource extends _i1.Mock
       ) as _i4.Future<List<_i5.MovieModel>>);
 
   @override
+  _i4.Future<_i2.MovieDetailsModel> getMovieDetails({required int? tmdbId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getMovieDetails,
+          [],
+          {#tmdbId: tmdbId},
+        ),
+        returnValue:
+            _i4.Future<_i2.MovieDetailsModel>.value(_FakeMovieDetailsModel_0(
+          this,
+          Invocation.method(
+            #getMovieDetails,
+            [],
+            {#tmdbId: tmdbId},
+          ),
+        )),
+      ) as _i4.Future<_i2.MovieDetailsModel>);
+
+  @override
   _i4.Future<void> cacheMovies({required List<_i5.MovieModel>? movies}) =>
       (super.noSuchMethod(
         Invocation.method(
           #cacheMovies,
           [],
           {#movies: movies},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> cacheMovieDetail(_i2.MovieDetailsModel? movie) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #cacheMovieDetail,
+          [movie],
         ),
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),

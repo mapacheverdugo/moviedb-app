@@ -5,6 +5,7 @@ import 'package:isar/isar.dart';
 import 'package:moviedb/core/network/network_info.dart';
 import 'package:moviedb/features/movies/data/data_sources/movies_local_data_source.dart';
 import 'package:moviedb/features/movies/data/data_sources/movies_remote_data_source.dart';
+import 'package:moviedb/features/movies/data/models/movie_details_model.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.dart';
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
@@ -48,6 +49,7 @@ Future<void> init() async {
     [
       WatchListItemModelSchema,
       MovieModelSchema,
+      MovieDetailsModelSchema,
     ],
     directory: dir.path,
   );

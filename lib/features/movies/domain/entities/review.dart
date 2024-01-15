@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
+part 'review.g.dart';
+
+@Embedded(ignore: {'props'})
 class ReviewEntity extends Equatable {
   final String authorName;
   final String authorUsername;
@@ -8,11 +12,11 @@ class ReviewEntity extends Equatable {
   final String content;
 
   const ReviewEntity({
-    required this.authorName,
-    required this.authorUsername,
-    required this.avatarUrl,
-    required this.rating,
-    required this.content,
+    this.authorName = "",
+    this.authorUsername = "",
+    this.avatarUrl = "",
+    this.rating,
+    this.content = "",
   });
 
   @override

@@ -9,7 +9,7 @@ import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   final tMovieDetailsModel = MovieDetailsModel(
-    id: 1,
+    tmdbId: 1,
     title: 'Test',
     overview: 'Overview',
     voteAverage: 1,

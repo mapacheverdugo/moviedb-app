@@ -36,12 +36,24 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<Either<Failure, MovieDetailsEntity>> getMovieDetails({
     required int movieId,
   }) async {
-    try {
-      final movieDetails =
-          await remoteDataSource.getMovieDetails(movieId: movieId);
-      return Right(movieDetails.toEntity());
-    } on ServerException {
-      return const Left(ServerFailure('An error has occurred'));
+    if (await networkInfo.isConnected) {
+      try {
+        final movieDetails =
+            await remoteDataSource.getMovieDetails(movieId: movieId);
+        localDataSource.cacheMovieDetail(movieDetails);
+        return Right(movieDetails.toEntity());
+      } on ServerException {
+        return const Left(ServerFailure('An error has occurred'));
+      }
+    } else {
+      try {
+        final movieDetails =
+            await localDataSource.getMovieDetails(tmdbId: movieId);
+
+        return Right(movieDetails);
+      } on CacheException {
+        return const Left(CacheFailure("An error has occurred"));
+      }
     }
   }
 

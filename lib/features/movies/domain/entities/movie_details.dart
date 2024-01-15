@@ -3,7 +3,7 @@ import 'package:moviedb/features/movies/domain/entities/genre.dart';
 import 'package:moviedb/features/movies/domain/entities/review.dart';
 
 class MovieDetailsEntity extends Equatable {
-  final int id;
+  final int tmdbId;
   final String title;
   final String posterUrl;
   final String backdropUrl;
@@ -16,7 +16,7 @@ class MovieDetailsEntity extends Equatable {
   final List<ReviewEntity> reviews;
 
   const MovieDetailsEntity({
-    required this.id,
+    required this.tmdbId,
     required this.title,
     required this.posterUrl,
     required this.backdropUrl,
@@ -31,7 +31,7 @@ class MovieDetailsEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
+        tmdbId,
         title,
         posterUrl,
         backdropUrl,

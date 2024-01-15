@@ -23,7 +23,7 @@ void main() {
 
   const tMovieId = 1;
   final tMovieDetailsModel = MovieDetailsModel(
-    id: tMovieId,
+    tmdbId: tMovieId,
     title: 'Test',
     overview: 'Overview',
     voteAverage: 1,
