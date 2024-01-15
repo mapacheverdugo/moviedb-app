@@ -13,10 +13,22 @@ sealed class SearchState extends Equatable {
 
 final class SearchInitial extends SearchState {}
 
-final class SearchLoading extends SearchState {}
+final class SearchLoading extends SearchState {
+  const SearchLoading({super.results});
+
+  @override
+  List<Object> get props => [results];
+}
 
 final class SearchLoaded extends SearchState {
-  const SearchLoaded({super.results});
+  const SearchLoaded({required super.results});
+
+  @override
+  List<Object> get props => [results];
+}
+
+final class SearchNoMoreResults extends SearchState {
+  const SearchNoMoreResults({required super.results});
 
   @override
   List<Object> get props => [results];

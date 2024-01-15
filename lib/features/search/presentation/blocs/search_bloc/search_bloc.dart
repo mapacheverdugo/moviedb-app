@@ -20,8 +20,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   SearchBloc(this._searchUseCase) : super(SearchInitial()) {
     on<ChangeQueryToSearch>(
       (event, emit) async {
+        isLastPage = false;
         page = 1;
-        emit(SearchLoading());
+        emit(SearchLoading(results: state.results));
         final failureOrMovies = await _searchUseCase(
           SearchUseCaseParams(
             query: event.query,
@@ -42,8 +43,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     on<SearchNow>(
       (event, emit) async {
+        isLastPage = false;
         page = 1;
-        emit(SearchLoading());
+        emit(SearchLoading(results: state.results));
         final failureOrMovies = await _searchUseCase(
           SearchUseCaseParams(
             query: event.query,
@@ -63,6 +65,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
     on<LoadMoreSearchResults>((event, emit) async {
       if (isLastPage) {
+        emit(SearchNoMoreResults(results: state.results));
         return;
       }
       final failureOrMovies = await _searchUseCase(
@@ -76,6 +79,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         (morePopularMovies) {
           if (morePopularMovies.isEmpty) {
             isLastPage = true;
+            emit(SearchNoMoreResults(results: state.results));
           } else {
             page++;
             emit(

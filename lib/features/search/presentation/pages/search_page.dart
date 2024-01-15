@@ -81,6 +81,11 @@ class SearchPage extends StatelessWidget {
             onMovieTap: (movie) => _onMovieTap(context, movie),
             onLoadMoreTap: () => _onLoadMoreTap(context),
           );
+        } else if (state is SearchNoMoreResults) {
+          return MoviesList(
+            movies: state.results,
+            onMovieTap: (movie) => _onMovieTap(context, movie),
+          );
         } else if (state is SearchError) {
           return Text(state.message);
         } else {

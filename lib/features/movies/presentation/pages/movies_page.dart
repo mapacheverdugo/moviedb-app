@@ -70,21 +70,25 @@ class MoviesPage extends StatelessWidget {
   Widget _buildList() {
     return BlocBuilder<MoviesBloc, MoviesState>(
       builder: (context, state) {
+        final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
+          builder: (context, __) {
+            return MoviesList(
+              movies: state.popularMovies,
+              onMovieTap: (movie) => _onMovieTap(context, movie),
+              onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
+              onLoadMoreTap: () => _onLoadMoreTap(context),
+            );
+          },
+        );
+
         if (state is MoviesLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (state is MoviesLoaded) {
-          return BlocBuilder<WatchlistBloc, WatchlistState>(
-            builder: (context, __) {
-              return MoviesList(
-                movies: state.popularMovies,
-                onMovieTap: (movie) => _onMovieTap(context, movie),
-                onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
-                onLoadMoreTap: () => _onLoadMoreTap(context),
-              );
-            },
-          );
+          return loadedList;
+        } else if (state is MoviesNoMoreResults) {
+          return loadedList;
         } else if (state is MoviesError) {
           return Text(state.message);
         } else {

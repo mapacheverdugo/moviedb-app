@@ -13,7 +13,12 @@ sealed class MoviesState extends Equatable {
 
 final class MoviesInitial extends MoviesState {}
 
-final class MoviesLoading extends MoviesState {}
+final class MoviesLoading extends MoviesState {
+  const MoviesLoading({super.popularMovies});
+
+  @override
+  List<Object> get props => [popularMovies];
+}
 
 final class MoviesError extends MoviesState {
   final String message;
@@ -26,6 +31,13 @@ final class MoviesError extends MoviesState {
 
 final class MoviesLoaded extends MoviesState {
   const MoviesLoaded({required super.popularMovies});
+
+  @override
+  List<Object> get props => [popularMovies];
+}
+
+final class MoviesNoMoreResults extends MoviesState {
+  const MoviesNoMoreResults({required super.popularMovies});
 
   @override
   List<Object> get props => [popularMovies];

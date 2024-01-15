@@ -14,7 +14,9 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
   MoviesBloc(this._getPopularMoviesUseCase) : super(MoviesInitial()) {
     on<GetMoviesEvent>((event, emit) async {
-      emit(MoviesLoading());
+      isLastPage = false;
+      page = 1;
+      emit(MoviesLoading(popularMovies: state.popularMovies));
       final failureOrMovies = await _getPopularMoviesUseCase(page);
       failureOrMovies.fold(
         (failure) => emit(MoviesError(message: failure.message)),
@@ -28,6 +30,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
     on<LoadMoreMoviesEvent>((event, emit) async {
       if (isLastPage) {
+        emit(MoviesNoMoreResults(popularMovies: state.popularMovies));
         return;
       }
       final failureOrMovies = await _getPopularMoviesUseCase(page);
@@ -36,6 +39,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         (morePopularMovies) {
           if (morePopularMovies.isEmpty) {
             isLastPage = true;
+            emit(MoviesNoMoreResults(popularMovies: state.popularMovies));
           } else {
             page++;
             emit(
