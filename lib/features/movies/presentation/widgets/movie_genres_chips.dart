@@ -13,8 +13,11 @@ class MovieGenresChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+
     return SizedBox(
       height: 32 + padding.vertical,
+      width: mq.size.width,
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.symmetric(

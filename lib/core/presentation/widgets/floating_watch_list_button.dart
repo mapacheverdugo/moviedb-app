@@ -1,3 +1,4 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 
 class FloatingWatchListButton extends StatelessWidget {
@@ -13,7 +14,10 @@ class FloatingWatchListButton extends StatelessWidget {
         children: [
           Text("Watch List"),
           SizedBox(width: 8),
-          Icon(Icons.bookmark_rounded),
+          Icon(
+            BootstrapIcons.bookmark_fill,
+            size: 18,
+          ),
         ],
       ),
     );

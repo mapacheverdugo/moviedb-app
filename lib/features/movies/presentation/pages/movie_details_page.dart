@@ -6,18 +6,13 @@ import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_action_button.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
-import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar_deletage.dart';
-import 'package:moviedb/features/movies/presentation/widgets/movie_genres_chips.dart';
-import 'package:moviedb/features/movies/presentation/widgets/movie_poster.dart';
+import 'package:moviedb/features/movies/presentation/widgets/custom_tab_bar.dart';
+import 'package:moviedb/features/movies/presentation/widgets/header_delegate.dart';
 import 'package:moviedb/features/movies/presentation/widgets/review_list_tile.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
 class MovieDetailsPage extends StatelessWidget {
-  static const _posterHeight = 120.0;
-  static const _posterWidth = 95.0;
-  static const _backdropHeight = 210.0;
-
   static const _tabs = [
     Tab(
       height: 37,
@@ -64,19 +59,13 @@ class MovieDetailsPage extends StatelessWidget {
                     SliverOverlapAbsorber(
                       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
                           headerContext),
-                      sliver: SliverAppBar(
+                      sliver: SliverPersistentHeader(
                         pinned: true,
-                        floating: true,
-                        expandedHeight: _backdropHeight +
-                            (_posterHeight / 2) +
-                            40 +
-                            tabBar.preferredSize.height,
-                        automaticallyImplyLeading: false,
-                        flexibleSpace: FlexibleSpaceBar(
-                          collapseMode: CollapseMode.pin,
-                          background: _buildHeader(context),
+                        delegate: HeaderDelegate(
+                          context: context,
+                          baseMovie: baseMovie,
+                          tabBar: tabBar,
                         ),
-                        bottom: tabBar,
                       ),
                     ),
                   ];
@@ -135,91 +124,6 @@ class MovieDetailsPage extends StatelessWidget {
 
   String get _formattedAverageRating {
     return baseMovie.voteAverage.toStringAsFixed(1);
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Column(
-      children: [
-        SizedBox(
-          height: _backdropHeight + (_posterHeight / 2),
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-                child: Image.network(
-                  baseMovie.backdropUrl,
-                  fit: BoxFit.cover,
-                  height: _backdropHeight,
-                  width: double.infinity,
-                ),
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  height: _posterHeight,
-                  padding: EdgeInsets.symmetric(
-                      horizontal: AppConstants.pagePadding.horizontal / 2),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Hero(
-                        tag: "poster-${baseMovie.tmdbId}",
-                        child: MoviePoster(
-                          url: baseMovie.posterUrl,
-                          width: _posterWidth,
-                          height: _posterHeight,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Spacer(),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  baseMovie.title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: textTheme.titleLarge,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        const SizedBox(height: 18),
-        BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
-          builder: (context, state) {
-            if (state is MovieDetailsLoaded) {
-              return MovieGenresChips(
-                genres: state.movieDetails.genres,
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppConstants.pagePadding.horizontal / 2,
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-        const SizedBox(height: 18),
-      ],
-    );
   }
 
   Widget _buildReviewsTab(BuildContext context) {
@@ -323,9 +227,16 @@ class MovieDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          Text(
+            "Popularity:",
+            style: textTheme.titleSmall,
+          ),
+          Text(baseMovie.popularity.toString()),
           SizedBox(
-              height: AppConstants.footerButtonsHeight +
-                  AppConstants.pagePadding.vertical),
+            height: AppConstants.footerButtonsHeight +
+                AppConstants.pagePadding.vertical,
+          ),
         ],
       ),
     );

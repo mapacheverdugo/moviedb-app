@@ -1,3 +1,4 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 
 class FloatingWatchListActionButton extends StatelessWidget {
@@ -16,22 +17,38 @@ class FloatingWatchListActionButton extends StatelessWidget {
 
     final watchlistedStyle = ElevatedButton.styleFrom(
       elevation: 0,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 14,
+      ),
     );
-    const watchlistedIcon = Icon(Icons.bookmark_added_rounded);
+    const watchlistedIcon = Icon(
+      BootstrapIcons.bookmark_check_fill,
+      size: 18,
+    );
 
     final notWatchlistedStyle = ElevatedButton.styleFrom(
       elevation: 0,
       backgroundColor: colorScheme.tertiary,
       foregroundColor: colorScheme.onTertiary,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 14,
+      ),
     );
-    const notWatchlistedIcon = Icon(Icons.bookmark_rounded);
+    const notWatchlistedIcon = Icon(
+      BootstrapIcons.bookmark_fill,
+      size: 18,
+    );
 
     return ElevatedButton(
       onPressed: onTap,
       style: isWatchlisted ? watchlistedStyle : notWatchlistedStyle,
-      child: isWatchlisted ? watchlistedIcon : notWatchlistedIcon,
+      child: SizedBox(
+        height: 18,
+        width: 18,
+        child: isWatchlisted ? watchlistedIcon : notWatchlistedIcon,
+      ),
     );
   }
 }

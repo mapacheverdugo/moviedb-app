@@ -74,6 +74,7 @@ class MoviesPage extends StatelessWidget {
         final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
           builder: (context, __) {
             return MoviesList(
+              padding: EdgeInsets.symmetric(vertical: 30),
               movies: state.popularMovies,
               onMovieTap: (movie) => _onMovieTap(context, movie),
               onBookmarkTap: (movie) => _onBookmarkTap(context, movie),

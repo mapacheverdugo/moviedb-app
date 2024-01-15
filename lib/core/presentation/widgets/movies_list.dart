@@ -11,12 +11,14 @@ class MoviesList extends StatelessWidget {
     this.onMovieTap,
     this.onBookmarkTap,
     this.onLoadMoreTap,
+    this.padding = EdgeInsets.zero,
   });
 
   final List<MovieEntity> movies;
   final Function(MovieEntity)? onMovieTap;
   final Function(MovieEntity)? onBookmarkTap;
   final VoidCallback? onLoadMoreTap;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,9 @@ class MoviesList extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
+            Container(
+              height: padding.top,
+            ),
             ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.only(

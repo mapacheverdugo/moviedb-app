@@ -1,3 +1,4 @@
+import 'package:bootstrap_icons/bootstrap_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -119,18 +120,37 @@ class MovieListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             if (onBookmarkTap != null)
-              GestureDetector(
+              InkWell(
+                customBorder: const CircleBorder(),
                 onTap: onBookmarkTap,
-                child: Icon(
-                  movie.isWatchlisted
-                      ? Icons.bookmark_added_rounded
-                      : Icons
-                          .bookmark_rounded, // TODO: change for Bootstrap Icons
-                  color: movie.isWatchlisted
-                      ? colorScheme.primary
-                      : colorScheme.onBackground,
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    movie.isWatchlisted
+                        ? BootstrapIcons.bookmark_check_fill
+                        : BootstrapIcons.bookmark_fill,
+                    color: movie.isWatchlisted
+                        ? colorScheme.primary
+                        : colorScheme.onBackground,
+                    size: 22,
+                  ),
                 ),
               ),
+            const SizedBox(height: 18),
+            InkWell(
+              customBorder: const CircleBorder(),
+              onTap: onBookmarkTap,
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  BootstrapIcons.star_fill,
+                  color: movie.userRating != null
+                      ? colorScheme.primary
+                      : colorScheme.onBackground,
+                  size: 22,
+                ),
+              ),
+            ),
           ],
         );
       },

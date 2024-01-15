@@ -7,6 +7,7 @@ import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
 import 'package:moviedb/core/presentation/widgets/floating_back_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
 import 'package:moviedb/features/search/presentation/blocs/search_bloc/search_bloc.dart';
+import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
 class SearchPage extends StatelessWidget {
@@ -81,11 +82,13 @@ class SearchPage extends StatelessWidget {
             movies: state.results,
             onMovieTap: (movie) => _onMovieTap(context, movie),
             onLoadMoreTap: () => _onLoadMoreTap(context),
+            onBookmarkTap: (movie) => _onBookmarkedTap(context, movie),
           );
         } else if (state is SearchNoMoreResults) {
           return MoviesList(
             movies: state.results,
             onMovieTap: (movie) => _onMovieTap(context, movie),
+            onBookmarkTap: (movie) => _onBookmarkedTap(context, movie),
           );
         } else if (state is SearchError) {
           return Text(state.message);
@@ -124,6 +127,12 @@ class SearchPage extends StatelessWidget {
       '/movie_details',
       arguments: movie,
     );
+  }
+
+  void _onBookmarkedTap(BuildContext context, MovieEntity movie) {
+    context.read<WatchlistBloc>().add(
+          ToggleWatchlistItem(movie: movie),
+        );
   }
 
   void _onLoadMoreTap(BuildContext context) {
