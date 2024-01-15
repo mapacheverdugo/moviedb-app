@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:moviedb/features/movies/domain/entities/review.dart';
 
@@ -34,11 +35,17 @@ class ReviewListTile extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ClipOval(
-                      child: Image.network(
-                        review.avatarUrl,
+                      child: CachedNetworkImage(
+                        imageUrl: review.avatarUrl,
                         width: 44,
                         height: 44,
                         fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => Image.asset(
+                          "assets/images/avatar_placeholder.png",
+                          fit: BoxFit.cover,
+                          width: 44,
+                          height: 44,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -74,7 +81,9 @@ class ReviewListTile extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          review.authorName,
+          review.authorName.isNotEmpty
+              ? review.authorName
+              : "@${review.authorUsername}",
           style: textTheme.titleSmall,
         ),
         const SizedBox(height: 5),

@@ -56,7 +56,7 @@ void main() {
       act: (bloc) => bloc.add(const ChangeQueryToSearch(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
-        SearchLoading(),
+        const SearchLoading(),
         SearchLoaded(results: tSearchResultItemModelList),
       ],
       verify: (bloc) {
@@ -74,7 +74,7 @@ void main() {
       act: (bloc) => bloc.add(const ChangeQueryToSearch(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
-        SearchLoading(),
+        const SearchLoading(),
         const SearchError(message: 'Server failed'),
       ],
       verify: (bloc) {
@@ -94,7 +94,7 @@ void main() {
       act: (bloc) => bloc.add(const SearchNow(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
-        SearchLoading(),
+        const SearchLoading(),
         SearchLoaded(results: tSearchResultItemModelList),
       ],
       verify: (bloc) {
@@ -112,7 +112,7 @@ void main() {
       act: (bloc) => bloc.add(const SearchNow(query: tQuery)),
       wait: SearchBloc.debounceDuration,
       expect: () => [
-        SearchLoading(),
+        const SearchLoading(),
         const SearchError(message: 'Server failed'),
       ],
       verify: (bloc) {

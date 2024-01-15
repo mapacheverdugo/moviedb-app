@@ -4,6 +4,7 @@ import 'package:moviedb/features/movies/domain/entities/review.dart';
 class ReviewModel extends ReviewEntity {
   const ReviewModel({
     required super.authorName,
+    required super.authorUsername,
     required super.avatarUrl,
     required super.rating,
     required super.content,
@@ -14,6 +15,7 @@ class ReviewModel extends ReviewEntity {
 
     return ReviewModel(
       authorName: json['author_details']['name'],
+      authorUsername: json['author_details']['username'],
       avatarUrl: getAvatarUrl(avatarPath),
       rating: (json['author_details']['rating'] as num?)?.toDouble(),
       content: json['content'],

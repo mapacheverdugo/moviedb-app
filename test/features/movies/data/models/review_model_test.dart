@@ -9,6 +9,7 @@ import '../../../../fixtures/fixture_reader.dart';
 void main() {
   const tReviewModel = ReviewModel(
     authorName: "Test",
+    authorUsername: "test",
     avatarUrl: "/test.jpg",
     rating: 1,
     content: "Test",

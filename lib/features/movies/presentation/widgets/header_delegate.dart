@@ -166,30 +166,6 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           ),
-          Positioned(
-            left: 0,
-            right: 0,
-            child: Column(
-              children: [
-                const SizedBox(height: 18),
-                BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
-                  builder: (context, state) {
-                    if (state is MovieDetailsLoaded) {
-                      return MovieGenresChips(
-                        genres: state.movieDetails.genres,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: AppConstants.pagePadding.horizontal / 2,
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                ),
-                const SizedBox(height: 18),
-              ],
-            ),
-          )
         ].reversed.toList(),
       ),
     );

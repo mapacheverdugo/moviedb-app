@@ -52,7 +52,6 @@ class SearchPage extends StatelessWidget {
                                   _onSearchAction(context, query),
                             );
                           }),
-                          const SizedBox(height: 22),
                         ],
                       ),
                     ),
@@ -80,6 +79,9 @@ class SearchPage extends StatelessWidget {
         } else if (state is SearchLoaded) {
           return MoviesList(
             movies: state.results,
+            padding: const EdgeInsets.symmetric(
+              vertical: 31,
+            ),
             onMovieTap: (movie) => _onMovieTap(context, movie),
             onLoadMoreTap: () => _onLoadMoreTap(context),
             onBookmarkTap: (movie) => _onBookmarkedTap(context, movie),
@@ -87,6 +89,9 @@ class SearchPage extends StatelessWidget {
         } else if (state is SearchNoMoreResults) {
           return MoviesList(
             movies: state.results,
+            padding: const EdgeInsets.symmetric(
+              vertical: 31,
+            ),
             onMovieTap: (movie) => _onMovieTap(context, movie),
             onBookmarkTap: (movie) => _onBookmarkedTap(context, movie),
           );

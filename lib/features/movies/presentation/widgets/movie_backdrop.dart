@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 
 class MovieBackdrop extends StatelessWidget {
@@ -17,8 +18,14 @@ class MovieBackdrop extends StatelessWidget {
         bottomLeft: Radius.circular(16),
         bottomRight: Radius.circular(16),
       ),
-      child: Image.network(
-        url,
+      child: CachedNetworkImage(
+        imageUrl: url,
+        errorWidget: (context, url, error) => Image.asset(
+          "assets/images/backdrop_placeholder.png",
+          fit: BoxFit.cover,
+          height: height,
+          width: double.infinity,
+        ),
         fit: BoxFit.cover,
         height: height,
         width: double.infinity,

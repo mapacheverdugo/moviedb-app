@@ -70,7 +70,7 @@ void main() {
       },
       act: (bloc) => bloc.add(const GetTopMoviesEvent()),
       expect: () => [
-        TopMoviesLoading(),
+        const TopMoviesLoading(),
         const TopMoviesError(message: 'Server failed'),
       ],
       verify: (bloc) {
