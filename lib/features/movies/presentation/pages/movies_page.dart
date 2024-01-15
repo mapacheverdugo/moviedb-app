@@ -6,7 +6,7 @@ import 'package:moviedb/core/presentation/widgets/app_title.dart';
 import 'package:moviedb/core/presentation/widgets/custom_search_bar.dart';
 import 'package:moviedb/core/presentation/widgets/floating_watch_list_button.dart';
 import 'package:moviedb/core/presentation/widgets/movies_list.dart';
-import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:moviedb/features/watchlist/presentation/blocs/watchlist_bloc/watchlist_bloc.dart';
 import 'package:moviedb/injection_container.dart';
 
@@ -19,7 +19,8 @@ class MoviesPage extends StatelessWidget {
 
     return Scaffold(
       body: BlocProvider(
-        create: (context) => sl<MoviesBloc>()..add(const GetMoviesEvent()),
+        create: (context) =>
+            sl<PopularMoviesBloc>()..add(const GetPopularMoviesEvent()),
         child: Stack(
           children: [
             SafeArea(
@@ -69,13 +70,13 @@ class MoviesPage extends StatelessWidget {
   }
 
   Widget _buildList() {
-    return BlocBuilder<MoviesBloc, MoviesState>(
+    return BlocBuilder<PopularMoviesBloc, PopularMoviesState>(
       builder: (context, state) {
         final loadedList = BlocBuilder<WatchlistBloc, WatchlistState>(
           builder: (context, __) {
             return MoviesList(
-              padding: EdgeInsets.symmetric(vertical: 30),
-              movies: state.popularMovies,
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              movies: state.movies,
               onMovieTap: (movie) => _onMovieTap(context, movie),
               onBookmarkTap: (movie) => _onBookmarkTap(context, movie),
               onLoadMoreTap: () => _onLoadMoreTap(context),
@@ -83,15 +84,15 @@ class MoviesPage extends StatelessWidget {
           },
         );
 
-        if (state is MoviesLoading) {
+        if (state is PopularMoviesLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is MoviesLoaded) {
+        } else if (state is PopularMoviesLoaded) {
           return loadedList;
-        } else if (state is MoviesNoMoreResults) {
+        } else if (state is PopularMoviesNoMoreResults) {
           return loadedList;
-        } else if (state is MoviesError) {
+        } else if (state is PopularMoviesError) {
           return Text(state.message);
         } else {
           return const SizedBox.shrink();
@@ -139,6 +140,6 @@ class MoviesPage extends StatelessWidget {
   }
 
   void _onLoadMoreTap(BuildContext context) {
-    context.read<MoviesBloc>().add(const LoadMoreMoviesEvent());
+    context.read<PopularMoviesBloc>().add(const LoadMorePopularMoviesEvent());
   }
 }

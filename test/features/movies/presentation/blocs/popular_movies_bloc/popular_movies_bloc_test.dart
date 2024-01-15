@@ -6,18 +6,18 @@ import 'package:mockito/mockito.dart';
 import 'package:moviedb/core/error/failure.dart';
 import 'package:moviedb/features/movies/data/models/movie_model.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
-import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
 
-import 'movies_bloc_test.mocks.dart';
+import 'popular_movies_bloc_test.mocks.dart';
 
 @GenerateMocks([GetPopularMoviesUseCase])
 void main() {
   late MockGetPopularMoviesUseCase mockGetPopularMoviesUseCase;
-  late MoviesBloc moviesBloc;
+  late PopularMoviesBloc moviesBloc;
 
   setUp(() {
     mockGetPopularMoviesUseCase = MockGetPopularMoviesUseCase();
-    moviesBloc = MoviesBloc(mockGetPopularMoviesUseCase);
+    moviesBloc = PopularMoviesBloc(mockGetPopularMoviesUseCase);
   });
 
   final tMovieModelList = [
@@ -36,42 +36,42 @@ void main() {
 
   const tPage = 1;
   test(
-    'initial state should be MoviesInitial',
+    'initial state should be PopularMoviesInitial',
     () async {
       // assert
-      expect(moviesBloc.state, equals(MoviesInitial()));
+      expect(moviesBloc.state, equals(PopularMoviesInitial()));
     },
   );
 
-  group('GetMoviesEvent', () {
-    blocTest<MoviesBloc, MoviesState>(
-      'should emit [MoviesLoading, MoviesLoaded] and add 1 to page when data is gotten successfully',
+  group('GetPopularMoviesEvent', () {
+    blocTest<PopularMoviesBloc, PopularMoviesState>(
+      'should emit [PopularMoviesLoading, PopularMoviesLoaded] and add 1 to page when data is gotten successfully',
       build: () {
         when(mockGetPopularMoviesUseCase.call(tPage))
             .thenAnswer((_) async => Right(tMovieModelList));
         return moviesBloc;
       },
-      act: (bloc) => bloc.add(const GetMoviesEvent()),
+      act: (bloc) => bloc.add(const GetPopularMoviesEvent()),
       expect: () => [
-        MoviesLoading(),
-        MoviesLoaded(popularMovies: tMovieModelList),
+        const PopularMoviesLoading(),
+        PopularMoviesLoaded(movies: tMovieModelList),
       ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage + 1));
       },
     );
 
-    blocTest<MoviesBloc, MoviesState>(
-      'should emit [MoviesLoading, MoviesError] and same page when data is gotten unsuccessfully',
+    blocTest<PopularMoviesBloc, PopularMoviesState>(
+      'should emit [PopularMoviesLoading, PopularMoviesError] and same page when data is gotten unsuccessfully',
       build: () {
         when(mockGetPopularMoviesUseCase.call(tPage)).thenAnswer(
             (_) async => const Left(ServerFailure('Server failed')));
         return moviesBloc;
       },
-      act: (bloc) => bloc.add(const GetMoviesEvent()),
+      act: (bloc) => bloc.add(const GetPopularMoviesEvent()),
       expect: () => [
-        MoviesLoading(),
-        const MoviesError(message: 'Server failed'),
+        PopularMoviesLoading(),
+        const PopularMoviesError(message: 'Server failed'),
       ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));
@@ -79,33 +79,33 @@ void main() {
     );
   });
 
-  group('LoadMoreMoviesEvent', () {
-    blocTest<MoviesBloc, MoviesState>(
-      'should emit [MoviesLoaded] and add 1 to page when data is gotten successfully',
+  group('LoadMorePopularMoviesEvent', () {
+    blocTest<PopularMoviesBloc, PopularMoviesState>(
+      'should emit [PopularMoviesLoaded] and add 1 to page when data is gotten successfully',
       build: () {
         when(mockGetPopularMoviesUseCase.call(tPage))
             .thenAnswer((_) async => Right(tMovieModelList));
         return moviesBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreMoviesEvent()),
+      act: (bloc) => bloc.add(const LoadMorePopularMoviesEvent()),
       expect: () => [
-        MoviesLoaded(popularMovies: tMovieModelList),
+        PopularMoviesLoaded(movies: tMovieModelList),
       ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage + 1));
       },
     );
 
-    blocTest<MoviesBloc, MoviesState>(
+    blocTest<PopularMoviesBloc, PopularMoviesState>(
       'should emit nothing, same page number and marked as last page when no more data is available',
       build: () {
         when(mockGetPopularMoviesUseCase.call(tPage))
             .thenAnswer((_) async => const Right([]));
         return moviesBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreMoviesEvent()),
+      act: (bloc) => bloc.add(const LoadMorePopularMoviesEvent()),
       expect: () => [
-        const MoviesNoMoreResults(popularMovies: []),
+        const PopularMoviesNoMoreResults(movies: []),
       ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));
@@ -113,16 +113,16 @@ void main() {
       },
     );
 
-    blocTest<MoviesBloc, MoviesState>(
-      'should emit [MoviesError] and same page when data is gotten unsuccessfully',
+    blocTest<PopularMoviesBloc, PopularMoviesState>(
+      'should emit [PopularMoviesError] and same page when data is gotten unsuccessfully',
       build: () {
         when(mockGetPopularMoviesUseCase.call(tPage)).thenAnswer(
             (_) async => const Left(ServerFailure('Server failed')));
         return moviesBloc;
       },
-      act: (bloc) => bloc.add(const LoadMoreMoviesEvent()),
+      act: (bloc) => bloc.add(const LoadMorePopularMoviesEvent()),
       expect: () => [
-        const MoviesError(message: 'Server failed'),
+        const PopularMoviesError(message: 'Server failed'),
       ],
       verify: (bloc) {
         expect(bloc.page, equals(tPage));

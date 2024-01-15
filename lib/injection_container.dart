@@ -6,8 +6,9 @@ import 'package:moviedb/features/movies/data/repositories/movie_repository_impl.
 import 'package:moviedb/features/movies/domain/repositories/movie_repository.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_movie_details.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
+import 'package:moviedb/features/movies/domain/usecases/get_top_movies_usecase.dart';
 import 'package:moviedb/features/movies/presentation/blocs/movie_details/movie_details_bloc.dart';
-import 'package:moviedb/features/movies/presentation/blocs/movies_bloc/movies_bloc.dart';
+import 'package:moviedb/features/movies/presentation/blocs/popular_movies_bloc/popular_movies_bloc.dart';
 import 'package:moviedb/features/search/data/data_sources/search_remote_data_source.dart';
 import 'package:moviedb/features/search/data/repositories/search_repository_impl.dart';
 import 'package:moviedb/features/search/domain/repositories/search_repository.dart';
@@ -46,7 +47,7 @@ Future<void> init() async {
 void _initMovieFeature() {
   // Bloc
   sl.registerFactory(
-    () => MoviesBloc(sl()),
+    () => PopularMoviesBloc(sl()),
   );
   sl.registerFactory(
     () => MovieDetailsBloc(sl()),
@@ -54,6 +55,7 @@ void _initMovieFeature() {
 
   // Use cases
   sl.registerLazySingleton(() => GetPopularMoviesUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetTopMoviesUseCase(repository: sl()));
   sl.registerLazySingleton(() => GetMovieDetailsUseCase(repository: sl()));
 
   // Repository

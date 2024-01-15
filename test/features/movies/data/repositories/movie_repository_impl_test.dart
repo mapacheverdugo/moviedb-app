@@ -38,7 +38,7 @@ void main() {
     )
   ];
 
-  group('get popular movies', () {
+  group('getPopularMovies', () {
     test(
       'should return movies when a call to data source is successful',
       () async {
@@ -72,6 +72,40 @@ void main() {
     );
   });
 
+  group('getTopMovies', () {
+    test(
+      'should return movies when a call to data source is successful',
+      () async {
+        // arrange
+        when(mockMoviesRemoteDataSource.getTopMovies())
+            .thenAnswer((_) async => tMovieModelList);
+
+        // act
+        final result = await movieRepositoryImpl.getTopMovies();
+
+        // assert
+        verify(mockMoviesRemoteDataSource.getTopMovies());
+        expect(result, isA<Right<Failure, List<MovieEntity>>>());
+      },
+    );
+
+    test(
+      'should return ServerFailure when a call to data source is unsuccessful',
+      () async {
+        // arrange
+        when(mockMoviesRemoteDataSource.getTopMovies())
+            .thenThrow(ServerException());
+
+        // act
+        final result = await movieRepositoryImpl.getTopMovies();
+
+        // assert
+        expect(
+            result, equals(const Left(ServerFailure('An error has occurred'))));
+      },
+    );
+  });
+
   const tMovieId = 1;
   final tMovieDetailsModel = MovieDetailsModel(
     id: tMovieId,
@@ -87,7 +121,7 @@ void main() {
     reviews: const [],
   );
 
-  group('get movie details', () {
+  group('getMovieDetails', () {
     test(
       'should return movie details when a call to data source is successful',
       () async {

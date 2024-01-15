@@ -3,48 +3,49 @@ import 'package:equatable/equatable.dart';
 import 'package:moviedb/core/domain/entities/movie.dart';
 import 'package:moviedb/features/movies/domain/usecases/get_popular_movies_usecase.dart';
 
-part 'movies_event.dart';
-part 'movies_state.dart';
+part 'popular_movies_event.dart';
+part 'popular_movies_state.dart';
 
-class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
+class PopularMoviesBloc extends Bloc<PopularMoviesEvent, PopularMoviesState> {
   final GetPopularMoviesUseCase _getPopularMoviesUseCase;
 
   bool isLastPage = false;
   int page = 1;
 
-  MoviesBloc(this._getPopularMoviesUseCase) : super(MoviesInitial()) {
-    on<GetMoviesEvent>((event, emit) async {
+  PopularMoviesBloc(this._getPopularMoviesUseCase)
+      : super(PopularMoviesInitial()) {
+    on<GetPopularMoviesEvent>((event, emit) async {
       isLastPage = false;
       page = 1;
-      emit(MoviesLoading(popularMovies: state.popularMovies));
+      emit(PopularMoviesLoading(movies: state.movies));
       final failureOrMovies = await _getPopularMoviesUseCase(page);
       failureOrMovies.fold(
-        (failure) => emit(MoviesError(message: failure.message)),
-        (popularMovies) {
+        (failure) => emit(PopularMoviesError(message: failure.message)),
+        (movies) {
           page++;
 
-          emit(MoviesLoaded(popularMovies: popularMovies));
+          emit(PopularMoviesLoaded(movies: movies));
         },
       );
     });
 
-    on<LoadMoreMoviesEvent>((event, emit) async {
+    on<LoadMorePopularMoviesEvent>((event, emit) async {
       if (isLastPage) {
-        emit(MoviesNoMoreResults(popularMovies: state.popularMovies));
+        emit(PopularMoviesNoMoreResults(movies: state.movies));
         return;
       }
       final failureOrMovies = await _getPopularMoviesUseCase(page);
       failureOrMovies.fold(
-        (failure) => emit(MoviesError(message: failure.message)),
+        (failure) => emit(PopularMoviesError(message: failure.message)),
         (morePopularMovies) {
           if (morePopularMovies.isEmpty) {
             isLastPage = true;
-            emit(MoviesNoMoreResults(popularMovies: state.popularMovies));
+            emit(PopularMoviesNoMoreResults(movies: state.movies));
           } else {
             page++;
             emit(
-              MoviesLoaded(
-                popularMovies: state.popularMovies + morePopularMovies,
+              PopularMoviesLoaded(
+                movies: state.movies + morePopularMovies,
               ),
             );
           }

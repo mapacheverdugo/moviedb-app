@@ -57,6 +57,17 @@ class MockMoviesRemoteDataSource extends _i1.Mock
       ) as _i4.Future<List<_i5.MovieModel>>);
 
   @override
+  _i4.Future<List<_i5.MovieModel>> getTopMovies({int? page = 1}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getTopMovies,
+          [],
+          {#page: page},
+        ),
+        returnValue: _i4.Future<List<_i5.MovieModel>>.value(<_i5.MovieModel>[]),
+      ) as _i4.Future<List<_i5.MovieModel>>);
+
+  @override
   _i4.Future<_i2.MovieDetailsModel> getMovieDetails({required int? movieId}) =>
       (super.noSuchMethod(
         Invocation.method(

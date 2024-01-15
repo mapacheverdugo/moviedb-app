@@ -39,6 +39,14 @@ class TheMovieDbConstants {
     return baseUrl + _getPopularMoviesPath(page);
   }
 
+  static String _getTopMoviesPath(int page) {
+    return '/movie/top_rated?page=$page';
+  }
+
+  static String getTopMoviesUrl(int page) {
+    return baseUrl + _getTopMoviesPath(page);
+  }
+
   static String _getMovieDetailsPath(int movieId) {
     return '/movie/$movieId?append_to_response=reviews';
   }

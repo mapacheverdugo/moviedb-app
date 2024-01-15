@@ -83,6 +83,62 @@ void main() {
   );
 
   group(
+    'getTopRatedMovies',
+    () {
+      final tUrl = Uri.parse(TheMovieDbConstants.getTopMoviesUrl(1));
+
+      test(
+        'should perform a GET request on a URL and return a List of MovieModel when get top rated movies',
+        () async {
+          // arrange
+          when(
+            mockHttpClient.get(tUrl, headers: anyNamed('headers')),
+          ).thenAnswer(
+            (_) async => http.Response(
+              fixture('movies_popular.json'),
+              200,
+              headers: {
+                HttpHeaders.contentTypeHeader:
+                    'application/json; charset=utf-8',
+              },
+            ),
+          );
+          // act
+          final result = await moviesRemoteDataSourceImpl.getTopMovies();
+          // assert
+          verify(mockHttpClient.get(
+            tUrl,
+            headers: anyNamed('headers'),
+          ));
+          expect(result, isA<List<MovieModel>>());
+        },
+      );
+
+      test(
+        'should throw a ServerException when the response code is 404 or other',
+        () async {
+          // arrange
+          when(
+            mockHttpClient.get(
+              tUrl,
+              headers: anyNamed('headers'),
+            ),
+          ).thenAnswer(
+            (_) async => http.Response(
+              'Something went wrong',
+              404,
+            ),
+          );
+          // act
+          final result = moviesRemoteDataSourceImpl.getTopMovies;
+          // assert
+          expect(result, throwsA(isA<ServerException>()));
+        },
+      );
+    },
+  );
+
+  group(
     'getMovieDetails',
     () {
       const tMovieId = 1;

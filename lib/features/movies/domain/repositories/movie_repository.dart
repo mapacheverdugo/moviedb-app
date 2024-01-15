@@ -5,6 +5,7 @@ import 'package:moviedb/features/movies/domain/entities/movie_details.dart';
 
 abstract class MovieRepository {
   Future<Either<Failure, List<MovieEntity>>> getPopularMovies({int page = 1});
+  Future<Either<Failure, List<MovieEntity>>> getTopMovies({int page = 1});
   Future<Either<Failure, MovieDetailsEntity>> getMovieDetails(
       {required int movieId});
 }
